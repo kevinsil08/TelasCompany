@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" nodeOrientation="LEFT_TO_RIGHT" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_Pages.AddHandiworkController">
+   <content>
+      <VBox prefHeight="733.0" prefWidth="1396.0" style="-fx-alignment: center;">
+         <children>
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="104.0" prefWidth="1234.0" style="-fx-alignment: center; -fx-border-width: 1px; -fx-border-color: black;" VBox.vgrow="SOMETIMES">
+               <children>
+                  <HBox prefHeight="46.0" prefWidth="1058.0" VBox.vgrow="SOMETIMES">
+                     <children>
+                        <Label text="Cédula" HBox.hgrow="SOMETIMES">
+                           <font>
+                              <Font name="Roboto Medium" size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="50.0" top="20.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField maxWidth="-Infinity" prefColumnCount="10" prefHeight="26.0" prefWidth="193.0">
+                           <HBox.margin>
+                              <Insets left="53.0" top="19.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Roboto" size="17.0" />
+                           </font>
+                        </TextField>
+                        <Button mnemonicParsing="false" text="Buscar Cliente">
+                           <HBox.margin>
+                              <Insets left="100.0" top="14.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Roboto Medium" size="16.0" />
+                           </font>
+                        </Button>
+                        <Button mnemonicParsing="false" text="Agregar Nuevo Cliente">
+                           <font>
+                              <Font name="Roboto Medium" size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="20.0" top="14.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Label text="Estado">
+                           <HBox.margin>
+                              <Insets left="50.0" top="20.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Roboto Medium" size="20.0" />
+                           </font>
+                        </Label>
+                        <TextField>
+                           <HBox.margin>
+                              <Insets left="50.0" top="19.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Roboto" size="17.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="49.0" prefWidth="1058.0" VBox.vgrow="SOMETIMES">
+                     <children>
+                        <Label text="Nombres" wrapText="true">
+                           <font>
+                              <Font name="Roboto Medium" size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="50.0" top="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField maxWidth="-Infinity" prefColumnCount="10" prefHeight="26.0" prefWidth="193.0">
+                           <HBox.margin>
+                              <Insets left="33.0" top="10.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Roboto" size="17.0" />
+                           </font>
+                        </TextField>
+                        <Label text="Apellidos">
+                           <font>
+                              <Font name="Roboto Medium" size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="103.0" top="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField maxWidth="-Infinity" prefColumnCount="10" prefHeight="26.0" prefWidth="193.0">
+                           <HBox.margin>
+                              <Insets left="50.0" top="10.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Roboto" size="17.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" top="20.0" />
+               </VBox.margin>
+            </VBox>
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="995.0">
+               <children>
+                  <Button fx:id="btnAddItem" mnemonicParsing="false" onMouseClicked="#showAddItem" text="Agregar Item">
+                     <VBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Roboto Black" size="22.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets right="200.0" top="20.0" />
+               </VBox.margin>
+            </VBox>
+            <VBox prefHeight="437.0" prefWidth="1396.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
+               <children>
+                  <TableView fx:id="Table" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="372.0" prefWidth="1243.0">
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="74.0" prefWidth="1172.0">
+                     <children>
+                        <Button fx:id="btnCancel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#closeDialog" prefHeight="36.0" prefWidth="132.0" text="Regresar" textFill="#c90a0a">
+                           <HBox.margin>
+                              <Insets left="50.0" top="20.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Roboto Black" size="20.0" />
+                           </font>
+                        </Button>
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="132.0" text="Guardar" textFill="#0bd72d">
+                           <font>
+                              <Font name="Roboto Black" size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="200.0" top="20.0" />
+                           </HBox.margin>
+                        </Button>
+                        <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="74.0" prefWidth="451.0" style="-fx-border-width: 1px; -fx-border-color: black;">
+                           <children>
+                              <Label text="Total Acumulado">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="20.0" top="10.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Roboto" size="22.0" />
+                                 </font>
+                              </Label>
+                              <TextField>
+                                 <font>
+                                    <Font name="Roboto" size="20.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="10.0" />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="200.0" />
+                           </HBox.margin>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>
