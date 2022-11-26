@@ -21,7 +21,7 @@ import java.util.List;
 public class SQLMeasurementDAOImpl implements MeasurementDAO{
     
     private  Connection connection;
-    private static final List<String> EMPTY = new ArrayList<>();
+    private static final List<Measurement> EMPTY = new ArrayList<>();
 
     @Override
     public int InsertMeasurement(Measurement measurement) {
@@ -39,8 +39,8 @@ public class SQLMeasurementDAOImpl implements MeasurementDAO{
     }
 
     @Override
-    public List<String> ListMeasurementWithItem(int ItemId) {
-        List<String> ListMeasurementWithItem = new ArrayList<>();
+    public List<Measurement> ListMeasurementWithItem(int ItemId) {
+        List<Measurement> ListMeasurementWithItem = new ArrayList<>();
         ResultSet rs = null;
         CallableStatement statement = null;
         
@@ -49,8 +49,10 @@ public class SQLMeasurementDAOImpl implements MeasurementDAO{
             statement.setInt(1, ItemId);
             rs = statement.executeQuery();
             while (rs.next()) {
-                String name = ((rs.getString("mea_name")));
-                ListMeasurementWithItem.add(name);
+                Measurement measurement = new Measurement();
+                measurement.setId((rs.getInt("mea_id")));
+                measurement.setName((rs.getString("mea_name")));
+                ListMeasurementWithItem.add(measurement);
             }
             return ListMeasurementWithItem;
         } catch (SQLException e) {
@@ -77,6 +79,47 @@ public class SQLMeasurementDAOImpl implements MeasurementDAO{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public int InsertValuesMeasurement(Measurement measurement) {
+        try {
+            CallableStatement statement = connection.prepareCall("{call pr_add_item_measurement (?,?,?)}");
+            statement.setInt(1, measurement.getIdHandDetail());
+            statement.setInt(2, measurement.getId());
+            statement.setDouble(3, measurement.getValue());
+            statement.execute();
+            return measurement.getId();
+        } catch (SQLException e) {
+            System.err.println(e);
+        } 
+        return -1;
+    }
+
+    @Override
+    public List<Measurement> ListValuesMeasurementOfItem(int HandDetailId) {
+        List<Measurement> ListMeasurementWithItem = new ArrayList<>();
+        ResultSet rs = null;
+        CallableStatement statement = null;
+        
+        try {
+            statement = connection.prepareCall("{call pr_values_measurement_item(?)}");
+            statement.setInt(1, HandDetailId);
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                Measurement Measurement = new Measurement();
+                        
+                Measurement.setValue((rs.getDouble("value")));
+                Measurement.setName((rs.getString("mea_name")));
+                Measurement.setId((rs.getInt("mea_id")));
+                Measurement.setIdHandDetail((rs.getInt("ite_id")));
+                ListMeasurementWithItem.add(Measurement);
+            }
+            return ListMeasurementWithItem;
+        } catch (SQLException e) {
+            System.err.println(e);
+        } 
+        return EMPTY;
     }
     
 }

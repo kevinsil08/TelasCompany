@@ -11,7 +11,7 @@ public class Customer {
     private String lastName;
     private String email;
     private String direction;
-    private String phoneNumber;
+    private String docCiRuc;
 
     public Customer() {
     }
@@ -20,13 +20,13 @@ public class Customer {
         
     }
 
-    public Customer(int id, String firstName, String lastName, String email, String direction, String phoneNumber) {
+    public Customer(int id, String firstName, String lastName, String docCiRuc , String direction ,String email  ) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.direction = direction;
-        this.phoneNumber = phoneNumber;
+        this.docCiRuc = docCiRuc;
     }
 
     public String getDirection() {
@@ -69,13 +69,15 @@ public class Customer {
         this.email = email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getDocCiRuc() {
+        return docCiRuc;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setDocCiRuc(String docCiRuc) {
+        this.docCiRuc = docCiRuc;
     }
+
+
     
     
 }

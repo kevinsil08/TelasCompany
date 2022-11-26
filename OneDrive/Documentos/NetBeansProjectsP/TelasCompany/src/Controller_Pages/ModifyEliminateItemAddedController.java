@@ -5,23 +5,19 @@
  */
 package Controller_Pages;
 
+import Model.HandiworkDetail;
 import Model.HandiworkDetailManager;
 import Model.HandiworkPaymentManager;
 import Model.Item;
-import Model.ItemManager;
 import Model.Measurement;
 import Model.MeasurementManager;
 import Model.ValidateInput;
-import com.sun.webkit.graphics.WCGraphicsManager;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -42,43 +38,43 @@ import javafx.stage.Stage;
  *
  * @author kevin
  */
-public class AddItemController implements Initializable {
-
-    @FXML
-    private ComboBox ComboItems;
+public class ModifyEliminateItemAddedController implements Initializable {
 
     @FXML
     private HBox HBoxMeasurement, HBoxMeasurement2;
-
+    
     @FXML
-    private TextArea TxtAreaDetail, TxtAreaAddDetail;
-
+    private Button BtnModifyItem,BtnCancel,BtnDelete;
+    
     @FXML
-    private TextField TxtFTotalCost, TxtFPayment;
-
+    private Label nameItem, PaymentDone,PayStatus;
+    
+    @FXML
+    private ComboBox ComboStateItem;
+    
+    @FXML
+    private TextArea TxtAreaDetail,TxtAreaAddDetail;
+    
+    @FXML
+    private TextField TxtFTotalCost,TxtFPayment;
+    
     @FXML
     private DatePicker DateDelivery;
-
-    @FXML
-    private Button BtnAddItem,BtnCancel;
-
-    private Label[] NameMeasurement;
-    private TextField[] TxtMeasurement;
-    private List<Item> ListItems;
-    private Item itemSelected;
-
+    
+    private HandiworkDetail itemSelected;
     private HandiworkDetailManager HandiworkDtlModel;
-    private ItemManager ItemManagerModel;
     private MeasurementManager MeasurementManagerModel;
     private HandiworkPaymentManager HandiworkPaymentManagerModel;
-    
 
-    public AddItemController(HandiworkDetailManager HandiworkDtlModel, ItemManager ItemManagerModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel) {
+    public ModifyEliminateItemAddedController(HandiworkDetail itemSelected, HandiworkDetailManager HandiworkDtlModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel) {
+        this.itemSelected = itemSelected;
         this.HandiworkDtlModel = HandiworkDtlModel;
-        this.ItemManagerModel = ItemManagerModel;
         this.MeasurementManagerModel = MeasurementManagerModel;
         this.HandiworkPaymentManagerModel = HandiworkPaymentManagerModel;
     }
+    
+    private Label[] NameMeasurement;
+    private TextField[] TxtMeasurement;
     
     @FXML
     void closeDialog(MouseEvent event) {
@@ -90,12 +86,12 @@ public class AddItemController implements Initializable {
         stage.close();
     }
     
-
+    
     @FXML
-    private void onAddHandiworkDetail(MouseEvent event) throws Exception {
+    private void onUpdateHandiworkDetail(MouseEvent event) throws Exception {
         String ErrorTitle = "Error de ingreso";
         String Detail = TxtAreaDetail.getText();
-        String AddDetail = (TxtAreaAddDetail.getText().isEmpty())
+        String AddDetail = (itemSelected.getAddDetail() == null)
                 ? null : TxtAreaAddDetail.getText();
 
         try{
@@ -111,83 +107,91 @@ public class AddItemController implements Initializable {
             return;
         }
         
-        if(Payment>TotalCost){
-            showError(ErrorTitle , "El Abono no debe ser mayor al Costo Total");
+        if(Payment+itemSelected.getPayment()>TotalCost){
+            showError(ErrorTitle , "El Abono más lo abonado no debe ser mayor al Costo Total");
             return;
         }
-        //Handiwork PrincipalHandiwork = Handiwork
-        int lastId=HandiworkDtlModel.AddHandiworkDetail(itemSelected.getId(), 1, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), "0", "p");
-        HandiworkPaymentManagerModel.AddHandiworkPayment(lastId, StartDate.toString(), Payment);
         
-            for (int i = 0; i < TxtMeasurement.length; i++) {
+        String state="p"; 
+        if(ComboStateItem.getSelectionModel().getSelectedIndex()==0){
+            state="f";
+        }
+        
+        String payStatus = "0";
+        
+        double totalPayment = Payment+itemSelected.getPayment();
+        
+        if(totalPayment==TotalCost){
+            payStatus = "1";
+        }
+        
+        HandiworkDetail HandiworkDetail = new HandiworkDetail(itemSelected.getId(),itemSelected.getTypeItemId(), 1, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), payStatus, state);
+        
+        HandiworkDtlModel.UpdateHandiworkDetail(HandiworkDetail);
+        HandiworkPaymentManagerModel.AddHandiworkPayment(itemSelected.getId(), StartDate.toString(), Payment);
+        
+            /*for (int i = 0; i < TxtMeasurement.length; i++) {
                 MeasurementManagerModel.AddMeasurementValues(Integer.parseInt(TxtMeasurement[i].getId()), lastId,Double.parseDouble(TxtMeasurement[i].getText()));
-            }
+            }*/
         closeStage();
         
         }catch(NumberFormatException e){
             showError(ErrorTitle , "Solo debe ingresar números en Precio Total y/o Abono");
         }
     }
-
+    
+    @FXML
+    private void onDeleteHandiworkDetail(MouseEvent event) throws Exception {
+        
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        nameItem.setText("Tipo de Item: "+itemSelected.getNameItem());
+        TxtAreaDetail.setText(itemSelected.getDetail());
         
-        TxtFTotalCost.setText("0");
+        System.out.println("aaa "+itemSelected.getAddDetail());
         
-        ListItems = ItemManagerModel.ListItems();
-
-        ArrayList<String> ItemsNames = new ArrayList(ListItems.size());
-        for (int i = 0; i < ListItems.size(); i++) {
-            Item item = (Item) ListItems.get(i);
-            ItemsNames.add(item.getName());
-        }
-        ObservableList<String> observableListItems = FXCollections.observableList(ItemsNames);
-        setItemsComboBox(observableListItems);
-
-        ComboItems.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue ov, String FirstValue, String LastValue) {
-                Item item;
-                for (int i = 0; i < ListItems.size(); i++) {
-                    item = (Item) ListItems.get(i);
-                    if (item.getName().equals((String) ComboItems.getSelectionModel().getSelectedItem())) {
-                        onClickItem(item.getId());
-                        EnableElements();
-                        itemSelected = item;
-                        break;
-                    }
-                }
-            }
-        });
-    }
-
-    private void EnableElements() {
-        TxtAreaDetail.setDisable(false);
-        TxtAreaAddDetail.setDisable(false);
-        TxtFTotalCost.setDisable(false);
-        TxtFPayment.setDisable(false);
-        DateDelivery.setDisable(false);
-        BtnAddItem.setDisable(false);
-    }
-
-    private void onClickItem(int ItemId) {
+        String AddDetail = (itemSelected.getAddDetail() == null)
+                ? null : TxtAreaAddDetail.getText();
+        
+        TxtAreaAddDetail.setText(AddDetail);
+        TxtFTotalCost.setText(itemSelected.getCost()+"");
+        DateDelivery.setValue(LOCAL_DATE(itemSelected.getDeliveryDeadline()));
+        PaymentDone.setText("Abonado: "+itemSelected.getPayment()+" $");
+        String valor = (itemSelected.getPayStatus().equals("0")?"No Pagado":"Pagado");
+        PayStatus.setText("Estado de Pago: "+valor);
+        
+        String[] StateItem = {"Realizado","Pendiente"};
+        ComboStateItem.setItems(FXCollections.observableArrayList(StateItem));
+        onClickItem();
+        
+    }    
+    
+    public static final LocalDate LOCAL_DATE (String dateString){
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    LocalDate localDate = LocalDate.parse(dateString, formatter);
+    return localDate;
+}
+    
+    private void onClickItem() {
         removeLabelsTextFields();
 
         int MAXVALUETOHBOX = 4;
-        List<Measurement> listMeasurement = MeasurementManagerModel.ListMeasurement(ItemId);
+        List<Measurement> listMeasurement = MeasurementManagerModel.ListValuesMeasurementOfItem(itemSelected.getId());
+        
+        System.out.println(listMeasurement.size());
         NameMeasurement = new Label[listMeasurement.size()];
         TxtMeasurement = new TextField[listMeasurement.size()];
         int ITERATOR = 0;
         while (ITERATOR < listMeasurement.size()) {
+
             NameMeasurement[ITERATOR] = new Label((String) listMeasurement.get(ITERATOR).getName());
             NameMeasurement[ITERATOR].setPadding(new Insets(0.0, 20.0, 0.0, 20.0));
             NameMeasurement[ITERATOR].setFont(new Font("Roboto", 22.0));
-            TxtMeasurement[ITERATOR] = new TextField();
+            TxtMeasurement[ITERATOR] = new TextField((Double) listMeasurement.get(ITERATOR).getValue()+"");
             TxtMeasurement[ITERATOR].setPrefSize(78, 26);
             TxtMeasurement[ITERATOR].setId(""+listMeasurement.get(ITERATOR).getId());
-            
-            System.out.println("aaa "+TxtMeasurement[ITERATOR].getId());
-
             
             if (ITERATOR > MAXVALUETOHBOX) {
                 HBoxMeasurement2.getChildren().addAll(NameMeasurement[ITERATOR], TxtMeasurement[ITERATOR]);
@@ -197,24 +201,23 @@ public class AddItemController implements Initializable {
             ITERATOR++;
         }
     }
-
-    private void setItemsComboBox(ObservableList<String> observableListItems) {
-        ComboItems.setItems(observableListItems);
-    }
-
+    
     private void removeLabelsTextFields() {
+
         if (NameMeasurement != null) {
             HBoxMeasurement.getChildren().removeAll(NameMeasurement);
             HBoxMeasurement.getChildren().removeAll(TxtMeasurement);
             HBoxMeasurement2.getChildren().removeAll(NameMeasurement);
             HBoxMeasurement2.getChildren().removeAll(TxtMeasurement);
         }
-    }
 
+    }
+    
     private void showError(String title , String error ){
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setHeaderText(title);
         errorAlert.setContentText(error);
         errorAlert.showAndWait();
     }
+    
 }

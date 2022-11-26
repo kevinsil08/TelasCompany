@@ -29,6 +29,7 @@ public class SQLHandiworkDetailDAOImpl implements HandiworkDetailDAO{
     @Override
     public int InsertHandiworkDetail(HandiworkDetail HandiworkDetail) {
         try {
+            
             CallableStatement statement = connection.prepareCall("{call pr_add_handiwork_detail (?,?,?,?,?,?,?,?,?)}");
             statement.setInt(1, HandiworkDetail.getTypeItemId());
             statement.setInt(2, HandiworkDetail.getHandiworkId());
@@ -37,14 +38,12 @@ public class SQLHandiworkDetailDAOImpl implements HandiworkDetailDAO{
             statement.setString(5, HandiworkDetail.getAddDetail());
             statement.setDouble(6, HandiworkDetail.getCost());
             statement.setString(7, HandiworkDetail.getDeliveryDeadline());
-            boolean state = false;
-            if(!HandiworkDetail.getPayStatus().equals("f")){
-                state = true;
-            }
-            statement.setBoolean(8, state);
+            statement.setBoolean(8, false);
             statement.setString(9, HandiworkDetail.getState());
-            statement.execute();
-            return HandiworkDetail.getId();
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()){
+                return rs.getInt("last_insert_id()");
+            }
         } catch (SQLException e) {
             System.err.println(e);
         } 
@@ -62,8 +61,9 @@ public class SQLHandiworkDetailDAOImpl implements HandiworkDetailDAO{
             rs = statement.executeQuery();
             while (rs.next()) {
                 HandiworkDetail HdnDetail = new HandiworkDetail();
-                
                 HdnDetail.setId((rs.getInt("hde_id")));
+                HdnDetail.setDetail(((rs.getString("hde_detail"))));
+                HdnDetail.setAddDetail(((rs.getString("hde_add_det"))));
                 HdnDetail.setNameItem(((rs.getString("typ_name"))));
                 HdnDetail.setDeliveryDeadline((rs.getString("hde_delivery_deadline")));
                 HdnDetail.setPayment((rs.getDouble("Abonado")));
@@ -81,7 +81,33 @@ public class SQLHandiworkDetailDAOImpl implements HandiworkDetailDAO{
 
     @Override
     public boolean UpdateHandiworkDetail(HandiworkDetail HandiworkDetail) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        CallableStatement statement = null;
+        try {
+            statement = connection.prepareCall("{call pr_update_handiwork_detail( ?, ?, ?, ?, ?, ?, ?)}");
+            statement.setString(1, HandiworkDetail.getDetail());
+            statement.setString(2, HandiworkDetail.getAddDetail());
+            statement.setDouble(3, HandiworkDetail.getCost());
+            statement.setString(4, HandiworkDetail.getDeliveryDeadline());
+            
+            boolean paystatus = false;
+            if(!HandiworkDetail.getPayStatus().equals("0")){
+                paystatus = true;
+            }
+            statement.setBoolean(5, paystatus);
+            
+            String stateItem = HandiworkDetail.getPayStatus();
+            if(!stateItem.equals("p")){
+                stateItem = "f";
+            }
+            
+            statement.setString(6, stateItem);
+            statement.setInt(7, HandiworkDetail.getId());
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            System.err.println(e);
+        } 
+        return false;
     }
 
     @Override

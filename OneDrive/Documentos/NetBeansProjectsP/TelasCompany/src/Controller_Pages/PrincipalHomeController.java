@@ -5,6 +5,9 @@
  */
 package Controller_Pages;
 
+import Model.CustomerManager;
+import Model.HandiworkManager;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,8 +37,17 @@ public class PrincipalHomeController implements Initializable {
 
     private double StageWidth, StageHeight;
 
-    public PrincipalHomeController(Stage stage) {
+    private CustomerManager modelCustomer;
+    private HandiworkManager modelHandiwork;
+
+    public PrincipalHomeController(CustomerManager modelCustomer, HandiworkManager modelHandiwork, Stage stage) {
+        this.modelCustomer = modelCustomer;
+        this.modelHandiwork = modelHandiwork;
         this.stage = stage;
+        stage.setOnCloseRequest(e -> {
+            modelCustomer.close();
+            modelHandiwork.close();
+        });
     }
 
     //Cliente
@@ -58,11 +70,6 @@ public class PrincipalHomeController implements Initializable {
 
     private Tab elaboracionTab, obrasPendientesTab;
 
-    
-
-    private final String[] NameTabs = {"Pedidos Pendientes", "Elaboración y Planchado", "Ingresar Cliente",
-        "Modificar Cliente", "Eliminar Cliente", "Arreglos","Añadir Pedido"};
-
     private final String[] Paths = {"/View/TableOrders.fxml", "/View/Elaboracion.fxml", "/View/AddCustomer.fxml",
         "/View/ModifyCustomer.fxml", "/View/DeleteCustomer.fxml","/View/Arreglos.fxml","/View/AddHandiwork.fxml"};
 
@@ -73,9 +80,9 @@ public class PrincipalHomeController implements Initializable {
     private ElaboracionController buildElaboracionController() {
         return new ElaboracionController();
     }
-
+    
     private AddCustomerController buildAddCustomerController() {
-        return new AddCustomerController();
+        return new AddCustomerController(modelCustomer, "");
     }
 
     private ModifyCustomerController buildModifyCustomerController() {
@@ -155,11 +162,20 @@ public class PrincipalHomeController implements Initializable {
         
 
     }
-
     
+    @FXML
+    void addCustomer(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(Paths[2]));
+        loader.setControllerFactory(t -> buildAddCustomerController());
+        Stage stageDialog = new Stage();
+        stageDialog.initModality(Modality.APPLICATION_MODAL);
+        stageDialog.setScene(new Scene(loader.load()));
+        stageDialog.setTitle("Agregar cliente");
+        stageDialog.showAndWait();
+    }
 
     private AddHandiworkController buildHandiworkController() {
-        return new AddHandiworkController();
+        return new AddHandiworkController(modelHandiwork, modelCustomer);
     }
 
     

@@ -27,13 +27,14 @@ public class HandiworkDetailManager {
         }
     }
     
-    public void AddHandiworkDetail(int TypeItemId, int HandiworkId, String EntryDate, String Detail, String AddDetail, double Cost, String DeliveryDeadline, String PayStatus, String State) {
+    public int AddHandiworkDetail(int TypeItemId, int HandiworkId, String EntryDate, String Detail, String AddDetail, double Cost, String DeliveryDeadline, String PayStatus, String State) {
         try{
         HandiworkDetail HandiworkDetail = new HandiworkDetail(0,TypeItemId,  HandiworkId,  EntryDate,  Detail,  AddDetail,  Cost,  DeliveryDeadline,  PayStatus,  State);
-        HandiworkDetailDAO.InsertHandiworkDetail(HandiworkDetail);
+        return HandiworkDetailDAO.InsertHandiworkDetail(HandiworkDetail);
         }catch(Exception e){
             e.printStackTrace();
         }
+        return -1;
     }
     
     public void UpdateHandiworkDetail(HandiworkDetail HandiworkDetail){

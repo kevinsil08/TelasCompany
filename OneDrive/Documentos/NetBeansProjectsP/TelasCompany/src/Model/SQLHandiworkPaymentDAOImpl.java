@@ -28,14 +28,11 @@ public class SQLHandiworkPaymentDAOImpl implements PaymentDAO{
     public int InsertPayment(HandiworkPayment HandiworkPayment) {
         try {
             CallableStatement statement = connection.prepareCall("{call pr_add_payment (?,?,?)}");
-            
             statement.setInt(1, HandiworkPayment.getId());
             statement.setString(2, HandiworkPayment.getDate());
             statement.setDouble(3, HandiworkPayment.getAmount());
-            ResultSet rs = statement.executeQuery();
-            if(rs.next()){
-                return rs.getInt("last_insert_id");
-            }
+            statement.execute();
+            return HandiworkPayment.getId();
         } catch (SQLException e) {
             System.err.println(e);
         } 
@@ -43,12 +40,12 @@ public class SQLHandiworkPaymentDAOImpl implements PaymentDAO{
     }
 
     @Override
-    public boolean UpdatePayment(HandiworkPayment typeItem) {
+    public boolean UpdatePayment(HandiworkPayment HandiworkPayment) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean DeletePayment(HandiworkPayment typeItem) {
+    public boolean DeletePayment(HandiworkPayment HandiworkPayment) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -75,6 +72,30 @@ public class SQLHandiworkPaymentDAOImpl implements PaymentDAO{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<HandiworkPayment> ListPaymentWithHandiworkId(int HandiworkDetailId) {
+        List<HandiworkPayment> ListItems = new ArrayList<>();
+        ResultSet rs = null;
+        
+        try {
+            CallableStatement statement = connection.prepareCall("{call pr_pay_handiwork_detail(?)}");
+            statement.setInt(1, HandiworkDetailId);
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                HandiworkPayment HdnDetail = new HandiworkPayment();
+                HdnDetail.setId((rs.getInt("hpa_id")));
+                HdnDetail.setNameItem((rs.getString("typ_name")));
+                HdnDetail.setDate(((rs.getString("pay_date"))));
+                HdnDetail.setAmount(((rs.getDouble("pay_amount"))));
+                ListItems.add(HdnDetail);
+            }
+            return ListItems;
+        } catch (SQLException e) {
+            System.err.println(e);
+        } 
+        return EMPTY;
     }
     
 }

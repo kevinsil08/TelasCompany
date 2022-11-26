@@ -26,7 +26,7 @@
                               <Insets left="50.0" top="20.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField maxWidth="-Infinity" prefColumnCount="10" prefHeight="26.0" prefWidth="193.0">
+                        <TextField fx:id="txfCedRuc" maxWidth="-Infinity" prefColumnCount="10" prefHeight="26.0" prefWidth="193.0">
                            <HBox.margin>
                               <Insets left="53.0" top="19.0" />
                            </HBox.margin>
@@ -78,7 +78,7 @@
                               <Insets left="50.0" top="10.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField maxWidth="-Infinity" prefColumnCount="10" prefHeight="26.0" prefWidth="193.0">
+                        <TextField fx:id="txfNames" maxWidth="-Infinity" prefColumnCount="10" prefHeight="26.0" prefWidth="193.0">
                            <HBox.margin>
                               <Insets left="33.0" top="10.0" />
                            </HBox.margin>
@@ -94,7 +94,7 @@
                               <Insets left="103.0" top="10.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField maxWidth="-Infinity" prefColumnCount="10" prefHeight="26.0" prefWidth="193.0">
+                        <TextField fx:id="txfSurnames" maxWidth="-Infinity" prefColumnCount="10" prefHeight="26.0" prefWidth="193.0">
                            <HBox.margin>
                               <Insets left="50.0" top="10.0" />
                            </HBox.margin>
@@ -111,14 +111,31 @@
             </VBox>
             <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="995.0">
                <children>
-                  <Button fx:id="btnAddItem" mnemonicParsing="false" onMouseClicked="#showAddItem" text="Agregar Item">
-                     <VBox.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="Roboto Black" size="22.0" />
-                     </font>
-                  </Button>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="btnAddItem" mnemonicParsing="false" onMouseClicked="#showAddItem" text="Agregar Item">
+                           <font>
+                              <Font name="Roboto Black" size="22.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnShowDetailItem" disable="true" mnemonicParsing="false" onMouseClicked="#showModifyDeleteItem" text="Detalles del Item">
+                           <font>
+                              <Font name="Roboto Black" size="22.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="100.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="btnPaymentsItem" disable="true" mnemonicParsing="false" onMouseClicked="#showPaymentsItem" text="Visualizar Abonos del Item">
+                           <font>
+                              <Font name="Roboto Black" size="22.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="100.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
                </children>
                <VBox.margin>
                   <Insets right="200.0" top="20.0" />
@@ -159,7 +176,7 @@
                                     <Font name="Roboto" size="22.0" />
                                  </font>
                               </Label>
-                              <TextField>
+                              <TextField fx:id="txfCostoTotal">
                                  <font>
                                     <Font name="Roboto" size="20.0" />
                                  </font>

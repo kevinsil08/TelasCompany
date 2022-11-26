@@ -6,6 +6,7 @@
 package Model;
 
 import DAO.PaymentDAO;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,7 +29,7 @@ public class HandiworkPaymentManager {
     
     public void AddHandiworkPayment(int Id, String Date, double Amount){
         try{
-        HandiworkPayment HandiworkPayment = new HandiworkPayment(0,Date,  Amount);
+        HandiworkPayment HandiworkPayment = new HandiworkPayment(Id,Date,  Amount);
         PaymentDAO.InsertPayment(HandiworkPayment);
         }catch(Exception e){
             e.printStackTrace();
@@ -42,6 +43,11 @@ public class HandiworkPaymentManager {
     public void DeleteHandiworkPayment(HandiworkPayment HandiworkPayment){
         PaymentDAO.DeletePayment(HandiworkPayment);
     }
+    
+    public List<HandiworkPayment> ListPaymentWithHandiworkId(int HandiworkDetailId){
+        return PaymentDAO.ListPaymentWithHandiworkId(HandiworkDetailId);
+    }
+    
     
     public void close(){
         try {

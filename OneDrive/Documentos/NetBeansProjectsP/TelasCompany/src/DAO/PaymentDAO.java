@@ -14,9 +14,11 @@ import java.util.List;
  */
 public interface PaymentDAO extends DAO{
     
-    public int InsertPayment(HandiworkPayment typeItem);
-    public boolean UpdatePayment(HandiworkPayment typeItem);
-    public boolean DeletePayment(HandiworkPayment typeItem);
+    public int InsertPayment(HandiworkPayment HandiworkPayment);
+    public boolean UpdatePayment(HandiworkPayment HandiworkPayment);
+    public boolean DeletePayment(HandiworkPayment HandiworkPayment);
     public List<HandiworkPayment> ListPayment();
+    
+    public List<HandiworkPayment> ListPaymentWithHandiworkId(int HandiworkDetailId);
     
 }

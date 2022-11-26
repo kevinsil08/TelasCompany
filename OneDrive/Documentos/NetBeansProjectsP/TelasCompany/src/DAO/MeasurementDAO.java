@@ -17,6 +17,9 @@ public interface MeasurementDAO extends DAO{
     public int InsertMeasurement(Measurement measurement);
     public boolean UpdateMeasurement(Measurement measurement);
     public boolean DeleteMeasurement(Measurement measurement);
-    public List<String> ListMeasurementWithItem(int ItemId);
+    public List<Measurement> ListMeasurementWithItem(int ItemId);
+    
+    public int InsertValuesMeasurement(Measurement measurement);
+    public List<Measurement> ListValuesMeasurementOfItem(int HandDetailId);
     
 }

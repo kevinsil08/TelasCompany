@@ -27,8 +27,8 @@ public class MeasurementManager {
         }
     }
     
-    public void AddMeasurement(String Name) throws Exception{
-        Measurement measurement = new Measurement(0,Name);
+    public void AddMeasurement(int Id, int IdItem, double Value ) throws Exception{
+        Measurement measurement = new Measurement(0, 0, 0);
         measurementDAO.InsertMeasurement(measurement);
     }
     
@@ -40,8 +40,17 @@ public class MeasurementManager {
         measurementDAO.DeleteMeasurement(measurement);
     }
     
-    public List<String> ListMeasurement(int ItemId){
+    public List<Measurement> ListMeasurement(int ItemId){
         return measurementDAO.ListMeasurementWithItem(ItemId);
+    }
+    
+    public void AddMeasurementValues(int Id, int IdHandDetail, double Value ) throws Exception{
+        Measurement measurement = new Measurement(Id, IdHandDetail, Value);
+        measurementDAO.InsertValuesMeasurement(measurement);
+    }
+    
+    public List<Measurement> ListValuesMeasurementOfItem(int HandiDetailId){
+        return measurementDAO.ListValuesMeasurementOfItem(HandiDetailId);
     }
     
     public void close(){

@@ -37,6 +37,8 @@ public class Item {
         this.StatusPayment = StatusPayment;
         this.StatusHandiworkDetail = StatusHandiworkDetail;
     }
+    
+    
 
     public String getDeliveryDate() {
         return DeliveryDate;
