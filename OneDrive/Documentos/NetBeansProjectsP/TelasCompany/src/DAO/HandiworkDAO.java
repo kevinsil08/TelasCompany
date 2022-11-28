@@ -21,4 +21,5 @@ public interface HandiworkDAO extends DAO{
     public List searchHanById(int idHandiwork);
     public boolean updateNumGarmentsTotalCost(Handiwork handiwork);
     public List<Handiwork> findAll();
+    public List<Handiwork> findPendingHandiworks();
 }

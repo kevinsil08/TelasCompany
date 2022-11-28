@@ -26,13 +26,17 @@ public class HandiworkManager {
         }
     }
     
-    public int addHandiwork( int customerID, String entryDate, double totalCost, int numberGarments, boolean state){
-        Handiwork handiwork = new Handiwork(0, customerID, entryDate, totalCost, numberGarments, state);
+    public int addHandiwork( int customerID, String entryDate, double totalCost, int numberGarments, boolean state , double leftPayment , String payStatus){
+        Handiwork handiwork = new Handiwork(0, customerID, entryDate, totalCost, numberGarments, state , leftPayment  , payStatus);
         return handiworkDAO.insertHandiwork(handiwork);
     }
     
     public List getById(int idHandiwork){
         return handiworkDAO.searchHanById(idHandiwork);
+    }
+    
+    public List getPendingHandworks(){
+        return handiworkDAO.findPendingHandiworks();
     }
     
     public void close(){

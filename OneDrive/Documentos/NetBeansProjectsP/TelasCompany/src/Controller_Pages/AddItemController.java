@@ -66,6 +66,8 @@ public class AddItemController implements Initializable {
     private TextField[] TxtMeasurement;
     private List<Item> ListItems;
     private Item itemSelected;
+    private int idHandiwork;
+    
 
     private HandiworkDetailManager HandiworkDtlModel;
     private ItemManager ItemManagerModel;
@@ -73,11 +75,12 @@ public class AddItemController implements Initializable {
     private HandiworkPaymentManager HandiworkPaymentManagerModel;
     
 
-    public AddItemController(HandiworkDetailManager HandiworkDtlModel, ItemManager ItemManagerModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel) {
+    public AddItemController(HandiworkDetailManager HandiworkDtlModel, ItemManager ItemManagerModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel , int idHandiwork) {
         this.HandiworkDtlModel = HandiworkDtlModel;
         this.ItemManagerModel = ItemManagerModel;
         this.MeasurementManagerModel = MeasurementManagerModel;
         this.HandiworkPaymentManagerModel = HandiworkPaymentManagerModel;
+        this.idHandiwork = idHandiwork;
     }
     
     @FXML
@@ -116,7 +119,7 @@ public class AddItemController implements Initializable {
             return;
         }
         //Handiwork PrincipalHandiwork = Handiwork
-        int lastId=HandiworkDtlModel.AddHandiworkDetail(itemSelected.getId(), 1, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), "0", "p");
+        int lastId=HandiworkDtlModel.AddHandiworkDetail(itemSelected.getId(), idHandiwork, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), "0", "p");
         HandiworkPaymentManagerModel.AddHandiworkPayment(lastId, StartDate.toString(), Payment);
         
             for (int i = 0; i < TxtMeasurement.length; i++) {

@@ -26,7 +26,7 @@
                               <Insets left="50.0" top="20.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="txfCedRuc" maxWidth="-Infinity" prefColumnCount="10" prefHeight="26.0" prefWidth="193.0">
+                        <TextField fx:id="txfCedRuc" maxWidth="-Infinity" onAction="#searchCustomerCI" prefColumnCount="10" prefHeight="26.0" prefWidth="193.0">
                            <HBox.margin>
                               <Insets left="53.0" top="19.0" />
                            </HBox.margin>
@@ -34,7 +34,7 @@
                               <Font name="Roboto" size="17.0" />
                            </font>
                         </TextField>
-                        <Button mnemonicParsing="false" text="Buscar Cliente">
+                        <Button fx:id="BtnSearchCustomer" mnemonicParsing="false" onAction="#searchCustomerDialog" text="Buscar Cliente">
                            <HBox.margin>
                               <Insets left="100.0" top="14.0" />
                            </HBox.margin>
@@ -42,7 +42,7 @@
                               <Font name="Roboto Medium" size="16.0" />
                            </font>
                         </Button>
-                        <Button mnemonicParsing="false" text="Agregar Nuevo Cliente">
+                        <Button fx:id="BtnAddCustomer" mnemonicParsing="false" onAction="#addCustomer" text="Agregar Nuevo Cliente">
                            <font>
                               <Font name="Roboto Medium" size="16.0" />
                            </font>
@@ -58,7 +58,7 @@
                               <Font name="Roboto Medium" size="20.0" />
                            </font>
                         </Label>
-                        <TextField>
+                        <TextField fx:id="txfEstado">
                            <HBox.margin>
                               <Insets left="50.0" top="19.0" />
                            </HBox.margin>

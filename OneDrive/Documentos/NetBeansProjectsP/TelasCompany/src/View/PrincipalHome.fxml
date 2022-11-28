@@ -44,7 +44,7 @@
                               <Font name="Roboto Black" size="22.0" />
                            </font>
                         </Label>
-                        <TextField>
+                        <TextField fx:id="TxfSearch">
                            <font>
                               <Font name="Roboto" size="18.0" />
                            </font>
@@ -62,13 +62,15 @@
                         <Insets left="80.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <TableView prefHeight="406.0" prefWidth="1346.0" tableMenuButtonVisible="true">
+                  <TableView fx:id="TbvHandiworks" prefHeight="406.0" prefWidth="1346.0" tableMenuButtonVisible="true">
                     <columns>
-                        <TableColumn prefWidth="118.13335037231445" text="Cédula" />
-                        <TableColumn prefWidth="189.066650390625" text="Nombres" />
-                      <TableColumn prefWidth="713.333251953125" text="Obra" />
-                      <TableColumn minWidth="0.0" prefWidth="179.73318481445312" text="Precio Total" />
-                        <TableColumn minWidth="0.0" prefWidth="224.5333251953125" text="Estado" />
+                        <TableColumn fx:id="TcCiRuc" prefWidth="137.5999984741211" text="Cédula" />
+                        <TableColumn fx:id="TcNames" prefWidth="64.0" text="Nombres" />
+                      <TableColumn fx:id="TcHanId" prefWidth="481.5999755859375" text="Obra" />
+                        <TableColumn fx:id="TcPaymentStatus" prefWidth="75.0" text="Estado del pago" />
+                        <TableColumn fx:id="TcHanState" minWidth="0.0" prefWidth="224.5333251953125" text="Estado de la obra" />
+                      <TableColumn fx:id="TcTotalHanCost" minWidth="0.0" prefWidth="179.73318481445312" text="Precio Total" />
+                        <TableColumn fx:id="TcPaymentLeft" prefWidth="75.0" text="Por Pagar" />
                     </columns>
                      <VBox.margin>
                         <Insets left="60.0" right="60.0" top="20.0" />
@@ -155,9 +157,8 @@
         <menus>
           <Menu mnemonicParsing="false" style="-fx-font-size: 14pt;" text="Cliente">
             <items>
-              <MenuItem mnemonicParsing="false" text="Agregar" />
-                  <MenuItem mnemonicParsing="false" text="Modificar" />
-                  <MenuItem mnemonicParsing="false" text="Eliminar" />
+              <MenuItem fx:id="MitAddCustomer" mnemonicParsing="false" onAction="#addCustomer" text="Agregar" />
+                  <MenuItem fx:id="MitModifyCustomer" mnemonicParsing="false" onAction="#modifyCustomer" text="Modificar" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" style="-fx-font-size: 14pt;" text="Producto">
