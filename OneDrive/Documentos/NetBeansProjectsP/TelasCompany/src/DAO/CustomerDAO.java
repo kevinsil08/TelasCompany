@@ -19,5 +19,7 @@ public interface CustomerDAO extends DAO{
     public boolean deleteCustomer(Customer customer);
     public List searchByCiRuc(String ciRuc);
     public List listCustomers();
+
+    public List<Customer> searchByHAndiworkId(int Handiwork);
 }
 

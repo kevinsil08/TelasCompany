@@ -67,6 +67,10 @@ public class SQLHandiworkDAOImpl implements HandiworkDAO {
                 handiwork.setTotalCost(rs.getDouble("han_total_cost"));
                 handiwork.setNumberGarments(rs.getInt("han_num_grmt"));
                 handiwork.setState(rs.getBoolean("han_state"));
+                String stsString = rs.getBoolean("han_state") ? "Finalizado" : "Pendiente" ;
+                handiwork.setStateString(stsString);
+                handiwork.setLeftPayment(rs.getDouble("han_left_payment"));
+                handiwork.setPayStatus(rs.getString("han_pay_status"));
                 listProjects.add(handiwork);
             }
             return listProjects;

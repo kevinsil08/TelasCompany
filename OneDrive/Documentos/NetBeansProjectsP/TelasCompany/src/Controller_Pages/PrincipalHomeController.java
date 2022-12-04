@@ -172,7 +172,7 @@ public class PrincipalHomeController implements Initializable {
 
         if (event.getSource() == AddHandiwork) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(Paths[NUMBERTAB]));
-            loader.setControllerFactory(t -> buildHandiworkController(-1));
+            loader.setControllerFactory(t -> buildHandiworkController(-1 , false));
             Stage stageDialog = new Stage();
             stageDialog.initModality(Modality.APPLICATION_MODAL);
             stageDialog.setScene(new Scene(loader.load()));
@@ -229,8 +229,8 @@ public class PrincipalHomeController implements Initializable {
         stageDialog.showAndWait();
     }
 
-    private AddHandiworkController buildHandiworkController(int id_handiwork) {
-        return new AddHandiworkController(modelHandiwork, modelCustomer, id_handiwork, false);
+    private AddHandiworkController buildHandiworkController(int id_handiwork , boolean  modify) {
+        return new AddHandiworkController(modelHandiwork, modelCustomer, id_handiwork, modify);
     }
 
     private void refreshTable() {
@@ -289,7 +289,7 @@ public class PrincipalHomeController implements Initializable {
         try {
             Handiwork tableItemSelected = TbvHandiworks.getSelectionModel().getSelectedItem();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/AddHandiwork.fxml"));
-            loader.setControllerFactory(t -> buildHandiworkController(tableItemSelected.getHandiWorkID()));
+            loader.setControllerFactory(t -> buildHandiworkController(tableItemSelected.getHandiWorkID(), true));
             Stage stageDialog = new Stage();
             stageDialog.initModality(Modality.APPLICATION_MODAL);
             stageDialog.setScene(new Scene(loader.load()));

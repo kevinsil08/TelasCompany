@@ -88,7 +88,7 @@ public class ModifyCustomerController implements Initializable {
         }
 
     }
-
+    
     private void filterTable(ObservableList<Customer> obersvableListPersons) {
         FilteredList<Customer> filteredListPersons = new FilteredList<>(obersvableListPersons, b -> true);
         TxfSearch.textProperty().addListener((observable, oldValue, newValue) -> {

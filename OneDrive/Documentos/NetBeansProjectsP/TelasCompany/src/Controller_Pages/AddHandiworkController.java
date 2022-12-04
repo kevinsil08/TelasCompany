@@ -40,6 +40,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -57,25 +58,27 @@ import javafx.stage.Stage;
 public class AddHandiworkController implements Initializable {
 
     @FXML
+    private ComboBox<String> CmbEstado;
+    @FXML
     Button btnAddItem, btnCancel, btnSave, btnShowDetailItem, btnPaymentsItem;
 
     @FXML
     private TableView<HandiworkDetail> Table = new TableView<HandiworkDetail>();
     @FXML
     private TableColumn NameItem = new TableColumn("Tipo de Item");
-    
+
     @FXML
     private TableColumn DeliveryDate = new TableColumn("Fecha de Entrega");
-    
+
     @FXML
     private TableColumn Payment = new TableColumn("Abonado");
-    
+
     @FXML
     private TableColumn TotalCost = new TableColumn("Total");
-    
+
     @FXML
     private TableColumn StatusPayment = new TableColumn("Estado de Abono");
-    
+
     @FXML
     private TableColumn StatusHandiworkDetail = new TableColumn("Estado");
     @FXML
@@ -95,6 +98,9 @@ public class AddHandiworkController implements Initializable {
 
     @FXML
     private TextField txfCostoTotal;
+    
+    @FXML
+    private TextField TxfDate;
 
     ObservableList<HandiworkDetail> ObservableList;
 
@@ -103,14 +109,14 @@ public class AddHandiworkController implements Initializable {
     private HandiworkManager modelHandiwork;
     private HandiworkPayment HandiworkPayment;
     private Customer customer;
-    private boolean readOnly;
+    private boolean modify;
     private int id_handiwork;
 
     public AddHandiworkController(HandiworkManager modelHandiwork, CustomerManager modelCustomer, int id_handiwork, boolean readOnly) {
         this.modelHandiwork = modelHandiwork;
         this.modelCustomer = modelCustomer;
         this.customer = new Customer();
-        this.readOnly = readOnly;
+        this.modify = readOnly;
         this.id_handiwork = id_handiwork;
     }
 
@@ -206,6 +212,7 @@ public class AddHandiworkController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         verifyWindowMode();
+        loadComboBoxValues();
         NameItem.setCellValueFactory(new PropertyValueFactory<>("nameItem"));
         DeliveryDate.setCellValueFactory(new PropertyValueFactory<>("DeliveryDeadline"));
         Payment.setCellValueFactory(new PropertyValueFactory<>("Payment"));
@@ -213,7 +220,7 @@ public class AddHandiworkController implements Initializable {
         StatusPayment.setCellValueFactory(new PropertyValueFactory<>("PayStatus"));
         StatusHandiworkDetail.setCellValueFactory(new PropertyValueFactory<>("State"));
         Table.getColumns().addAll(NameItem, DeliveryDate, Payment, TotalCost, StatusPayment, StatusHandiworkDetail);
-        System.out.println(" id :  "  + id_handiwork);
+        System.out.println(" id :  " + id_handiwork);
         HandiworkDetailManager = new HandiworkDetailManager(buildHandiworkDetailDao());
         List<HandiworkDetail> ListItems = HandiworkDetailManager.ListItemsForTableView(id_handiwork);
         ObservableList = FXCollections.observableList(ListItems);
@@ -331,14 +338,18 @@ public class AddHandiworkController implements Initializable {
         txfSurnames.setText(listCustomer.get(0).getLastName());
         txfNames.setDisable(true);
         txfSurnames.setDisable(true);
+        txfCedRuc.setText(listCustomer.get(0).getDocCiRuc());
     }
 
     private void fillHandiworkFields(int idHandiwork) {
-        List<Handiwork> listHandiwork = modelHandiwork.getById(idHandiwork);
+        List<Handiwork> listHandiwork = modelHandiwork.getById(idHandiwork);listHandiwork.toString();
         txfCostoTotal.setText(String.format("%.2f", listHandiwork.get(0).getTotalCost()));
+        CmbEstado.getSelectionModel().select(listHandiwork.get(0).getStateString());
+        TxfDate.setText(listHandiwork.get(0).getEntryDate());
+        
     }
 
-    private AddCustomerController buildAddCustomerDialog(CustomerManager modelCustomer, Customer customer) {
+    AddCustomerController buildAddCustomerDialog(CustomerManager modelCustomer, Customer customer) {
         return new AddCustomerController(modelCustomer, customer, false);
     }
 
@@ -375,7 +386,7 @@ public class AddHandiworkController implements Initializable {
     }
 
     private AddItemController buildAddItemController() {
-        return new AddItemController(buildHandiworkDetailManager(), buildItemManager(), buildMeasurementManager(), buildHandiworkPaymentManager() ,  id_handiwork);
+        return new AddItemController(buildHandiworkDetailManager(), buildItemManager(), buildMeasurementManager(), buildHandiworkPaymentManager(), id_handiwork);
     }
 
     private ModifyEliminateItemAddedController buildModifyCustomerController(HandiworkDetail itemSelected, HandiworkDetailManager HandiworkDtlModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel) {
@@ -413,14 +424,27 @@ public class AddHandiworkController implements Initializable {
     }
 
     private void verifyWindowMode() {
-        if (readOnly) {
-            txfCedRuc.setDisable(readOnly);
-            txfNames.setDisable(readOnly);
-            txfSurnames.setDisable(readOnly);
-            BtnAddCustomer.setDisable(readOnly);
-            BtnSearchCustomer.setDisable(readOnly);
-        } 
-        
+        if (modify) {
+            txfCedRuc.setDisable(modify);
+            txfNames.setDisable(modify);
+            txfSurnames.setDisable(modify);
+            BtnAddCustomer.setDisable(modify);
+            BtnSearchCustomer.setDisable(modify);
+            BtnSearchCustomer.setVisible(!modify);
+            BtnAddCustomer.setVisible(!modify);
+            List<Customer> listCustomer = modelCustomer.findCustomerByHandiworkId(id_handiwork);
+            if (!listCustomer.isEmpty()) {
+                fillCustomerNames(listCustomer);
+                fillHandiworkFields(id_handiwork);
+            }
+        }
+
     }
+
+    private void loadComboBoxValues() {
+        ObservableList<String> list = FXCollections.observableArrayList("Finalizado","Pendiente");
+        CmbEstado.setItems(list);
+    }
+    
 
 }

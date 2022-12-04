@@ -58,4 +58,8 @@ public class CustomerManager {
             Logger.getLogger(CustomerManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public List<Customer> findCustomerByHandiworkId(int handiworkID) {
+        return customerDAO.searchByHAndiworkId(handiworkID);
+    }
 }
