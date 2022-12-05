@@ -46,4 +46,20 @@ public class HandiworkManager {
             Logger.getLogger(HandiworkManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public int updateHanState(Handiwork handiwork) {
+        return handiworkDAO.updateHanState(handiwork);
+    }
+
+    public int setStateOfHanDetail(Handiwork handiwork) {
+        return handiworkDAO.setStateOfHanDetails(handiwork);
+    }
+
+    public int updateCosts(int idHandiwork) {
+        return handiworkDAO.updateHandiworkCosts(idHandiwork);
+    }
+    
+    public int updateLeftCost(int idHandiwork){
+        return handiworkDAO.updateLeftCost(idHandiwork);
+    }
 }

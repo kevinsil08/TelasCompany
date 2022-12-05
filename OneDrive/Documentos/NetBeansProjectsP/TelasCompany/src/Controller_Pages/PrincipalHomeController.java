@@ -91,7 +91,7 @@ public class PrincipalHomeController implements Initializable {
     private TableColumn<Handiwork, String> TcCiRuc, TcHanState, TcNames, TcPaymentStatus;
 
     @FXML
-    private TableColumn<Handiwork, Integer> TcHanId;
+    private TableColumn<Handiwork, String> TcHanDate;
 
     @FXML
     private TableColumn<Handiwork, Double> TcPaymentLeft, TcTotalHanCost;
@@ -236,7 +236,7 @@ public class PrincipalHomeController implements Initializable {
     private void refreshTable() {
         TcCiRuc.setCellValueFactory(new PropertyValueFactory<>("ciCustomer"));
         TcNames.setCellValueFactory(new PropertyValueFactory<>("namesCustomer"));
-        TcHanId.setCellValueFactory(new PropertyValueFactory<>("handiWorkID"));
+        TcHanDate.setCellValueFactory(new PropertyValueFactory<>("entryDate"));
         TcPaymentStatus.setCellValueFactory(new PropertyValueFactory<>("payStatus"));
         TcHanState.setCellValueFactory(new PropertyValueFactory<>("stateString"));
         TcTotalHanCost.setCellValueFactory(new PropertyValueFactory<>("totalCost"));
@@ -254,7 +254,7 @@ public class PrincipalHomeController implements Initializable {
                     return true;
                 }
                 String searchedString = newValue.toLowerCase();
-                if (Integer.toString(handiwork.getHandiWorkID()).indexOf(searchedString) > -1) {
+                if (handiwork.getEntryDate().toLowerCase().indexOf(searchedString) > -1) {
                     return true;
                 }
                 if (handiwork.getNamesCustomer().toLowerCase().indexOf(searchedString) > -1) {

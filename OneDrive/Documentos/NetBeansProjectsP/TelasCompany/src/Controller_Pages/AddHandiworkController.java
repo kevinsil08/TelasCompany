@@ -83,7 +83,9 @@ public class AddHandiworkController implements Initializable {
     private TableColumn StatusHandiworkDetail = new TableColumn("Estado");
     @FXML
     private Button BtnAddCustomer;
-
+    @FXML
+    private Button BtbUpdateHandiwork;
+    
     @FXML
     private Button BtnSearchCustomer;
     @FXML
@@ -101,6 +103,10 @@ public class AddHandiworkController implements Initializable {
     
     @FXML
     private TextField TxfDate;
+    @FXML
+    private TextField TxfPagado;
+    @FXML
+    private TextField txfPorPagar;
 
     ObservableList<HandiworkDetail> ObservableList;
 
@@ -128,6 +134,7 @@ public class AddHandiworkController implements Initializable {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/AddItem.fxml"));
                 loader.setControllerFactory(t -> buildAddItemController());
                 loadStage(loader, "Agregar Item");
+                fillHandiworkFields(id_handiwork);
             }
 
         } catch (Exception e) {
@@ -315,6 +322,7 @@ public class AddHandiworkController implements Initializable {
         if (!listCustomer.isEmpty()) {
             fillCustomerNames(listCustomer);
             int idHandiwork = createNewHandiwork(listCustomer);
+            id_handiwork = idHandiwork;
             if (idHandiwork != -1) {
                 fillHandiworkFields(idHandiwork);
             } else {
@@ -342,11 +350,14 @@ public class AddHandiworkController implements Initializable {
     }
 
     private void fillHandiworkFields(int idHandiwork) {
-        List<Handiwork> listHandiwork = modelHandiwork.getById(idHandiwork);listHandiwork.toString();
+        int ingreso  = modelHandiwork.updateCosts(idHandiwork);
+        List<Handiwork> listHandiwork = modelHandiwork.getById(idHandiwork);
         txfCostoTotal.setText(String.format("%.2f", listHandiwork.get(0).getTotalCost()));
         CmbEstado.getSelectionModel().select(listHandiwork.get(0).getStateString());
         TxfDate.setText(listHandiwork.get(0).getEntryDate());
-        
+        txfPorPagar.setText(String.format("%.2f", listHandiwork.get(0).getLeftPayment()));
+        Double payed = listHandiwork.get(0).getTotalCost() - listHandiwork.get(0).getLeftPayment();
+        TxfPagado.setText(String.format("%.2f", payed));
     }
 
     AddCustomerController buildAddCustomerDialog(CustomerManager modelCustomer, Customer customer) {
@@ -446,5 +457,28 @@ public class AddHandiworkController implements Initializable {
         CmbEstado.setItems(list);
     }
     
+    @FXML
+    void updateHandiwork(ActionEvent event) {
+        // update only state that if is finalizado or pendiente
+        List<Handiwork> listHandiwork = modelHandiwork.getById(id_handiwork);
+        listHandiwork.get(0).setState(CmbEstado.getValue().equals("Finalizado"));
+        if (modelHandiwork.updateHanState(listHandiwork.get(0)) != -1) {
+            infoDial("Actualización obra","Estado de la obra se guardó correctamente","");
+            // update all the handiwork details to finished state
+            modelHandiwork.setStateOfHanDetail(listHandiwork.get(0));
+        } else {
+            showError("Error al guradar obra", "No se actualizó los cambios de la obra");
+        }
+        
+        
+    }
+    
+    private void infoDial(String title, String header, String msg) {
+        Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
+        infoAlert.setTitle(title);
+        infoAlert.setHeaderText(header);
+        infoAlert.setContentText(msg);
+        infoAlert.showAndWait();
+    }
 
 }
