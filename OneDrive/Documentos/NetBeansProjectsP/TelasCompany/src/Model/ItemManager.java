@@ -27,24 +27,22 @@ public class ItemManager {
         }
     }
     
-    public void AddHandiworkDetail(String Name) throws Exception{
+    public void AddItem(String Name) throws Exception{
         Item item = new Item(0,Name);
         itemDAO.InsertItem(item);
     }
     
-    public void UpdateHandiworkDetail(Item item){
+    public void UpdateItem(Item item){
         itemDAO.UpdateItem(item);
     }
     
-    public void DeleteHandiworkDetail(Item item){
+    public void DeleteItem(Item item){
         itemDAO.DeleteItem(item);
     }
     
     public List<Item> ListItems(){
         return itemDAO.ListItems();
     }
-    
-    
     
     public void close(){
         try {

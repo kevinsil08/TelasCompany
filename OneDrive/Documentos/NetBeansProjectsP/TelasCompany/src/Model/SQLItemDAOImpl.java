@@ -25,12 +25,30 @@ public class SQLItemDAOImpl implements ItemDAO{
 
     @Override
     public int InsertItem(Item typeItem) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            CallableStatement statement = connection.prepareCall("{call pr_add_item (?)}");
+            statement.setString(1, typeItem.getName());
+            statement.execute();
+            return 1;
+        } catch (SQLException e) {
+            System.err.println(e);
+        } 
+        return -1;
     }
 
     @Override
     public boolean UpdateItem(Item typeItem) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        CallableStatement statement = null;
+        try {
+            statement = connection.prepareCall("{call pr_update_item( ?, ?)}");
+            statement.setString(1, typeItem.getName());
+            statement.setInt(2, typeItem.getId());
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            System.err.println(e);
+        } 
+        return false;
     }
 
     @Override
@@ -51,7 +69,6 @@ public class SQLItemDAOImpl implements ItemDAO{
                 Item item = new Item();
                 item.setName(((rs.getString("typ_name"))));
                 item.setId((rs.getInt("typ_id")));
-                
                 ListItems.add(item);
             }
             return ListItems;
