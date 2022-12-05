@@ -5,26 +5,29 @@
  */
 package Controller_Pages;
 
+import DAO.ItemDAO;
+import DAO.MeasurementDAO;
 import Model.CustomerManager;
 import Model.HandiworkManager;
+import Model.ItemManager;
+import Model.MeasurementManager;
+import Model.SQLItemDAOImpl;
+import Model.SQLMeasurementDAOImpl;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+
 
 /**
  * FXML Controller class
@@ -34,9 +37,6 @@ import javafx.stage.StageStyle;
 public class PrincipalHomeController implements Initializable {
 
     private Stage stage;
-
-    private double StageWidth, StageHeight;
-
     private CustomerManager modelCustomer;
     private HandiworkManager modelHandiwork;
 
@@ -71,15 +71,10 @@ public class PrincipalHomeController implements Initializable {
     private Tab elaboracionTab, obrasPendientesTab;
 
     private final String[] Paths = {"/View/TableOrders.fxml", "/View/Elaboracion.fxml", "/View/AddCustomer.fxml",
-        "/View/ModifyCustomer.fxml", "/View/DeleteCustomer.fxml","/View/Arreglos.fxml","/View/AddHandiwork.fxml"};
+        "/View/ModifyCustomer.fxml", "/View/DeleteCustomer.fxml","/View/Arreglos.fxml","/View/AddHandiwork.fxml",
+        "/View/AddNewItem.fxml","/View/ModifyItem.fxml","/View/AddMeasurement.fxml","/View/ModifyMeasurement.fxml",
+        "/View/AssignMeasurementToItem.fxml"};
 
-    private TableOrdersController buildTableOrdersController() {
-        return new TableOrdersController();
-    }
-
-    private ElaboracionController buildElaboracionController() {
-        return new ElaboracionController();
-    }
     
     private AddCustomerController buildAddCustomerController() {
         return new AddCustomerController(modelCustomer, "");
@@ -141,7 +136,7 @@ public class PrincipalHomeController implements Initializable {
             Stage stageDialog = new Stage();
             stageDialog.initModality(Modality.APPLICATION_MODAL);
             stageDialog.setScene(new Scene(loader.load()));
-            stageDialog.setTitle("Personas sin proyectos asignados");
+            stageDialog.setTitle("Agregar Pedidos");
             stageDialog.showAndWait();  
             return;
         }
@@ -172,6 +167,97 @@ public class PrincipalHomeController implements Initializable {
         stageDialog.setScene(new Scene(loader.load()));
         stageDialog.setTitle("Agregar cliente");
         stageDialog.showAndWait();
+    }
+    
+    @FXML
+    private void AddItem() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(Paths[7]));
+        loader.setControllerFactory(t -> buildAddNewItemController());
+        Stage stageDialog = new Stage();
+        stageDialog.initModality(Modality.APPLICATION_MODAL);
+        stageDialog.setScene(new Scene(loader.load()));
+        stageDialog.setTitle("Agregar nuevo Item");
+        stageDialog.showAndWait();
+    }
+    
+    @FXML
+    private void UpdateItem() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(Paths[8]));
+        loader.setControllerFactory(t -> buildModifyItemController());
+        Stage stageDialog = new Stage();
+        stageDialog.initModality(Modality.APPLICATION_MODAL);
+        stageDialog.setScene(new Scene(loader.load()));
+        stageDialog.setTitle("Actualizar Item");
+        stageDialog.showAndWait();
+    }
+    
+    @FXML
+    private void AddMeasurement() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(Paths[9]));
+        loader.setControllerFactory(t -> buildAddMeasurementController());
+        Stage stageDialog = new Stage();
+        stageDialog.initModality(Modality.APPLICATION_MODAL);
+        stageDialog.setScene(new Scene(loader.load()));
+        stageDialog.setTitle("Agregar nueva medida");
+        stageDialog.showAndWait();
+    }
+    
+    @FXML
+    private void UpdateMeasurement() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(Paths[10]));
+        loader.setControllerFactory(t -> buildModifyMeasurementController());
+        Stage stageDialog = new Stage();
+        stageDialog.initModality(Modality.APPLICATION_MODAL);
+        stageDialog.setScene(new Scene(loader.load()));
+        stageDialog.setTitle("Actualizar Item");
+        stageDialog.showAndWait();
+    }
+    
+    @FXML
+    private void AssignMeasurementItem() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(Paths[11]));
+        loader.setControllerFactory(t -> buildAssignMeasurementToItemController());
+        Stage stageDialog = new Stage();
+        stageDialog.initModality(Modality.APPLICATION_MODAL);
+        stageDialog.setScene(new Scene(loader.load()));
+        stageDialog.setTitle("Asignar Medidas a un Item");
+        stageDialog.showAndWait();
+    }
+    
+    private ItemDAO buildItemDAO() {
+        return new SQLItemDAOImpl();
+    }
+
+    private ItemManager buildItemManager() {
+        return new ItemManager(buildItemDAO());
+    }
+    
+    private AddNewItemController buildAddNewItemController(){
+        return new AddNewItemController(buildItemManager());
+    }
+    
+    private ModifyItemController buildModifyItemController(){
+        return new ModifyItemController(buildItemManager());
+    }
+    
+    private MeasurementDAO buildMeasurementDAO() {
+        return new SQLMeasurementDAOImpl();
+    }
+
+    private MeasurementManager buildMeasurementManager() {
+        return new MeasurementManager(buildMeasurementDAO());
+    }
+    
+    private AddMeasurementController buildAddMeasurementController(){
+        return  new AddMeasurementController(buildItemManager(), buildMeasurementManager());
+    }
+    
+    private ModifyMeasurementController buildModifyMeasurementController(){
+        return  new ModifyMeasurementController(buildMeasurementManager());
+    }
+    
+    private AssignMeasurementToItemController buildAssignMeasurementToItemController(){
+        return new AssignMeasurementToItemController(buildItemManager(), buildMeasurementManager());
     }
 
     private AddHandiworkController buildHandiworkController() {

@@ -61,19 +61,19 @@ public class AddHandiworkController implements Initializable {
     private TableView<HandiworkDetail> Table = new TableView<HandiworkDetail>();
     @FXML
     private TableColumn NameItem = new TableColumn("Tipo de Item");
-    ;
+    
     @FXML
     private TableColumn DeliveryDate = new TableColumn("Fecha de Entrega");
-    ;
+    
     @FXML
     private TableColumn Payment = new TableColumn("Abonado");
-    ;
+    
     @FXML
     private TableColumn TotalCost = new TableColumn("Total");
-    ;
+    
     @FXML
     private TableColumn StatusPayment = new TableColumn("Estado de Abono");
-    ;
+    
     @FXML
     private TableColumn StatusHandiworkDetail = new TableColumn("Estado");
 
@@ -136,7 +136,6 @@ public class AddHandiworkController implements Initializable {
         HandiworkDetailManager = new HandiworkDetailManager(buildHandiworkDetailDao());
         List<HandiworkDetail> ListItems = HandiworkDetailManager.ListItemsForTableView(1);
         ObservableList = FXCollections.observableList(ListItems);
-
         setItemstable();
     }
 
@@ -178,7 +177,7 @@ public class AddHandiworkController implements Initializable {
                 HandiworkPayment = new HandiworkPayment();
                 HandiworkPayment.setId(tableItemSelected.getId());
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ShowPaymentsItem.fxml"));
-                loader.setControllerFactory(t -> buildShowPaymentsItemController(buildHandiworkPaymentManager()));
+                loader.setControllerFactory(t -> buildShowPaymentsItemController(buildHandiworkPaymentManager(),tableItemSelected));
                 loadStage(loader, "Pagos del item");
 
             } else {
@@ -327,8 +326,8 @@ public class AddHandiworkController implements Initializable {
         return new ModifyEliminateItemAddedController(itemSelected, HandiworkDtlModel, MeasurementManagerModel, HandiworkPaymentManagerModel);
     }
 
-    private ShowPaymentsItemController buildShowPaymentsItemController(HandiworkPaymentManager HandiworkPaymentManagerModel){
-        return new ShowPaymentsItemController(HandiworkPaymentManagerModel,HandiworkPayment);
+    private ShowPaymentsItemController buildShowPaymentsItemController(HandiworkPaymentManager HandiworkPaymentManagerModel, HandiworkDetail itemSelected){
+        return new ShowPaymentsItemController(HandiworkPaymentManagerModel,HandiworkPayment,itemSelected,buildHandiworkDetailManager());
     }
     private void showError(String title, String error) {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);

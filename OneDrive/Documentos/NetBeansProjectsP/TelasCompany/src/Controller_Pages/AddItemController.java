@@ -12,7 +12,6 @@ import Model.ItemManager;
 import Model.Measurement;
 import Model.MeasurementManager;
 import Model.ValidateInput;
-import com.sun.webkit.graphics.WCGraphicsManager;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
