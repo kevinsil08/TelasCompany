@@ -1,0 +1,147 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Aug 29, 2022, 8:57:17 PM
+    Author     : kevin
+*/
+
+.buttonPanel:hover {
+    -fx-background-color: #ca1e1a;
+    -fx-background-radius: 8,7,6;
+    -fx-background-insets: 0,1,2;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgb(202,30,26) , 10, 0.0 , 0 , 1 );
+}
+
+.radiusBorderPanel{
+    -fx-border-radius: 30 30 0 0;
+    -fx-background-radius: 30 30 0 0;
+}
+
+.roundButton{
+    -fx-background-radius: 4em;
+    
+}
+
+.completeBorderPanel{
+    -fx-border-radius: 30 30 30 30;
+    -fx-background-radius: 30 30 30 30;
+}
+
+.whiteFontField{
+    -fx-text-fill : red;
+}
+
+
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('Roboto-Regular.ttf');
+}
+
+@font-face {
+    src: url('Roboto-Black.ttf');
+}
+@font-face {
+    font-family: 'Lato';
+    src: url('Lato-Regular.ttf');
+}
+@font-face {
+    font-family: 'Lato-bold';
+    src: url('Lato-Bold.ttf');
+}
+
+
+.labels{
+    -fx-font-family: 'Roboto Black';
+    -fx-font-size: 2em;
+    -fx-text-fill: #000000;
+    
+}
+
+.buttonPanel:hover {
+    -fx-background-color: #ca1e1a;
+    -fx-background-radius: 8,7,6;
+    -fx-background-insets: 0,1,2;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgb(202,30,26) , 10, 0.0 , 0 , 1 );
+}
+
+.radiusBorderPanel{
+    -fx-border-radius: 30 30 0 0;
+    -fx-background-radius: 30 30 0 0;
+}
+
+.roundButton{
+    -fx-background-radius: 5em;
+    
+}
+
+.completeBorderPanel{
+    -fx-border-radius: 30 30 30 30;
+    -fx-background-radius: 30 30 30 30;
+}
+
+.whiteFontField{
+    -fx-text-fill : red;
+}
+
+.containerForm{
+    -fx-background-color: #D3D3D3;
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.1),10.0,0.0,0.0,10.0);
+    -fx-background-radius:30;
+}
+
+.fieldForm{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius:20;
+}
+
+.fieldTitle{
+    -fx-font-family: 'Lato-bold', 'Arial';
+    -fx-font-size: 1.2em;
+    -fx-text-fill: black;
+    -fx-font-weight: bold
+}
+
+.fieldInput{
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-font-family: 'Lato', 'Arial';
+    -fx-font-size: 2em;
+    -fx-text-fill: #555555;
+}
+
+.acceptButton{
+    -fx-font-family: 'Roboto',  'Arial';
+    -fx-font-size: 2em;
+    -fx-background-radius:30;
+    -fx-background-color: black;
+    -fx-text-fill: white;
+}
+
+.labelError{
+    -fx-font-family: 'Roboto Black';
+    -fx-font-size: 1.3em;
+    -fx-text-fill: #ff0101;
+}
+
+.fieldSearch{
+    -fx-font-family: 'Lato';
+    -fx-font-size: 2em;
+    -fx-text-fill: black;
+}
+
+.table-view .column-header {
+    -fx-background-color: #1C5D99;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+
+

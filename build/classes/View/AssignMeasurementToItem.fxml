@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox prefHeight="613.0" prefWidth="1148.0" style="-fx-alignment: center;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_Pages.AssignMeasurementToItemController">
+   <children>
+      <VBox prefHeight="70.0" prefWidth="674.0" style="-fx-alignment: center;">
+         <children>
+            <Label text="Asignar Medida al Item">
+               <font>
+                  <Font name="Roboto Black" size="30.0" />
+               </font>
+            </Label>
+            <Label text="Campos Obligatorios *" textFill="#e10808">
+               <font>
+                  <Font name="Roboto" size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <HBox prefHeight="73.0" prefWidth="1148.0" style="-fx-alignment: center;">
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+         <children>
+            <Label text="Escoga un item ">
+               <font>
+                  <Font name="Roboto Medium" size="22.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
+            </Label>
+            <ComboBox fx:id="ComboItems" prefHeight="44.0" prefWidth="308.0" style="-fx-font-size: 15pt;">
+               <HBox.margin>
+                  <Insets left="20.0" top="20.0" />
+               </HBox.margin>
+            </ComboBox>
+         </children>
+      </HBox>
+      <HBox prefHeight="73.0" prefWidth="1148.0" style="-fx-alignment: center;">
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+         <children>
+            <Label text="Escoga una medida ">
+               <font>
+                  <Font name="Roboto Medium" size="22.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
+            </Label>
+            <ComboBox fx:id="ComboMeasurements" prefHeight="44.0" prefWidth="308.0" style="-fx-font-size: 15pt;">
+               <HBox.margin>
+                  <Insets left="20.0" top="20.0" />
+               </HBox.margin>
+            </ComboBox>
+         </children>
+      </HBox>
+      <HBox prefHeight="288.0" prefWidth="1148.0" style="-fx-alignment: center;">
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+         <children>
+            <TableView fx:id="Table" prefHeight="248.0" prefWidth="396.0">
+               <HBox.margin>
+                  <Insets bottom="20.0" top="20.0" />
+               </HBox.margin>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: center;">
+         <children>
+            <Button fx:id="BtnCancel" mnemonicParsing="false" onMouseClicked="#closeDialog" text="Cancelar">
+               <font>
+                  <Font name="Roboto Medium" size="22.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="200.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onMouseClicked="#InsertMeasurementOfAItem" text="Ingresar">
+               <font>
+                  <Font name="Roboto Medium" size="22.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</VBox>
