@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox prefHeight="616.0" prefWidth="1150.0" style="-fx-alignment: center;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_Pages.TableOrdersDoneController">
+   <children>
+      <Label text="Pedidos Realizados">
+         <font>
+            <Font name="Roboto Black" size="22.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="20.0" top="20.0" />
+         </VBox.margin>
+      </Label>
+      <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
+         <children>
+            <Label text="Buscar">
+               <font>
+                  <Font name="Roboto" size="18.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </Label>
+            <TextField prefHeight="26.0" prefWidth="210.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
+         <children>
+            <Label prefHeight="15.0" prefWidth="457.0" text="Se puede buscar por Cédula, Nombre, Apellidos, Tlfn, Celular, Dirección y Correo" textAlignment="CENTER" textOverrun="LEADING_ELLIPSIS">
+               <font>
+                  <Font name="Roboto" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="60.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+         <VBox.margin>
+            <Insets bottom="30.0" top="10.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
+         <children>
+            <Label text="Desde">
+               <font>
+                  <Font name="Roboto" size="18.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </Label>
+            <DatePicker />
+            <Label text="Hasta">
+               <font>
+                  <Font name="Roboto" size="18.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="50.0" right="10.0" />
+               </HBox.margin>
+            </Label>
+            <DatePicker />
+         </children>
+      </HBox>
+      <TableView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="1106.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+         <columns>
+            <TableColumn prefWidth="75.0" text="C1" />
+            <TableColumn prefWidth="75.0" text="C2" />
+         </columns>
+         <VBox.margin>
+            <Insets bottom="50.0" top="20.0" />
+         </VBox.margin>
+      </TableView>
+   </children>
+</VBox>
