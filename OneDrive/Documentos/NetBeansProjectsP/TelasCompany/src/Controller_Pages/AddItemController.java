@@ -155,7 +155,7 @@ public class AddItemController implements Initializable {
                 }
                
             }else{
-            int lastId=HandiworkDtlModel.AddHandiworkDetail(itemSelected.getId(), idHandiwork, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), "0", "p");
+             lastId=HandiworkDtlModel.AddHandiworkDetail(itemSelected.getId(), idHandiwork, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), "0", "p",1);
             
             for (int i = 0; i < TxtMeasurement.length; i++) {
                 MeasurementManagerModel.AddMeasurementValues(Integer.parseInt(TxtMeasurement[i].getId()), lastId,TxtMeasurement[i].getText());

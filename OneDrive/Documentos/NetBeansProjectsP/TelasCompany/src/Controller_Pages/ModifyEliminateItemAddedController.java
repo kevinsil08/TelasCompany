@@ -267,7 +267,6 @@ public class ModifyEliminateItemAddedController implements Initializable {
         HBoxMeasurement2.getChildren().clear();
         TxtFTotalCost.setEditable(true);
         TxtFTotalCost.setText("");
-        TxtFPayment.setText("");
         TxtAreaAddDetail.setText("");
         TxtAreaDetail.setText("");
         obsListPlanchados.clear();
@@ -424,7 +423,7 @@ public class ModifyEliminateItemAddedController implements Initializable {
         TxfPanchadoCost.setText("");
         TxfPanchadoDescr.setText("");
         TxfPanchadoDescr.requestFocus();
-
+    }
     private boolean showConfirmation() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initModality(Modality.APPLICATION_MODAL);
