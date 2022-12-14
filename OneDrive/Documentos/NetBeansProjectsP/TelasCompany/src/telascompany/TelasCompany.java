@@ -9,10 +9,13 @@ package telascompany;
 import Controller_Pages.PrincipalHomeController;
 import DAO.CustomerDAO;
 import DAO.HandiworkDAO;
+import DAO.PlanchadoDAO;
 import Model.CustomerManager;
 import Model.HandiworkManager;
+import Model.PlanchadoManager;
 import Model.SQLCustomerDAOImpl;
 import Model.SQLHandiworkDAOImpl;
+import Model.SQLPlanchadoImpl;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -41,7 +44,7 @@ public class TelasCompany extends Application {
     }
 
     private PrincipalHomeController buildController( Stage stage) {
-        return new PrincipalHomeController(  buildModelCustomer()  , buildModelHandiwork(),stage);
+        return new PrincipalHomeController(  buildModelCustomer()  , buildModelHandiwork(), stage);
     }
     
     
@@ -61,5 +64,5 @@ public class TelasCompany extends Application {
     private HandiworkManager buildModelHandiwork(){
         return new HandiworkManager(buildHandiworkDAO());
     }
-    
+     
 }
