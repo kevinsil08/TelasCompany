@@ -41,6 +41,14 @@
                         <Font name="Roboto Black" size="20.0" />
                      </font>
                   </Label>
+                  <Label fx:id="DateActual" text="Fecha Actual: ">
+                     <font>
+                        <Font name="Roboto Black" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="300.0" />
+                     </HBox.margin>
+                  </Label>
                </children>
                <VBox.margin>
                   <Insets bottom="5.0" top="10.0" />
@@ -58,7 +66,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Label>
-                        <ComboBox fx:id="ComboStateItem" prefHeight="30.0" prefWidth="250.0" promptText="Seleccione Realizado o Pendiente" style="-fx-font-size: 10pt;" />
+                        <ComboBox fx:id="ComboStateItem" prefHeight="30.0" prefWidth="250.0" promptText="Pendiente o Finalizado" style="-fx-font-size: 10pt;" />
                         <Label text="*" textFill="#c20c0c">
                            <font>
                               <Font name="Roboto Black" size="18.0" />
@@ -177,11 +185,6 @@
                               <Font name="Roboto" size="16.0" />
                            </font>
                         </TextField>
-                        <Label text="*" textFill="#c20c0c">
-                           <font>
-                              <Font name="Roboto Black" size="22.0" />
-                           </font>
-                        </Label>
                         <Label text="Fecha de entrega">
                            <font>
                               <Font name="Roboto Medium" size="18.0" />
@@ -210,7 +213,7 @@
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: center;">
                      <children>
-                        <Button fx:id="BtnCancel" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="71.0" prefWidth="174.0" text="Cancelar">
+                        <Button fx:id="BtnCancel" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#closeDialog" prefHeight="71.0" prefWidth="174.0" text="Cancelar">
                            <font>
                               <Font name="Roboto Medium" size="16.0" />
                            </font>
@@ -239,18 +242,6 @@
                            <HBox.margin>
                               <Insets right="100.0" />
                            </HBox.margin>
-                        </Button>
-                        <Button fx:id="BtnAddItem1" alignment="TOP_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Eliminar Item">
-                           <font>
-                              <Font name="Roboto Medium" size="16.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="60.0" fitWidth="60.0">
-                                 <image>
-                                    <Image url="@Images/delete_icon.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
                         </Button>
                      </children>
                   </HBox>

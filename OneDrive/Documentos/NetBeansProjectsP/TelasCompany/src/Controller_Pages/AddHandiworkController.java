@@ -28,11 +28,11 @@ import Model.SQLItemDAOImpl;
 import Model.SQLMeasurementDAOImpl;
 import Model.SQLPlanchadoImpl;
 import javafx.event.ActionEvent;
+
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,8 +42,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -61,40 +59,31 @@ import javafx.stage.Stage;
 public class AddHandiworkController implements Initializable {
 
     @FXML
-    private ComboBox<String> CmbEstado;
-    @FXML
     Button btnAddItem, btnCancel, btnSave, btnShowDetailItem, btnPaymentsItem;
 
     @FXML
     private TableView<HandiworkDetail> Table = new TableView<HandiworkDetail>();
     @FXML
     private TableColumn NameItem = new TableColumn("Tipo de Item");
-
-    @FXML
-    private TableColumn DeliveryDate = new TableColumn("Fecha de Entrega");
-
-    @FXML
-    private TableColumn Payment = new TableColumn("Abonado");
-
-    @FXML
-    private TableColumn TotalCost = new TableColumn("Total");
-
-    @FXML
-    private TableColumn StatusPayment = new TableColumn("Estado de Abono");
-
-    @FXML
-    private TableColumn StatusHandiworkDetail = new TableColumn("Estado");
-    @FXML
-    private Button BtnAddCustomer;
-    @FXML
-    private Button BtbUpdateHandiwork;
     
     @FXML
-    private Button BtnSearchCustomer;
+    private TableColumn DeliveryDate = new TableColumn("Fecha de Entrega");
+    
+    @FXML
+    private TableColumn Payment = new TableColumn("Abonado");
+    
+    @FXML
+    private TableColumn TotalCost = new TableColumn("Total");
+    
+    @FXML
+    private TableColumn StatusPayment = new TableColumn("Estado de Abono");
+    
+    @FXML
+    private TableColumn StatusHandiworkDetail = new TableColumn("Estado");
+
     @FXML
     private TextField txfCedRuc;
-    @FXML
-    private TextField txfEstado;
+
     @FXML
     private TextField txfNames;
 
@@ -103,13 +92,6 @@ public class AddHandiworkController implements Initializable {
 
     @FXML
     private TextField txfCostoTotal;
-    
-    @FXML
-    private TextField TxfDate;
-    @FXML
-    private TextField TxfPagado;
-    @FXML
-    private TextField txfPorPagar;
 
     ObservableList<HandiworkDetail> ObservableList;
 
@@ -117,16 +99,10 @@ public class AddHandiworkController implements Initializable {
     private CustomerManager modelCustomer;
     private HandiworkManager modelHandiwork;
     private HandiworkPayment HandiworkPayment;
-    private Customer customer;
-    private boolean modify;
-    private int id_handiwork;
 
-    public AddHandiworkController(HandiworkManager modelHandiwork, CustomerManager modelCustomer, int id_handiwork, boolean readOnly) {
+    public AddHandiworkController(HandiworkManager modelHandiwork, CustomerManager modelCustomer) {
         this.modelHandiwork = modelHandiwork;
         this.modelCustomer = modelCustomer;
-        this.customer = new Customer();
-        this.modify = readOnly;
-        this.id_handiwork = id_handiwork;
     }
 
     @FXML
@@ -139,6 +115,8 @@ public class AddHandiworkController implements Initializable {
                 loadStage(loader, "Agregar Item");
                 fillHandiworkFields(id_handiwork);
                 modelHandiwork.updateCosts(id_handiwork);
+
+
             }
 
         } catch (Exception e) {
@@ -162,10 +140,10 @@ public class AddHandiworkController implements Initializable {
         stageDialog.setScene(new Scene(loader.load()));
         stageDialog.setTitle(title);
         stageDialog.showAndWait();
-        HandiworkDetailManager = new HandiworkDetailManager(buildHandiworkDetailDao());
-        List<HandiworkDetail> ListItems = HandiworkDetailManager.ListItemsForTableView(id_handiwork);
-        ObservableList = FXCollections.observableList(ListItems);
 
+        HandiworkDetailManager = new HandiworkDetailManager(buildHandiworkDetailDao());
+        List<HandiworkDetail> ListItems = HandiworkDetailManager.ListItemsForTableView(1);
+        ObservableList = FXCollections.observableList(ListItems);
         setItemstable();
     }
 
@@ -208,7 +186,7 @@ public class AddHandiworkController implements Initializable {
                 HandiworkPayment = new HandiworkPayment();
                 HandiworkPayment.setId(tableItemSelected.getId());
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ShowPaymentsItem.fxml"));
-                loader.setControllerFactory(t -> buildShowPaymentsItemController(buildHandiworkPaymentManager()));
+                loader.setControllerFactory(t -> buildShowPaymentsItemController(buildHandiworkPaymentManager(),tableItemSelected));
                 loadStage(loader, "Pagos del item");
 
             } else {
@@ -223,8 +201,6 @@ public class AddHandiworkController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        verifyWindowMode();
-        loadComboBoxValues();
         NameItem.setCellValueFactory(new PropertyValueFactory<>("nameItem"));
         DeliveryDate.setCellValueFactory(new PropertyValueFactory<>("DeliveryDeadline"));
         Payment.setCellValueFactory(new PropertyValueFactory<>("Payment"));
@@ -232,10 +208,6 @@ public class AddHandiworkController implements Initializable {
         StatusPayment.setCellValueFactory(new PropertyValueFactory<>("PayStatus"));
         StatusHandiworkDetail.setCellValueFactory(new PropertyValueFactory<>("State"));
         Table.getColumns().addAll(NameItem, DeliveryDate, Payment, TotalCost, StatusPayment, StatusHandiworkDetail);
-        System.out.println(" id :  " + id_handiwork);
-        HandiworkDetailManager = new HandiworkDetailManager(buildHandiworkDetailDao());
-        List<HandiworkDetail> ListItems = HandiworkDetailManager.ListItemsForTableView(id_handiwork);
-        ObservableList = FXCollections.observableList(ListItems);
         setItemstable();
 
         Table.setOnMouseClicked((MouseEvent event) -> {
@@ -266,7 +238,7 @@ public class AddHandiworkController implements Initializable {
     }
 
     @FXML
-    private void searchCustomerCI(ActionEvent event) throws IOException, Exception {
+    void searchCustomerCI(ActionEvent event) throws IOException, Exception {
         // validar que previamente sea una cedula valida
         String ciRuc = txfCedRuc.getText();
         List<Customer> listCustomer = modelCustomer.findCustomerByCiRuc(ciRuc);
@@ -274,50 +246,13 @@ public class AddHandiworkController implements Initializable {
             fillCustomerNames(listCustomer);
             createNewHandiwork(listCustomer);
         } else {
-            confirmationAddCustomer("Cédula/Ruc no registrados", "¿ Ingresar nuevo cliente ? ", "Seleccione opción", ciRuc);
+            newCustomerDialog(ciRuc);
         }
     }
 
-    @FXML
-    private void addCustomer(ActionEvent event) throws IOException {
+    private void newCustomerDialog(String ciRuc) throws IOException, Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/AddCustomer.fxml"));
-        customer.setDocCiRuc("");
-        loader.setControllerFactory(t -> buildAddCustomerController());
-        Stage stageDialog = new Stage();
-        stageDialog.initModality(Modality.APPLICATION_MODAL);
-        stageDialog.setScene(new Scene(loader.load()));
-        stageDialog.setTitle("Agregar cliente");
-        stageDialog.showAndWait();
-        List<Customer> listCustomer = modelCustomer.findCustomerByCiRuc(customer.getDocCiRuc());
-        if (!listCustomer.isEmpty()) {
-            fillCustomerNames(listCustomer);
-            createNewHandiwork(listCustomer);
-        }
-        return;
-    }
-
-    @FXML
-    void searchCustomerDialog(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ModifyCustomer.fxml"));
-        loader.setControllerFactory(t -> buildModifyCustomerController());
-        Stage stageDialog = new Stage();
-        stageDialog.initModality(Modality.APPLICATION_MODAL);
-        stageDialog.setScene(new Scene(loader.load()));
-        stageDialog.setTitle("Buscar cliente");
-        stageDialog.showAndWait();
-        System.out.println(" se busco : " + customer.getDocCiRuc());
-        List<Customer> listCustomer = modelCustomer.findCustomerByCiRuc(customer.getDocCiRuc());
-        if (!listCustomer.isEmpty()) {
-            fillCustomerNames(listCustomer);
-            createNewHandiwork(listCustomer);
-        }
-
-    }
-
-    private void newCustomerDialogCi(String ciRuc) throws IOException, Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/AddCustomer.fxml"));
-        customer.setDocCiRuc(ciRuc);
-        loader.setControllerFactory(t -> buildAddCustomerDialog(modelCustomer, customer));
+        loader.setControllerFactory(t -> buildAddCustomerDialog(modelCustomer, ciRuc));
         loadStage(loader, "Agregar cliente");
         loadCustomerFields(ciRuc);
     }
@@ -327,23 +262,21 @@ public class AddHandiworkController implements Initializable {
         if (!listCustomer.isEmpty()) {
             fillCustomerNames(listCustomer);
             int idHandiwork = createNewHandiwork(listCustomer);
-            id_handiwork = idHandiwork;
             if (idHandiwork != -1) {
                 fillHandiworkFields(idHandiwork);
             } else {
-                showError("Error registro", "Error al ingresar la obra en la base de datos");
+                System.out.println("Error al ingresar la obra en la base de datos");
             }
         } else {
             // mostar mensaje de que no se registro el cliente
-            showError("Error registro", "No existe cliente con cedula : " + ciRuc);
+            System.out.println(" no se creo cliente nuevo");
         }
     }
 
     private int createNewHandiwork(List<Customer> listCustomer) {
         LocalDate systemDate = java.time.LocalDate.now();
         int customerId = listCustomer.get(0).getId();
-        id_handiwork = modelHandiwork.addHandiwork(customerId, systemDate.toString(), 0., 0, false, 0., "Por pagar");
-        return id_handiwork;
+        return modelHandiwork.addHandiwork(customerId, systemDate.toString(), 0., 0, false);
     }
 
     private void fillCustomerNames(List<Customer> listCustomer) {
@@ -351,22 +284,15 @@ public class AddHandiworkController implements Initializable {
         txfSurnames.setText(listCustomer.get(0).getLastName());
         txfNames.setDisable(true);
         txfSurnames.setDisable(true);
-        txfCedRuc.setText(listCustomer.get(0).getDocCiRuc());
     }
 
     private void fillHandiworkFields(int idHandiwork) {
-        int ingreso  = modelHandiwork.updateCosts(idHandiwork);
         List<Handiwork> listHandiwork = modelHandiwork.getById(idHandiwork);
         txfCostoTotal.setText(String.format("%.2f", listHandiwork.get(0).getTotalCost()));
-        CmbEstado.getSelectionModel().select(listHandiwork.get(0).getStateString());
-        TxfDate.setText(listHandiwork.get(0).getEntryDate());
-        txfPorPagar.setText(String.format("%.2f", listHandiwork.get(0).getLeftPayment()));
-        Double payed = listHandiwork.get(0).getTotalCost() - listHandiwork.get(0).getLeftPayment();
-        TxfPagado.setText(String.format("%.2f", payed));
     }
 
-    AddCustomerController buildAddCustomerDialog(CustomerManager modelCustomer, Customer customer) {
-        return new AddCustomerController(modelCustomer, customer, false);
+    private AddCustomerController buildAddCustomerDialog(CustomerManager modelCustomer, String ciRuc) {
+        return new AddCustomerController(modelCustomer, ciRuc);
     }
 
     private HandiworkDetailDAO buildHandiworkDetailDao() {
@@ -411,22 +337,23 @@ public class AddHandiworkController implements Initializable {
 
     private AddItemController buildAddItemController() {
         return new AddItemController(buildHandiworkDetailManager(), buildItemManager(), buildMeasurementManager(), buildHandiworkPaymentManager(), buildPlanchadoManager() ,id_handiwork);
+
     }
 
     private ModifyEliminateItemAddedController buildModifyCustomerController(HandiworkDetail itemSelected, HandiworkDetailManager HandiworkDtlModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel, PlanchadoManager modelPlanchado) {
         return new ModifyEliminateItemAddedController(itemSelected, HandiworkDtlModel, MeasurementManagerModel, HandiworkPaymentManagerModel ,modelPlanchado);
     }
 
-    private ShowPaymentsItemController buildShowPaymentsItemController(HandiworkPaymentManager HandiworkPaymentManagerModel) {
-        return new ShowPaymentsItemController(HandiworkPaymentManagerModel, HandiworkPayment);
+    private ShowPaymentsItemController buildShowPaymentsItemController(HandiworkPaymentManager HandiworkPaymentManagerModel, HandiworkDetail itemSelected){
+        return new ShowPaymentsItemController(HandiworkPaymentManagerModel,HandiworkPayment,itemSelected,buildHandiworkDetailManager());
     }
-
     private void showError(String title, String error) {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setHeaderText(title);
         errorAlert.setContentText(error);
         errorAlert.showAndWait();
     }
+
 
     private void confirmationAddCustomer(String title, String headerText, String contentText, String ciRuc) throws Exception {
         Alert confAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -493,5 +420,4 @@ public class AddHandiworkController implements Initializable {
         infoAlert.setContentText(msg);
         infoAlert.showAndWait();
     }
-
 }

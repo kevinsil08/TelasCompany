@@ -16,7 +16,7 @@
    <content>
       <VBox prefHeight="733.0" prefWidth="1396.0" style="-fx-alignment: center;">
          <children>
-            <Label text="*Datos Obligatorios" textFill="#c20c0c">
+            <Label fx:id="StatePayment" text="Estado de Pago: Pendiente">
                <font>
                   <Font name="Roboto Black" size="18.0" />
                </font>
@@ -43,28 +43,12 @@
                <children>
                   <HBox prefHeight="78.0" prefWidth="1396.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
                      <children>
-                        <Label text="Precio Total">
+                        <Label fx:id="TotalCost" text="Precio Total">
                            <font>
                               <Font name="Roboto Medium" size="18.0" />
                            </font>
                            <HBox.margin>
-                              <Insets right="20.0" />
-                           </HBox.margin>
-                        </Label>
-                        <TextField fx:id="TxtFTotalCost" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0">
-                           <HBox.margin>
-                              <Insets right="15.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="Roboto" size="16.0" />
-                           </font>
-                        </TextField>
-                        <Label text="*" textFill="#c20c0c">
-                           <font>
-                              <Font name="Roboto Black" size="22.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets right="20.0" />
+                              <Insets right="50.0" />
                            </HBox.margin>
                         </Label>
                         <Label fx:id="PaymentDone" text="Abonado">
@@ -72,7 +56,7 @@
                               <Font name="Roboto Medium" size="20.0" />
                            </font>
                            <HBox.margin>
-                              <Insets right="20.0" />
+                              <Insets left="35.0" right="50.0" />
                            </HBox.margin>
                         </Label>
                         <Label text="Abono">
@@ -114,7 +98,7 @@
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: center;">
                      <children>
-                        <Button fx:id="BtnCancel" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="71.0" prefWidth="174.0" text="Cancelar">
+                        <Button fx:id="BtnCancel" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#closeDialog" prefHeight="71.0" prefWidth="174.0" text="Cancelar">
                            <font>
                               <Font name="Roboto Medium" size="16.0" />
                            </font>
@@ -129,7 +113,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="BtnAddPayment" alignment="TOP_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Insertar Abono">
+                        <Button fx:id="BtnAddPayment" alignment="TOP_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#InsertPayment" text="Insertar Abono">
                            <font>
                               <Font name="Roboto Medium" size="16.0" />
                            </font>

@@ -25,12 +25,33 @@ public class SQLMeasurementDAOImpl implements MeasurementDAO{
 
     @Override
     public int InsertMeasurement(Measurement measurement) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            CallableStatement statement = connection.prepareCall("{call pr_add_measurement (?)}");
+            statement.setString(1, measurement.getName());
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()){
+                return rs.getInt("last_insert_id()");
+            }
+            return 1;
+        } catch (SQLException e) {
+            System.err.println(e);
+        } 
+        return -1;
     }
 
     @Override
     public boolean UpdateMeasurement(Measurement measurement) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        CallableStatement statement = null;
+        try {
+            statement = connection.prepareCall("{call pr_update_measurement(?,?)}");
+            statement.setString(1, measurement.getName());
+            statement.setInt(2, measurement.getId());
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            System.err.println(e);
+        } 
+        return false;
     }
 
     @Override
@@ -116,6 +137,59 @@ public class SQLMeasurementDAOImpl implements MeasurementDAO{
                 ListMeasurementWithItem.add(Measurement);
             }
             return ListMeasurementWithItem;
+        } catch (SQLException e) {
+            System.err.println(e);
+        } 
+        return EMPTY;
+    }
+
+    @Override
+    public boolean UpdateValuesItemMeasurement(Measurement measurement) {
+        CallableStatement statement = null;
+        try {
+            statement = connection.prepareCall("{call pr_update_item_measurement(?,?,?)}");
+            statement.setString(1, String.valueOf(measurement.getValue()));
+            statement.setInt(2, measurement.getIdHandDetail());
+            statement.setInt(3, measurement.getId());
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            System.err.println(e);
+        } 
+        return false;
+    }
+    //
+
+    @Override
+    public int InsertItemMeasurement(int ItemId, int MeasurementId) {
+        try {
+            CallableStatement statement = connection.prepareCall("{call pr_insert_item_measurement (?,?)}");
+            statement.setInt(1, ItemId);
+            statement.setInt(2, MeasurementId);
+            statement.execute();
+            return 1;
+        } catch (SQLException e) {
+            System.err.println(e);
+        } 
+        return -1;
+    }
+
+    @Override
+    public List<Measurement> ListMeasurements() {
+        List<Measurement> ListMeasurements = new ArrayList<>();
+        ResultSet rs = null;
+        CallableStatement statement = null;
+        
+        try {
+            statement = connection.prepareCall("{call pr_list_measurement()}");
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                Measurement measurement = new Measurement();
+                measurement.setName(((rs.getString("mea_name"))));
+                measurement.setId((rs.getInt("mea_id")));
+                ListMeasurements.add(measurement);
+            }
+            return ListMeasurements;
         } catch (SQLException e) {
             System.err.println(e);
         } 

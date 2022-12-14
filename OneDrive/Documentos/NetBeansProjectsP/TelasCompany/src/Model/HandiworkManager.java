@@ -26,17 +26,13 @@ public class HandiworkManager {
         }
     }
     
-    public int addHandiwork( int customerID, String entryDate, double totalCost, int numberGarments, boolean state , double leftPayment , String payStatus){
-        Handiwork handiwork = new Handiwork(0, customerID, entryDate, totalCost, numberGarments, state , leftPayment  , payStatus);
+    public int addHandiwork( int customerID, String entryDate, double totalCost, int numberGarments, boolean state){
+        Handiwork handiwork = new Handiwork(0, customerID, entryDate, totalCost, numberGarments, state);
         return handiworkDAO.insertHandiwork(handiwork);
     }
     
     public List getById(int idHandiwork){
         return handiworkDAO.searchHanById(idHandiwork);
-    }
-    
-    public List getPendingHandworks(){
-        return handiworkDAO.findPendingHandiworks();
     }
     
     public void close(){
@@ -45,21 +41,5 @@ public class HandiworkManager {
         } catch (Exception ex) {
             Logger.getLogger(HandiworkManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public int updateHanState(Handiwork handiwork) {
-        return handiworkDAO.updateHanState(handiwork);
-    }
-
-    public int setStateOfHanDetail(Handiwork handiwork) {
-        return handiworkDAO.setStateOfHanDetails(handiwork);
-    }
-
-    public int updateCosts(int idHandiwork) {
-        return handiworkDAO.updateHandiworkCosts(idHandiwork);
-    }
-    
-    public int updateLeftCost(int idHandiwork){
-        return handiworkDAO.updateLeftCost(idHandiwork);
     }
 }

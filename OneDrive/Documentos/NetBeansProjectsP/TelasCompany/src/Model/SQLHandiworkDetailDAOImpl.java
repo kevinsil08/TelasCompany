@@ -69,8 +69,19 @@ public class SQLHandiworkDetailDAOImpl implements HandiworkDetailDAO{
                 HdnDetail.setDeliveryDeadline((rs.getString("hde_delivery_deadline")));
                 HdnDetail.setPayment((rs.getDouble("Abonado")));
                 HdnDetail.setCost((rs.getDouble("hde_cost")));
-                HdnDetail.setPayStatus((rs.getString("hde_pay_status")));
-                HdnDetail.setState((rs.getString("hde_state")));
+                String StatePay = "No pagado";
+                if(!"0".equals(rs.getString("hde_pay_status"))){
+                    StatePay = "Pagado";
+                }
+                HdnDetail.setPayStatus(StatePay);
+                
+                String StateItem = "Pendiente";
+                if(!"p".equals(rs.getString("hde_state"))){
+                    StateItem = "Finalizado";
+                }
+                
+                HdnDetail.setState(StateItem);
+                
                 ListItems.add(HdnDetail);
             }
             return ListItems;
@@ -91,13 +102,13 @@ public class SQLHandiworkDetailDAOImpl implements HandiworkDetailDAO{
             statement.setString(4, HandiworkDetail.getDeliveryDeadline());
             
             boolean paystatus = false;
-            if(!HandiworkDetail.getPayStatus().equals("0")){
+            if(!HandiworkDetail.getPayStatus().equals("No pagado")){
                 paystatus = true;
             }
             statement.setBoolean(5, paystatus);
             
-            String stateItem = HandiworkDetail.getPayStatus();
-            if(!stateItem.equals("p")){
+            String stateItem = "p";
+            if(! HandiworkDetail.getPayStatus().equals("Pendiente")){
                 stateItem = "f";
             }
             

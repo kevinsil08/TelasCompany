@@ -78,7 +78,6 @@ public class AddItemController implements Initializable {
     private Item itemSelected;
     private int idHandiwork;
     private ObservableList<Planchado> obsListPlanchados;
-
     private HandiworkDetailManager HandiworkDtlModel;
     private ItemManager ItemManagerModel;
     private MeasurementManager MeasurementManagerModel;
@@ -86,10 +85,12 @@ public class AddItemController implements Initializable {
     private PlanchadoManager modelPlanchado;
 
     public AddItemController(HandiworkDetailManager HandiworkDtlModel, ItemManager ItemManagerModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel, PlanchadoManager modelPlanchado, int idHandiwork) {
+
         this.HandiworkDtlModel = HandiworkDtlModel;
         this.ItemManagerModel = ItemManagerModel;
         this.MeasurementManagerModel = MeasurementManagerModel;
         this.HandiworkPaymentManagerModel = HandiworkPaymentManagerModel;
+
         this.modelPlanchado = modelPlanchado;
         this.idHandiwork = idHandiwork;
         this.obsListPlanchados = FXCollections.observableArrayList();
@@ -112,17 +113,30 @@ public class AddItemController implements Initializable {
         String AddDetail = (TxtAreaAddDetail.getText().isEmpty())
                 ? null : TxtAreaAddDetail.getText();
 
-        try {
+        try{
+            
+        double Payment = Double.parseDouble(TxtFPayment.getText());
+        double TotalCost = Double.parseDouble(TxtFTotalCost.getText());
+        LocalDate DeliveryDate = DateDelivery.getValue();
+        LocalDate StartDate = LocalDate.now();
+        ValidateInput validateInput = new ValidateInput();
+        
+        if (!validateInput.firstDateBeforeSecondDate(StartDate.toString(), DeliveryDate.toString())) {
+            showError(ErrorTitle , "La fecha de entrega debe ser mayor a la actual");
+            return;
+        }
+        
+        if(Payment>TotalCost){
+            showError(ErrorTitle , "El Abono no debe ser mayor al Costo Total");
+            return;
+        }
+        //Handiwork PrincipalHandiwork = Handiwork
+        int lastId=HandiworkDtlModel.AddHandiworkDetail(itemSelected.getId(), 1, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), "0", "p");
+        HandiworkPaymentManagerModel.AddHandiworkPayment(lastId, StartDate.toString(), Payment);
+        
+            for (int i = 0; i < TxtMeasurement.length; i++) {
+                MeasurementManagerModel.AddMeasurementValues(Integer.parseInt(TxtMeasurement[i].getId()), lastId,Double.parseDouble(TxtMeasurement[i].getText()));
 
-            double Payment = Double.parseDouble(TxtFPayment.getText());
-            double TotalCost = Double.parseDouble(TxtFTotalCost.getText());
-            LocalDate DeliveryDate = DateDelivery.getValue();
-            LocalDate StartDate = LocalDate.now();
-            ValidateInput validateInput = new ValidateInput();
-
-            if (!validateInput.firstDateBeforeSecondDate(StartDate.toString(), DeliveryDate.toString())) {
-                showError(ErrorTitle, "La fecha de entrega debe ser posterior a la actual");
-                return;
             }
 
             if (Payment > TotalCost) {

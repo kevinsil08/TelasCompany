@@ -30,19 +30,14 @@ public class SQLHandiworkDAOImpl implements HandiworkDAO {
         CallableStatement statement = null;
         ResultSet rs;
         try {
-            statement = connection.prepareCall("{call pr_insert_Handiwork(?,?,?,?,?,?,?)}");
+            statement = connection.prepareCall("{call pr_insert_Handiwork(?,?,?,?,?)}");
             statement.setInt(1, handiwork.getCustomerID());
             statement.setString(2, handiwork.getEntryDate());
             statement.setDouble(3, handiwork.getTotalCost());
             statement.setInt(4, handiwork.getNumberGarments());
             statement.setBoolean(5, handiwork.isState());
-            statement.setDouble(6, handiwork.getLeftPayment());
-            statement.setString(7, handiwork.getPayStatus());
-            
             rs = statement.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("LAST_INSERT_ID()");
-            }
+            return rs.getInt("LAST_INSERT_ID()");
         } catch (SQLException e) {
             System.err.println(e);
         }
@@ -66,10 +61,6 @@ public class SQLHandiworkDAOImpl implements HandiworkDAO {
                 handiwork.setTotalCost(rs.getDouble("han_total_cost"));
                 handiwork.setNumberGarments(rs.getInt("han_num_grmt"));
                 handiwork.setState(rs.getBoolean("han_state"));
-                String stsString = rs.getBoolean("han_state") ? "Finalizado" : "Pendiente" ;
-                handiwork.setStateString(stsString);
-                handiwork.setLeftPayment(rs.getDouble("han_left_payment"));
-                handiwork.setPayStatus(rs.getString("han_pay_status"));
                 listProjects.add(handiwork);
             }
             return listProjects;
@@ -107,32 +98,7 @@ public class SQLHandiworkDAOImpl implements HandiworkDAO {
 
     @Override
     public List<Handiwork> findAll() {
-        List<Handiwork> listProjects = new ArrayList<>();
-        PreparedStatement ps;
-        ResultSet rs;
-        try {
-            CallableStatement callableStatement = connection.prepareCall("{call pr_list_handiworks()}");
-            rs = callableStatement.executeQuery();
-            while (rs.next()) {
-                Handiwork handiwork = new Handiwork();
-                handiwork.setHandiWorkID(rs.getInt("han_id"));
-                handiwork.setCustomerID(rs.getInt("cus_id"));
-                handiwork.setEntryDate(rs.getString("han_entry_date"));
-                handiwork.setTotalCost(rs.getDouble("han_total_cost"));
-                handiwork.setNumberGarments(rs.getInt("han_num_grmt"));
-                handiwork.setState(rs.getBoolean("han_state"));
-                String stsString = rs.getBoolean("han_state") ? "Finalizado" : "Pendiente" ;
-                handiwork.setStateString(stsString);
-                handiwork.setLeftPayment(rs.getDouble("han_left_payment"));
-                handiwork.setPayStatus(rs.getString("han_pay_status"));
-                listProjects.add(handiwork);
-            }
-            return listProjects;
-
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-        return EMPTY;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -154,97 +120,5 @@ public class SQLHandiworkDAOImpl implements HandiworkDAO {
             e.printStackTrace();
         }
     }
-
-    @Override
-    public List<Handiwork> findPendingHandiworks() {
-        List<Handiwork> handiworkList = new ArrayList<>();
-        PreparedStatement ps;
-        ResultSet rs;
-        try {
-            CallableStatement callableStatement = connection.prepareCall("{call pr_get_pending_handiworks()}");
-            rs = callableStatement.executeQuery();
-            while (rs.next()) {
-                Handiwork handiwork = new Handiwork();
-                handiwork.setCiCustomer(rs.getString("cus_ced"));
-                handiwork.setNamesCustomer(rs.getString("cus_names") + " " + rs.getString("cus_surnames"));
-                handiwork.setHandiWorkID(rs.getInt("han_id"));
-                handiwork.setPayStatus(rs.getString("han_pay_status"));
-                String stsString = rs.getBoolean("han_state") ? "Finalizado" : "Pendiente" ;
-                handiwork.setStateString(stsString);
-                handiwork.setTotalCost(rs.getDouble("han_total_cost"));
-                handiwork.setLeftPayment(rs.getDouble("han_left_payment"));
-                handiwork.setEntryDate(rs.getString("han_entry_date"));
-                handiworkList.add(handiwork);
-            }
-            return handiworkList;
-
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-        return EMPTY;
-    }
-
-    @Override
-    public int updateHanState(Handiwork handiwork) {
-        CallableStatement statement = null;
-        ResultSet rs;
-        try {
-            statement = connection.prepareCall("{call pr_update_handiwork_state(?,?)}");
-            statement.setBoolean(1, handiwork.isState());
-            statement.setInt(2, handiwork.getHandiWorkID());
-            rs = statement.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("LAST_INSERT_ID()");
-            }
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-        return -1;
-    }
-
-    @Override
-    public int setStateOfHanDetails(Handiwork handiwork) {
-        CallableStatement statement = null;
-        ResultSet rs;
-        try {
-            statement = connection.prepareCall("{call pr_update_all_han_det_by_han_id(?,?)}");
-            statement.setInt(1, handiwork.getHandiWorkID());
-            String han_state = handiwork.isState() ? "f" : "p";
-            statement.setString(2, han_state);
-            statement.executeQuery();
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-        return -1;
-    }
-
-    @Override
-    public int updateHandiworkCosts(int idHandiwork) {
-        CallableStatement statement = null;
-        ResultSet rs;
-        try {
-            statement = connection.prepareCall("{call pr_update_handiwork_total_cost_and_lft_pymt(?)}");
-            statement.setInt(1, idHandiwork);
-            statement.executeQuery();
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-        return -1;
-    }
-
-    @Override
-    public int updateLeftCost(int idHandiwork) {
-        CallableStatement statement = null;
-        ResultSet rs;
-        try {
-            statement = connection.prepareCall("{call pr_update_handiwork_left_payment(?)}");
-            statement.setInt(1, idHandiwork);
-            statement.executeQuery();
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-        return -1;
-    }
-    
 
 }
