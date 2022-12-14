@@ -9,6 +9,7 @@ import DAO.HandiworkDetailDAO;
 import DAO.ItemDAO;
 import DAO.MeasurementDAO;
 import DAO.PaymentDAO;
+import DAO.PlanchadoDAO;
 import Model.Customer;
 import Model.CustomerManager;
 import Model.Handiwork;
@@ -20,11 +21,14 @@ import Model.HandiworkPaymentManager;
 import Model.Item;
 import Model.ItemManager;
 import Model.MeasurementManager;
+import Model.PlanchadoManager;
 import Model.SQLHandiworkDetailDAOImpl;
 import Model.SQLHandiworkPaymentDAOImpl;
 import Model.SQLItemDAOImpl;
 import Model.SQLMeasurementDAOImpl;
-import java.awt.event.ActionEvent;
+import Model.SQLPlanchadoImpl;
+import javafx.event.ActionEvent;
+
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -109,6 +113,10 @@ public class AddHandiworkController implements Initializable {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/AddItem.fxml"));
                 loader.setControllerFactory(t -> buildAddItemController());
                 loadStage(loader, "Agregar Item");
+                fillHandiworkFields(id_handiwork);
+                modelHandiwork.updateCosts(id_handiwork);
+
+
             }
 
         } catch (Exception e) {
@@ -153,8 +161,9 @@ public class AddHandiworkController implements Initializable {
                 btnPaymentsItem.setDisable(false);
                 btnShowDetailItem.setDisable(false);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ModifyEliminateItemAdded.fxml"));
-                loader.setControllerFactory(t -> buildModifyCustomerController(tableItemSelected, buildHandiworkDetailManager(), buildMeasurementManager(), buildHandiworkPaymentManager()));
+                loader.setControllerFactory(t -> buildModifyCustomerController(tableItemSelected, buildHandiworkDetailManager(), buildMeasurementManager(), buildHandiworkPaymentManager(), buildPlanchadoManager()));
                 loadStage(loader, "Modificar/Eliminar item ingresado");
+                modelHandiwork.updateCosts(id_handiwork);
             } else {
                 showError("Error debe seleccionar un item", "Error debe seleccionar un item");
                 btnPaymentsItem.setDisable(true);
@@ -317,13 +326,22 @@ public class AddHandiworkController implements Initializable {
     private HandiworkPaymentManager buildHandiworkPaymentManager() {
         return new HandiworkPaymentManager(buildPaymentDAO());
     }
-
-    private AddItemController buildAddItemController() {
-        return new AddItemController(buildHandiworkDetailManager(), buildItemManager(), buildMeasurementManager(), buildHandiworkPaymentManager());
+    
+    private PlanchadoManager buildPlanchadoManager(){
+        return new PlanchadoManager(buildPlanchadoDAO());
     }
 
-    private ModifyEliminateItemAddedController buildModifyCustomerController(HandiworkDetail itemSelected, HandiworkDetailManager HandiworkDtlModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel) {
-        return new ModifyEliminateItemAddedController(itemSelected, HandiworkDtlModel, MeasurementManagerModel, HandiworkPaymentManagerModel);
+    private PlanchadoDAO buildPlanchadoDAO() {
+        return new SQLPlanchadoImpl();
+    }
+
+    private AddItemController buildAddItemController() {
+        return new AddItemController(buildHandiworkDetailManager(), buildItemManager(), buildMeasurementManager(), buildHandiworkPaymentManager(), buildPlanchadoManager() ,id_handiwork);
+
+    }
+
+    private ModifyEliminateItemAddedController buildModifyCustomerController(HandiworkDetail itemSelected, HandiworkDetailManager HandiworkDtlModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel, PlanchadoManager modelPlanchado) {
+        return new ModifyEliminateItemAddedController(itemSelected, HandiworkDtlModel, MeasurementManagerModel, HandiworkPaymentManagerModel ,modelPlanchado);
     }
 
     private ShowPaymentsItemController buildShowPaymentsItemController(HandiworkPaymentManager HandiworkPaymentManagerModel, HandiworkDetail itemSelected){
@@ -336,4 +354,70 @@ public class AddHandiworkController implements Initializable {
         errorAlert.showAndWait();
     }
 
+
+    private void confirmationAddCustomer(String title, String headerText, String contentText, String ciRuc) throws Exception {
+        Alert confAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confAlert.setTitle(title);
+        confAlert.setHeaderText(headerText);
+        confAlert.setContentText(contentText);
+        Optional<ButtonType> result = confAlert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            newCustomerDialogCi(ciRuc);
+        }
+    }
+
+    private AddCustomerController buildAddCustomerController() {
+        return new AddCustomerController(modelCustomer, customer, false);
+    }
+
+    private ModifyCustomerController buildModifyCustomerController() {
+        return new ModifyCustomerController(modelCustomer, customer, false);
+    }
+
+    private void verifyWindowMode() {
+        if (modify) {
+            txfCedRuc.setDisable(modify);
+            txfNames.setDisable(modify);
+            txfSurnames.setDisable(modify);
+            BtnAddCustomer.setDisable(modify);
+            BtnSearchCustomer.setDisable(modify);
+            BtnSearchCustomer.setVisible(!modify);
+            BtnAddCustomer.setVisible(!modify);
+            List<Customer> listCustomer = modelCustomer.findCustomerByHandiworkId(id_handiwork);
+            if (!listCustomer.isEmpty()) {  
+                fillCustomerNames(listCustomer);
+                fillHandiworkFields(id_handiwork);
+            }
+        }
+
+    }
+
+    private void loadComboBoxValues() {
+        ObservableList<String> list = FXCollections.observableArrayList("Finalizado","Pendiente");
+        CmbEstado.setItems(list);
+    }
+    
+    @FXML
+    void updateHandiwork(ActionEvent event) {
+        // update only state that if is finalizado or pendiente
+        List<Handiwork> listHandiwork = modelHandiwork.getById(id_handiwork);
+        listHandiwork.get(0).setState(CmbEstado.getValue().equals("Finalizado"));
+        if (modelHandiwork.updateHanState(listHandiwork.get(0)) != -1) {
+            infoDial("Actualización obra","Estado de la obra se guardó correctamente","");
+            // update all the handiwork details to finished state
+            modelHandiwork.setStateOfHanDetail(listHandiwork.get(0));
+        } else {
+            showError("Error al guradar obra", "No se actualizó los cambios de la obra");
+        }
+        
+        
+    }
+    
+    private void infoDial(String title, String header, String msg) {
+        Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
+        infoAlert.setTitle(title);
+        infoAlert.setHeaderText(header);
+        infoAlert.setContentText(msg);
+        infoAlert.showAndWait();
+    }
 }
