@@ -97,7 +97,9 @@
                         <Insets bottom="10.0" top="20.0" />
                      </VBox.margin>
                   </HBox>
+
                   <HBox fx:id="HBoxMeasurement2" prefHeight="72.0" prefWidth="1396.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
+
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>

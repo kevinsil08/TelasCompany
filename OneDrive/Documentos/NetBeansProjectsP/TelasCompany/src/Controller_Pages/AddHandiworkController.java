@@ -9,6 +9,7 @@ import DAO.HandiworkDetailDAO;
 import DAO.ItemDAO;
 import DAO.MeasurementDAO;
 import DAO.PaymentDAO;
+import DAO.PlanchadoDAO;
 import Model.Customer;
 import Model.CustomerManager;
 import Model.Handiwork;
@@ -20,10 +21,12 @@ import Model.HandiworkPaymentManager;
 import Model.Item;
 import Model.ItemManager;
 import Model.MeasurementManager;
+import Model.PlanchadoManager;
 import Model.SQLHandiworkDetailDAOImpl;
 import Model.SQLHandiworkPaymentDAOImpl;
 import Model.SQLItemDAOImpl;
 import Model.SQLMeasurementDAOImpl;
+import Model.SQLPlanchadoImpl;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
@@ -137,6 +140,7 @@ public class AddHandiworkController implements Initializable {
                 loader.setControllerFactory(t -> buildAddItemController());
                 loadStage(loader, "Agregar Item");
                 fillHandiworkFields(id_handiwork);
+                modelHandiwork.updateCosts(id_handiwork);
             }
 
         } catch (Exception e) {
@@ -193,8 +197,9 @@ public class AddHandiworkController implements Initializable {
                 btnPaymentsItem.setDisable(false);
                 btnShowDetailItem.setDisable(false);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ModifyEliminateItemAdded.fxml"));
-                loader.setControllerFactory(t -> buildModifyCustomerController(tableItemSelected, buildHandiworkDetailManager(), buildMeasurementManager(), buildHandiworkPaymentManager()));
+                loader.setControllerFactory(t -> buildModifyCustomerController(tableItemSelected, buildHandiworkDetailManager(), buildMeasurementManager(), buildHandiworkPaymentManager(), buildPlanchadoManager()));
                 loadStage(loader, "Modificar/Eliminar item ingresado");
+                modelHandiwork.updateCosts(id_handiwork);
                 fillHandiworkFields(id_handiwork);
             } else {
                 showError("Error debe seleccionar un item", "Error debe seleccionar un item");
@@ -420,13 +425,21 @@ public class AddHandiworkController implements Initializable {
     private HandiworkPaymentManager buildHandiworkPaymentManager() {
         return new HandiworkPaymentManager(buildPaymentDAO());
     }
-
-    private AddItemController buildAddItemController() {
-        return new AddItemController(buildHandiworkDetailManager(), buildItemManager(), buildMeasurementManager(), buildHandiworkPaymentManager(), id_handiwork);
+    
+    private PlanchadoManager buildPlanchadoManager(){
+        return new PlanchadoManager(buildPlanchadoDAO());
     }
 
-    private ModifyEliminateItemAddedController buildModifyCustomerController(HandiworkDetail itemSelected, HandiworkDetailManager HandiworkDtlModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel) {
-        return new ModifyEliminateItemAddedController(itemSelected, HandiworkDtlModel, MeasurementManagerModel, HandiworkPaymentManagerModel);
+    private PlanchadoDAO buildPlanchadoDAO() {
+        return new SQLPlanchadoImpl();
+    }
+
+    private AddItemController buildAddItemController() {
+        return new AddItemController(buildHandiworkDetailManager(), buildItemManager(), buildMeasurementManager(), buildHandiworkPaymentManager(), buildPlanchadoManager() ,id_handiwork);
+    }
+
+    private ModifyEliminateItemAddedController buildModifyCustomerController(HandiworkDetail itemSelected, HandiworkDetailManager HandiworkDtlModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel, PlanchadoManager modelPlanchado) {
+        return new ModifyEliminateItemAddedController(itemSelected, HandiworkDtlModel, MeasurementManagerModel, HandiworkPaymentManagerModel ,modelPlanchado);
     }
 
 
@@ -471,7 +484,7 @@ public class AddHandiworkController implements Initializable {
             BtnSearchCustomer.setVisible(!modify);
             BtnAddCustomer.setVisible(!modify);
             List<Customer> listCustomer = modelCustomer.findCustomerByHandiworkId(id_handiwork);
-            if (!listCustomer.isEmpty()) {
+            if (!listCustomer.isEmpty()) {  
                 fillCustomerNames(listCustomer);
                 fillHandiworkFields(id_handiwork);
             }
