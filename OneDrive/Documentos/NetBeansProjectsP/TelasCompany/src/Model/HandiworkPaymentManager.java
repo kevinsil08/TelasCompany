@@ -44,6 +44,10 @@ public class HandiworkPaymentManager {
         PaymentDAO.DeletePayment(HandiworkPayment);
     }
     
+    public double TotalPaymentDone(int HandiworkDetailId){
+        return PaymentDAO.TotalPaymentDone(HandiworkDetailId);
+    }
+    
     public List<HandiworkPayment> ListPaymentWithHandiworkId(int HandiworkDetailId){
         return PaymentDAO.ListPaymentWithHandiworkId(HandiworkDetailId);
     }

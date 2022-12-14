@@ -62,7 +62,7 @@
                         <Insets left="80.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <TableView fx:id="TbvHandiworks" prefHeight="406.0" prefWidth="1346.0" tableMenuButtonVisible="true">
+                  <TableView fx:id="TbvHandiworks" prefHeight="406.0" prefWidth="1346.0" stylesheets="@../css/styles.css" tableMenuButtonVisible="true">
                     <columns>
                         <TableColumn fx:id="TcCiRuc" prefWidth="137.5999984741211" text="Cédula" />
                         <TableColumn fx:id="TcNames" prefWidth="64.0" text="Nombres" />
@@ -161,18 +161,17 @@
                   <MenuItem fx:id="MitModifyCustomer" mnemonicParsing="false" onAction="#modifyCustomer" text="Modificar" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" style="-fx-font-size: 14pt;" text="Producto">
+            <Menu mnemonicParsing="false" style="-fx-font-size: 14pt;" text="Item">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Agregar" />
-                  <MenuItem mnemonicParsing="false" text="Modificar" />
-                  <MenuItem mnemonicParsing="false" text="Eliminar" />
+                  <MenuItem mnemonicParsing="false" onAction="#AddItem" text="Agregar" />
+                  <MenuItem mnemonicParsing="false" onAction="#UpdateItem" text="Modificar" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" style="-fx-font-size: 14pt;" text="Medidas">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Agregar" />
-                  <MenuItem mnemonicParsing="false" text="Modificar" />
-                  <MenuItem mnemonicParsing="false" text="Eliminar" />
+                  <MenuItem mnemonicParsing="false" onAction="#AddMeasurement" text="Agregar" />
+                  <MenuItem mnemonicParsing="false" onAction="#UpdateMeasurement" text="Modificar" />
+                  <MenuItem mnemonicParsing="false" onAction="#AssignMeasurementItem" text="Asignar Medidas a un Item" />
                </items>
             </Menu>
         </menus>

@@ -97,5 +97,22 @@ public class SQLHandiworkPaymentDAOImpl implements PaymentDAO{
         } 
         return EMPTY;
     }
+
+    @Override
+    public double TotalPaymentDone(int HandiworkDetailId) {
+        ResultSet rs = null;
+        try {
+            CallableStatement statement = connection.prepareCall("{call pr_get_total_payment_handiwork_detail(?)}");
+            statement.setInt(1, HandiworkDetailId);
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                return rs.getDouble("Abonado");
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e);
+        } 
+        return -1;
+    }
     
 }

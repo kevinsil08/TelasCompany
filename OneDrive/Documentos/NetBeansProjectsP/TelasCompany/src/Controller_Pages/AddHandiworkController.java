@@ -63,12 +63,13 @@ public class AddHandiworkController implements Initializable {
     @FXML
     private ComboBox<String> CmbEstado;
     @FXML
-    Button btnAddItem, btnCancel, btnSave, btnShowDetailItem, btnPaymentsItem;
+    Button btnAddItem, btnCancel, btnSave, btnShowDetailItem, btnPaymentsItem, btnDelete;
 
     @FXML
     private TableView<HandiworkDetail> Table = new TableView<HandiworkDetail>();
     @FXML
     private TableColumn NameItem = new TableColumn("Tipo de Item");
+
 
     @FXML
     private TableColumn DeliveryDate = new TableColumn("Fecha de Entrega");
@@ -81,6 +82,7 @@ public class AddHandiworkController implements Initializable {
 
     @FXML
     private TableColumn StatusPayment = new TableColumn("Estado de Abono");
+
 
     @FXML
     private TableColumn StatusHandiworkDetail = new TableColumn("Estado");
@@ -145,6 +147,19 @@ public class AddHandiworkController implements Initializable {
             e.printStackTrace();
         }
     }
+    
+    @FXML
+    private void DeleteItem(MouseEvent event) throws IOException {
+        try {
+
+            HandiworkDetail tableItemSelected = Table.getSelectionModel().getSelectedItem();
+            if(showConfirmation(tableItemSelected.getPayment()+"", tableItemSelected.getNameItem())){
+                HandiworkDetailManager.DeleteHandiworkDetail(id_handiwork, tableItemSelected.getId());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     void closeDialog(MouseEvent event) {
@@ -165,7 +180,6 @@ public class AddHandiworkController implements Initializable {
         HandiworkDetailManager = new HandiworkDetailManager(buildHandiworkDetailDao());
         List<HandiworkDetail> ListItems = HandiworkDetailManager.ListItemsForTableView(id_handiwork);
         ObservableList = FXCollections.observableList(ListItems);
-
         setItemstable();
     }
 
@@ -186,6 +200,7 @@ public class AddHandiworkController implements Initializable {
                 loader.setControllerFactory(t -> buildModifyCustomerController(tableItemSelected, buildHandiworkDetailManager(), buildMeasurementManager(), buildHandiworkPaymentManager(), buildPlanchadoManager()));
                 loadStage(loader, "Modificar/Eliminar item ingresado");
                 modelHandiwork.updateCosts(id_handiwork);
+                fillHandiworkFields(id_handiwork);
             } else {
                 showError("Error debe seleccionar un item", "Error debe seleccionar un item");
                 btnPaymentsItem.setDisable(true);
@@ -207,9 +222,11 @@ public class AddHandiworkController implements Initializable {
                 btnShowDetailItem.setDisable(false);
                 HandiworkPayment = new HandiworkPayment();
                 HandiworkPayment.setId(tableItemSelected.getId());
+                
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ShowPaymentsItem.fxml"));
-                loader.setControllerFactory(t -> buildShowPaymentsItemController(buildHandiworkPaymentManager()));
+                loader.setControllerFactory(t -> buildShowPaymentsItemController(buildHandiworkPaymentManager(),tableItemSelected));
                 loadStage(loader, "Pagos del item");
+                fillHandiworkFields(id_handiwork);
 
             } else {
                 showError("Error debe seleccionar un item", "Error debe seleccionar un item");
@@ -226,12 +243,18 @@ public class AddHandiworkController implements Initializable {
         verifyWindowMode();
         loadComboBoxValues();
         NameItem.setCellValueFactory(new PropertyValueFactory<>("nameItem"));
+        NameItem.setStyle( "-fx-alignment: CENTER;");
         DeliveryDate.setCellValueFactory(new PropertyValueFactory<>("DeliveryDeadline"));
-        Payment.setCellValueFactory(new PropertyValueFactory<>("Payment"));
-        TotalCost.setCellValueFactory(new PropertyValueFactory<>("Cost"));
+        DeliveryDate.setStyle( "-fx-alignment: CENTER;");
         StatusPayment.setCellValueFactory(new PropertyValueFactory<>("PayStatus"));
+        StatusPayment.setStyle( "-fx-alignment: CENTER;");
         StatusHandiworkDetail.setCellValueFactory(new PropertyValueFactory<>("State"));
-        Table.getColumns().addAll(NameItem, DeliveryDate, Payment, TotalCost, StatusPayment, StatusHandiworkDetail);
+        StatusHandiworkDetail.setStyle( "-fx-alignment: CENTER;");
+        Payment.setCellValueFactory(new PropertyValueFactory<>("Payment"));
+        Payment.setStyle( "-fx-alignment: CENTER-RIGHT;");
+        TotalCost.setCellValueFactory(new PropertyValueFactory<>("Cost"));
+        TotalCost.setStyle( "-fx-alignment: CENTER-RIGHT;");
+        Table.getColumns().addAll(NameItem, DeliveryDate, StatusPayment, StatusHandiworkDetail,Payment, TotalCost);
         System.out.println(" id :  " + id_handiwork);
         HandiworkDetailManager = new HandiworkDetailManager(buildHandiworkDetailDao());
         List<HandiworkDetail> ListItems = HandiworkDetailManager.ListItemsForTableView(id_handiwork);
@@ -252,6 +275,7 @@ public class AddHandiworkController implements Initializable {
             if (tableItemSelected != null) {
                 btnPaymentsItem.setDisable(false);
                 btnShowDetailItem.setDisable(false);
+                btnDelete.setDisable(false);
                 HandiworkPayment = new HandiworkPayment();
                 HandiworkPayment.setId(tableItemSelected.getId());
 
@@ -259,6 +283,7 @@ public class AddHandiworkController implements Initializable {
                 showError("Error debe seleccionar un item", "Error debe seleccionar un item");
                 btnPaymentsItem.setDisable(true);
                 btnShowDetailItem.setDisable(true);
+                btnDelete.setDisable(true);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -417,8 +442,10 @@ public class AddHandiworkController implements Initializable {
         return new ModifyEliminateItemAddedController(itemSelected, HandiworkDtlModel, MeasurementManagerModel, HandiworkPaymentManagerModel ,modelPlanchado);
     }
 
-    private ShowPaymentsItemController buildShowPaymentsItemController(HandiworkPaymentManager HandiworkPaymentManagerModel) {
-        return new ShowPaymentsItemController(HandiworkPaymentManagerModel, HandiworkPayment);
+
+    private ShowPaymentsItemController buildShowPaymentsItemController(HandiworkPaymentManager HandiworkPaymentManagerModel, HandiworkDetail itemSelected){
+        return new ShowPaymentsItemController(HandiworkPaymentManagerModel,HandiworkPayment,itemSelected,buildHandiworkDetailManager());
+
     }
 
     private void showError(String title, String error) {
@@ -481,9 +508,7 @@ public class AddHandiworkController implements Initializable {
             modelHandiwork.setStateOfHanDetail(listHandiwork.get(0));
         } else {
             showError("Error al guradar obra", "No se actualizó los cambios de la obra");
-        }
-        
-        
+        }   
     }
     
     private void infoDial(String title, String header, String msg) {
@@ -492,6 +517,21 @@ public class AddHandiworkController implements Initializable {
         infoAlert.setHeaderText(header);
         infoAlert.setContentText(msg);
         infoAlert.showAndWait();
+    }
+    
+    private boolean showConfirmation(String amountTotalPayment,String name) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.setHeaderText(null);
+        alert.setTitle("Confirmación");
+        alert.setContentText("¿Desea eliminar el item '"+name+"', ha sido abonado: "+amountTotalPayment+"$ ?");
+        Optional<ButtonType> action = alert.showAndWait();
+        boolean OptionChoosed = true;
+        if (action.get() != ButtonType.OK) {
+            OptionChoosed = false;
+        }
+
+        return OptionChoosed;
     }
 
 }

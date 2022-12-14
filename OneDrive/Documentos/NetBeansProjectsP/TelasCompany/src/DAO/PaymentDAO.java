@@ -19,6 +19,8 @@ public interface PaymentDAO extends DAO{
     public boolean DeletePayment(HandiworkPayment HandiworkPayment);
     public List<HandiworkPayment> ListPayment();
     
+    public double TotalPaymentDone(int HandiworkDetailId);
+    
     public List<HandiworkPayment> ListPaymentWithHandiworkId(int HandiworkDetailId);
     
 }

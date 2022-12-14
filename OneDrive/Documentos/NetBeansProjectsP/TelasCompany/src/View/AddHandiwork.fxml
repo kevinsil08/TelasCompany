@@ -130,7 +130,7 @@
             </VBox>
             <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="995.0">
                <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="1158.0">
                      <children>
                         <Button fx:id="btnAddItem" mnemonicParsing="false" onMouseClicked="#showAddItem" text="Agregar Item">
                            <font>
@@ -153,6 +153,14 @@
                               <Insets left="100.0" />
                            </HBox.margin>
                         </Button>
+                        <Button fx:id="btnDelete" disable="true" mnemonicParsing="false" onMouseClicked="#DeleteItem" text="Eliminar Item">
+                           <font>
+                              <Font name="Roboto Black" size="22.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="100.0" />
+                           </HBox.margin>
+                        </Button>
                      </children>
                   </HBox>
                </children>
@@ -162,7 +170,7 @@
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="290.0" prefWidth="1396.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
                <children>
-                  <TableView fx:id="Table" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="268.0" prefWidth="1243.0">
+                  <TableView fx:id="Table" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="268.0" prefWidth="1243.0" stylesheets="@../css/styles.css">
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>

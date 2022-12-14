@@ -27,9 +27,9 @@ public class MeasurementManager {
         }
     }
     
-    public void AddMeasurement(int Id, int IdItem, double Value ) throws Exception{
-        Measurement measurement = new Measurement(0, 0, 0);
-        measurementDAO.InsertMeasurement(measurement);
+    public int AddMeasurement(String nameMeasurement) throws Exception{
+        Measurement measurement = new Measurement(0,nameMeasurement);
+        return measurementDAO.InsertMeasurement(measurement);
     }
     
     public void UpdateMeasurement(Measurement measurement){
@@ -44,20 +44,32 @@ public class MeasurementManager {
         return measurementDAO.ListMeasurementWithItem(ItemId);
     }
     
-    public void AddMeasurementValues(int Id, int IdHandDetail, double Value ) throws Exception{
+    public int InsertItemMeasurement(int ItemId, int MeasurementId){
+        return measurementDAO.InsertItemMeasurement(ItemId,MeasurementId);
+    }
+    
+    public void AddMeasurementValues(int Id, int IdHandDetail, String Value ) throws Exception{
         Measurement measurement = new Measurement(Id, IdHandDetail, Value);
         measurementDAO.InsertValuesMeasurement(measurement);
+    }
+    
+    public List<Measurement> ListMeasurements(){
+        return measurementDAO.ListMeasurements();
     }
     
     public List<Measurement> ListValuesMeasurementOfItem(int HandiDetailId){
         return measurementDAO.ListValuesMeasurementOfItem(HandiDetailId);
     }
     
+    public void UpdateValuesItemMeasurement(Measurement measurement){
+        measurementDAO.UpdateValuesItemMeasurement(measurement);
+    }
+    
     public void close(){
         try {
             measurementDAO.close();
         } catch (Exception ex) {
-            Logger.getLogger(HandiworkDetailManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MeasurementManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

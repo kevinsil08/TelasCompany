@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +30,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -41,6 +43,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -58,7 +61,8 @@ public class ModifyEliminateItemAddedController implements Initializable {
     private Button BtnModifyItem, BtnCancel, BtnDelete;
 
     @FXML
-    private Label nameItem, PaymentDone, PayStatus;
+    private Label nameItem, PaymentDone, PayStatus, DateActual;
+
 
     @FXML
     private ComboBox ComboStateItem;
@@ -67,16 +71,25 @@ public class ModifyEliminateItemAddedController implements Initializable {
     private TextArea TxtAreaDetail, TxtAreaAddDetail;
 
     @FXML
-    private TextField TxtFTotalCost, TxtFPayment;
+    private TextField TxtFTotalCost;
 
     @FXML
     private DatePicker DateDelivery;
+    
     private ObservableList<Planchado> obsListPlanchados;
+
+
+
+
     private HandiworkDetail itemSelected;
     private HandiworkDetailManager HandiworkDtlModel;
     private MeasurementManager MeasurementManagerModel;
     private HandiworkPaymentManager HandiworkPaymentManagerModel;
+
     private PlanchadoManager modelPlanchado;
+
+    private LocalDate StartDate;
+
 
     public ModifyEliminateItemAddedController(HandiworkDetail itemSelected, HandiworkDetailManager HandiworkDtlModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel, PlanchadoManager modelPlanchado) {
         this.itemSelected = itemSelected;
@@ -85,6 +98,7 @@ public class ModifyEliminateItemAddedController implements Initializable {
         this.HandiworkPaymentManagerModel = HandiworkPaymentManagerModel;
         this.modelPlanchado = modelPlanchado;
         this.obsListPlanchados = FXCollections.observableArrayList();
+        StartDate = LocalDate.now();
     }
 
     private Label[] NameMeasurement;
@@ -102,43 +116,32 @@ public class ModifyEliminateItemAddedController implements Initializable {
 
     @FXML
     private void onUpdateHandiworkDetail(MouseEvent event) throws Exception {
-        String ErrorTitle = "Error de ingreso";
-        String Detail = TxtAreaDetail.getText();
-        String AddDetail = (itemSelected.getAddDetail() == null)
-                ? null : TxtAreaAddDetail.getText();
 
-        try {
+        if (showConfirmation()) {
+            String ErrorTitle = "Error de ingreso";
+            String Detail = TxtAreaDetail.getText();
+            String AddDetail = (itemSelected.getAddDetail() == null)
+                    ? null : TxtAreaAddDetail.getText();
+            String payStatus = "No pagado";
 
-            double Payment = Double.parseDouble(TxtFPayment.getText());
-            double TotalCost = Double.parseDouble(TxtFTotalCost.getText());
-            LocalDate DeliveryDate = DateDelivery.getValue();
-            LocalDate StartDate = LocalDate.now();
-            ValidateInput validateInput = new ValidateInput();
+            try {
 
-            if (!validateInput.firstDateBeforeSecondDate(StartDate.toString(), DeliveryDate.toString())) {
-                showError(ErrorTitle, "La fecha de entrega debe ser mayor a la actual");
-                return;
-            }
+                double TotalCost = Double.parseDouble(TxtFTotalCost.getText());
 
-            if (Payment + itemSelected.getPayment() > TotalCost) {
-                showError(ErrorTitle, "El Abono más lo abonado no debe ser mayor al Costo Total");
-                return;
-            }
+                LocalDate DeliveryDate = DateDelivery.getValue();
 
-            String state = "p";
-            if (ComboStateItem.getSelectionModel().getSelectedIndex() == 0) {
-                state = "f";
-            }
+                ValidateInput validateInput = new ValidateInput();
 
-            String payStatus = "0";
+                if (!validateInput.firstDateBeforeSecondDate(StartDate.toString(), DeliveryDate.toString())) {
+                    showError(ErrorTitle, "La fecha de entrega debe ser mayor a la actual");
+                    return;
+                }
 
-            double totalPayment = Payment + itemSelected.getPayment();
-
-            if (totalPayment == TotalCost) {
-                payStatus = "1";
-            }
-
-            if (itemSelected.getNameItem().toUpperCase().equals("PLANCHADOS")) {
+                String state = "Pendiente";
+                if (ComboStateItem.getSelectionModel().getSelectedIndex() == 0) {
+                    state = "Finalizado";
+                }
+                if (itemSelected.getNameItem().toUpperCase().equals("PLANCHADOS")) {
                 if (obsListPlanchados.isEmpty()) {
                     showError("Error de registro", "Ingrese planchados");
                     return;
@@ -153,31 +156,32 @@ public class ModifyEliminateItemAddedController implements Initializable {
                 HandiworkDetail HandiworkDetail = new HandiworkDetail(itemSelected.getId(), itemSelected.getTypeItemId(), 1, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), payStatus, state , obsListPlanchados.size());
                 HandiworkDtlModel.UpdateHandiworkDetail(HandiworkDetail);
 
-            } else {
-                HandiworkDetail HandiworkDetail = new HandiworkDetail(itemSelected.getId(), itemSelected.getTypeItemId(), 1, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), payStatus, state , 1);
-                HandiworkDtlModel.UpdateHandiworkDetail(HandiworkDetail);
-                
-                /*for (int i = 0; i < TxtMeasurement.length; i++) {
-                MeasurementManagerModel.AddMeasurementValues(Integer.parseInt(TxtMeasurement[i].getId()), lastId,Double.parseDouble(TxtMeasurement[i].getText()));
-            }*/
-            }
-            HandiworkPaymentManagerModel.AddHandiworkPayment(itemSelected.getId(), StartDate.toString(), Payment);
-            closeStage();
+            }else{
+                HandiworkDetail HandiworkDetail = new HandiworkDetail(itemSelected.getId(), itemSelected.getTypeItemId(), 1, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), payStatus, state);
 
-        } catch (NumberFormatException e) {
-            showError(ErrorTitle, "Solo debe ingresar números en Precio Total y/o Abono");
+                HandiworkDtlModel.UpdateHandiworkDetail(HandiworkDetail);
+
+                for (int i = 0; i < TxtMeasurement.length; i++) {
+                    Measurement measurement = new Measurement(Integer.parseInt(TxtMeasurement[i].getId()), itemSelected.getId(), TxtMeasurement[i].getText());
+                    MeasurementManagerModel.UpdateValuesItemMeasurement(measurement);
+                }
+                }
+                closeStage();
+
+            } catch (NumberFormatException e) {
+                showError(ErrorTitle, "Solo debe ingresar números en Precio Total y/o Abono");
+            }
         }
     }
 
-    @FXML
-    private void onDeleteHandiworkDetail(MouseEvent event) throws Exception {
-
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         nameItem.setText("Tipo de Item: " + itemSelected.getNameItem());
         TxtAreaDetail.setText(itemSelected.getDetail());
+
+        DateActual.setText("Fecha Actual: " + StartDate.toString());
+
 
         String AddDetail = (itemSelected.getAddDetail() == null)
                 ? null : TxtAreaAddDetail.getText();
@@ -186,10 +190,12 @@ public class ModifyEliminateItemAddedController implements Initializable {
         TxtFTotalCost.setText(itemSelected.getCost() + "");
         DateDelivery.setValue(LOCAL_DATE(itemSelected.getDeliveryDeadline()));
         PaymentDone.setText("Abonado: " + itemSelected.getPayment() + " $");
-        String valor = (itemSelected.getPayStatus().equals("0") ? "No Pagado" : "Pagado");
+
+
+        String valor = (itemSelected.getPayStatus().equals("No pagado") ? "No Pagado" : "Pagado");
         PayStatus.setText("Estado de Pago: " + valor);
 
-        String[] StateItem = {"Realizado", "Pendiente"};
+        String[] StateItem = {"Finalizado", "Pendiente"};
         ComboStateItem.setItems(FXCollections.observableArrayList(StateItem));
         onClickItem();
 
@@ -209,42 +215,43 @@ public class ModifyEliminateItemAddedController implements Initializable {
             TxtFTotalCost.setEditable(false);
             addMultySubItemsFields(itemSelected.getId());
 
+
         } else {
 
             int MAXVALUETOHBOX = 4;
-            List<Measurement> listMeasurement = MeasurementManagerModel.ListValuesMeasurementOfItem(itemSelected.getId());
+        List<Measurement> listMeasurement = MeasurementManagerModel.ListValuesMeasurementOfItem(itemSelected.getId());
 
-            NameMeasurement = new Label[listMeasurement.size()];
-            TxtMeasurement = new TextField[listMeasurement.size()];
-            int ITERATOR = 0;
-            while (ITERATOR < listMeasurement.size()) {
+        NameMeasurement = new Label[listMeasurement.size()];
+        TxtMeasurement = new TextField[listMeasurement.size()];
+        int ITERATOR = 0;
+        while (ITERATOR < listMeasurement.size()) {
 
-                NameMeasurement[ITERATOR] = new Label((String) listMeasurement.get(ITERATOR).getName());
-                NameMeasurement[ITERATOR].setPadding(new Insets(0.0, 20.0, 0.0, 20.0));
-                NameMeasurement[ITERATOR].setFont(new Font("Roboto", 22.0));
-                TxtMeasurement[ITERATOR] = new TextField((Double) listMeasurement.get(ITERATOR).getValue() + "");
-                TxtMeasurement[ITERATOR].setPrefSize(78, 26);
-                TxtMeasurement[ITERATOR].setId("" + listMeasurement.get(ITERATOR).getId());
+            NameMeasurement[ITERATOR] = new Label((String) listMeasurement.get(ITERATOR).getName());
+            NameMeasurement[ITERATOR].setPadding(new Insets(0.0, 50.0, 0.0, 50.0));
+            NameMeasurement[ITERATOR].setFont(new Font("Roboto", 22.0));
+            TxtMeasurement[ITERATOR] = new TextField(listMeasurement.get(ITERATOR).getValue());
+            TxtMeasurement[ITERATOR].setPrefSize(78, 26);
+            TxtMeasurement[ITERATOR].setId("" + listMeasurement.get(ITERATOR).getId());
 
-                if (ITERATOR > MAXVALUETOHBOX) {
-                    HBoxMeasurement2.getChildren().addAll(NameMeasurement[ITERATOR], TxtMeasurement[ITERATOR]);
-                } else {
-                    HBoxMeasurement.getChildren().addAll(NameMeasurement[ITERATOR], TxtMeasurement[ITERATOR]);
+            if (ITERATOR > MAXVALUETOHBOX) {
+                HBoxMeasurement2.getChildren().addAll(NameMeasurement[ITERATOR], TxtMeasurement[ITERATOR]);
+            } else {
+                HBoxMeasurement.getChildren().addAll(NameMeasurement[ITERATOR], TxtMeasurement[ITERATOR]);
                 }
                 ITERATOR++;
+
             }
         }
     }
 
-    private void removeLabelsTextFields() {
 
+    private void removeLabelsTextFields() {
         if (NameMeasurement != null) {
             HBoxMeasurement.getChildren().removeAll(NameMeasurement);
             HBoxMeasurement.getChildren().removeAll(TxtMeasurement);
             HBoxMeasurement2.getChildren().removeAll(NameMeasurement);
             HBoxMeasurement2.getChildren().removeAll(TxtMeasurement);
         }
-
     }
 
     private void showError(String title, String error) {
@@ -253,6 +260,7 @@ public class ModifyEliminateItemAddedController implements Initializable {
         errorAlert.setContentText(error);
         errorAlert.showAndWait();
     }
+
 
     private void clearHboxContents() {
         HBoxMeasurement.getChildren().clear();
@@ -416,6 +424,21 @@ public class ModifyEliminateItemAddedController implements Initializable {
         TxfPanchadoCost.setText("");
         TxfPanchadoDescr.setText("");
         TxfPanchadoDescr.requestFocus();
+
+    private boolean showConfirmation() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.setHeaderText(null);
+        alert.setTitle("Confirmación");
+        alert.setContentText("¿Desea actualizar el item?");
+        Optional<ButtonType> action = alert.showAndWait();
+        boolean OptionChoosed = true;
+        if (action.get() != ButtonType.OK) {
+            OptionChoosed = false;
+        }
+
+        return OptionChoosed;
+
     }
 
 }

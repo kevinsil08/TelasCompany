@@ -20,6 +20,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -32,6 +33,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -44,6 +46,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -112,24 +115,31 @@ public class AddItemController implements Initializable {
         String AddDetail = (TxtAreaAddDetail.getText().isEmpty())
                 ? null : TxtAreaAddDetail.getText();
 
-        try {
-
-            double Payment = Double.parseDouble(TxtFPayment.getText());
-            double TotalCost = Double.parseDouble(TxtFTotalCost.getText());
-            LocalDate DeliveryDate = DateDelivery.getValue();
-            LocalDate StartDate = LocalDate.now();
-            ValidateInput validateInput = new ValidateInput();
-
-            if (!validateInput.firstDateBeforeSecondDate(StartDate.toString(), DeliveryDate.toString())) {
-                showError(ErrorTitle, "La fecha de entrega debe ser posterior a la actual");
-                return;
-            }
-
-            if (Payment > TotalCost) {
-                showError(ErrorTitle, "El Abono no debe ser mayor al Costo Total");
-                return;
-            }
-            //Handiwork PrincipalHandiwork = Handiwork
+        try{
+            
+        double Payment = Double.parseDouble(TxtFPayment.getText());
+        double TotalCost = Double.parseDouble(TxtFTotalCost.getText());
+        LocalDate DeliveryDate = DateDelivery.getValue();
+        LocalDate StartDate = LocalDate.now();
+        ValidateInput validateInput = new ValidateInput();
+        
+        if(DeliveryDate == null){
+            showError(ErrorTitle , "Debe ingresar una fecha de entrega");
+            return;
+        }
+        
+        if (!validateInput.firstDateBeforeSecondDate(StartDate.toString(), DeliveryDate.toString())) {
+            showError(ErrorTitle , "La fecha de entrega debe ser mayor a la actual");
+            return;
+        }
+        
+        if(Payment>TotalCost){
+            showError(ErrorTitle , "El Abono no debe ser mayor al Costo Total");
+            return;
+        }
+        
+        if(showConfirmation(itemSelected.getName())){
+            
             int lastId = 0;
             if (itemSelected.getId() == 4) {
                 if (obsListPlanchados.isEmpty()) {
@@ -144,17 +154,25 @@ public class AddItemController implements Initializable {
                     modelPlanchado.insertPlanchadoToHanDetail(planchado);
                 }
                
-            } else {
-                lastId = HandiworkDtlModel.AddHandiworkDetail(itemSelected.getId(), idHandiwork, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), "0", "p", 1);
-                for (int i = 0; i < TxtMeasurement.length; i++) {
-                    MeasurementManagerModel.AddMeasurementValues(Integer.parseInt(TxtMeasurement[i].getId()), lastId, Double.parseDouble(TxtMeasurement[i].getText()));
-                }
-                
+            }else{
+            int lastId=HandiworkDtlModel.AddHandiworkDetail(itemSelected.getId(), idHandiwork, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), "0", "p");
+            
+            for (int i = 0; i < TxtMeasurement.length; i++) {
+                MeasurementManagerModel.AddMeasurementValues(Integer.parseInt(TxtMeasurement[i].getId()), lastId,TxtMeasurement[i].getText());
             }
-            HandiworkPaymentManagerModel.AddHandiworkPayment(lastId, StartDate.toString(), Payment);
-            closeStage();
-        } catch (NumberFormatException e) {
-            showError(ErrorTitle, "Solo debe ingresar números en Precio Total y/o Abono");
+            
+            }
+            if(!TxtFPayment.getText().isEmpty() && Payment>0){
+                HandiworkPaymentManagerModel.AddHandiworkPayment(lastId, StartDate.toString(), Payment);
+            }
+        closeStage();
+        }
+        
+        
+        
+        }catch(NumberFormatException e){
+            showError(ErrorTitle , "Solo debe ingresar números en Precio Total y/o Abono");
+
         }
     }
 
@@ -162,7 +180,7 @@ public class AddItemController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         TxtFTotalCost.setText("0");
-
+        TxtFPayment.setText("0");
         ListItems = ItemManagerModel.ListItems();
 
         ArrayList<String> ItemsNames = new ArrayList(ListItems.size());
@@ -227,6 +245,7 @@ public class AddItemController implements Initializable {
                     HBoxMeasurement.getChildren().addAll(NameMeasurement[ITERATOR], TxtMeasurement[ITERATOR]);
                 }
                 ITERATOR++;
+
             }
 
         }
@@ -252,6 +271,7 @@ public class AddItemController implements Initializable {
         errorAlert.setContentText(error);
         errorAlert.showAndWait();
     }
+
 
     private void addMultySubItemsFields(int itemID) {
 
@@ -416,6 +436,23 @@ public class AddItemController implements Initializable {
         TxtAreaAddDetail.setText("");
         TxtAreaDetail.setText("");
         obsListPlanchados.clear();
+    }
+
+
+    
+    private boolean showConfirmation(String name) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.setHeaderText(null);
+        alert.setTitle("Confirmación");
+        alert.setContentText("¿Desea agregar el item '"+name+"' ?");
+        Optional<ButtonType> action = alert.showAndWait();
+        boolean OptionChoosed = true;
+        if (action.get() != ButtonType.OK) {
+            OptionChoosed = false;
+        }
+
+        return OptionChoosed;
     }
 
 }
