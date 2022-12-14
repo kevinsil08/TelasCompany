@@ -48,7 +48,7 @@ public class MeasurementManager {
         return measurementDAO.InsertItemMeasurement(ItemId,MeasurementId);
     }
     
-    public void AddMeasurementValues(int Id, int IdHandDetail, double Value ) throws Exception{
+    public void AddMeasurementValues(int Id, int IdHandDetail, String Value ) throws Exception{
         Measurement measurement = new Measurement(Id, IdHandDetail, Value);
         measurementDAO.InsertValuesMeasurement(measurement);
     }

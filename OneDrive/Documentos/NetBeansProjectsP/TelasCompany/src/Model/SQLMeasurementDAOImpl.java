@@ -108,7 +108,7 @@ public class SQLMeasurementDAOImpl implements MeasurementDAO{
             CallableStatement statement = connection.prepareCall("{call pr_add_item_measurement (?,?,?)}");
             statement.setInt(1, measurement.getIdHandDetail());
             statement.setInt(2, measurement.getId());
-            statement.setDouble(3, measurement.getValue());
+            statement.setString(3, measurement.getValue());
             statement.execute();
             return measurement.getId();
         } catch (SQLException e) {
@@ -129,8 +129,7 @@ public class SQLMeasurementDAOImpl implements MeasurementDAO{
             rs = statement.executeQuery();
             while (rs.next()) {
                 Measurement Measurement = new Measurement();
-                        
-                Measurement.setValue((rs.getDouble("value")));
+                Measurement.setValue((rs.getString("value")));
                 Measurement.setName((rs.getString("mea_name")));
                 Measurement.setId((rs.getInt("mea_id")));
                 Measurement.setIdHandDetail((rs.getInt("ite_id")));

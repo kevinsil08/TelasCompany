@@ -15,20 +15,20 @@ public class Measurement {
     private String Name;
     
     private int IdHandDetail;
-    private double Value;
+    private String Value;
 
     public Measurement(int Id, String Name) {
         this.Id = Id;
         this.Name = Name;
     }
 
-    public Measurement(int Id, int IdHandDetail, double Value) {
+    public Measurement(int Id, int IdHandDetail, String Value) {
         this.Id = Id;
         this.IdHandDetail = IdHandDetail;
         this.Value = Value;
     }
 
-    public Measurement(int Id, String Name, int IdHandDetail, double Value) {
+    public Measurement(int Id, String Name, int IdHandDetail, String Value) {
         this.Id = Id;
         this.Name = Name;
         this.IdHandDetail = IdHandDetail;
@@ -46,15 +46,13 @@ public class Measurement {
         this.IdHandDetail = IdHandDetail;
     }
 
-    public double getValue() {
+    public String getValue() {
         return Value;
     }
 
-    public void setValue(double Value) {
+    public void setValue(String Value) {
         this.Value = Value;
     }
-    
-    
 
     public int getId() {
         return Id;

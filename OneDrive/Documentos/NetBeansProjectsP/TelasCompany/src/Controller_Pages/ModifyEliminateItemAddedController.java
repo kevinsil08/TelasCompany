@@ -59,7 +59,7 @@ public class ModifyEliminateItemAddedController implements Initializable {
     private TextArea TxtAreaDetail, TxtAreaAddDetail;
 
     @FXML
-    private TextField TxtFTotalCost, TxtFPayment;
+    private TextField TxtFTotalCost;
 
     @FXML
     private DatePicker DateDelivery;
@@ -105,24 +105,6 @@ public class ModifyEliminateItemAddedController implements Initializable {
 
                 double TotalCost = Double.parseDouble(TxtFTotalCost.getText());
 
-                if (!TxtFPayment.getText().isEmpty()) {
-                    double Payment = Double.parseDouble(TxtFPayment.getText());
-
-                    double totalPayment = Payment + itemSelected.getPayment();
-
-                    if (Payment + itemSelected.getPayment() > TotalCost) {
-                        showError(ErrorTitle, "El Abono más lo abonado no debe ser mayor al Costo Total");
-                        return;
-                    }
-
-                    if (totalPayment == TotalCost) {
-                        payStatus = "Pagado";
-                    }
-
-                    HandiworkPaymentManagerModel.AddHandiworkPayment(itemSelected.getId(), StartDate.toString(), Payment);
-
-                }
-
                 LocalDate DeliveryDate = DateDelivery.getValue();
 
                 ValidateInput validateInput = new ValidateInput();
@@ -142,7 +124,7 @@ public class ModifyEliminateItemAddedController implements Initializable {
                 HandiworkDtlModel.UpdateHandiworkDetail(HandiworkDetail);
 
                 for (int i = 0; i < TxtMeasurement.length; i++) {
-                    Measurement measurement = new Measurement(Integer.parseInt(TxtMeasurement[i].getId()), itemSelected.getId(), Double.parseDouble(TxtMeasurement[i].getText()));
+                    Measurement measurement = new Measurement(Integer.parseInt(TxtMeasurement[i].getId()), itemSelected.getId(), TxtMeasurement[i].getText());
                     MeasurementManagerModel.UpdateValuesItemMeasurement(measurement);
                 }
                 closeStage();
@@ -194,9 +176,9 @@ public class ModifyEliminateItemAddedController implements Initializable {
         while (ITERATOR < listMeasurement.size()) {
 
             NameMeasurement[ITERATOR] = new Label((String) listMeasurement.get(ITERATOR).getName());
-            NameMeasurement[ITERATOR].setPadding(new Insets(0.0, 20.0, 0.0, 20.0));
+            NameMeasurement[ITERATOR].setPadding(new Insets(0.0, 50.0, 0.0, 50.0));
             NameMeasurement[ITERATOR].setFont(new Font("Roboto", 22.0));
-            TxtMeasurement[ITERATOR] = new TextField((Double) listMeasurement.get(ITERATOR).getValue() + "");
+            TxtMeasurement[ITERATOR] = new TextField(listMeasurement.get(ITERATOR).getValue());
             TxtMeasurement[ITERATOR].setPrefSize(78, 26);
             TxtMeasurement[ITERATOR].setId("" + listMeasurement.get(ITERATOR).getId());
 

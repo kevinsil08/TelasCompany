@@ -122,8 +122,18 @@ public class SQLHandiworkDetailDAOImpl implements HandiworkDetailDAO{
     }
 
     @Override
-    public boolean DeleteHandiworkDetail(HandiworkDetail HandiworkDetail) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean DeleteHandiworkDetail(int HandiworkId,int HandiworkDetailId) {
+        CallableStatement statement = null;
+        try {
+            statement = connection.prepareCall("{call pr_delete_handiwork_detail( ?, ?)}");
+            statement.setInt(1, HandiworkId);
+            statement.setInt(2, HandiworkDetailId);
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            System.err.println(e);
+        } 
+        return false;
     }
 
     @Override

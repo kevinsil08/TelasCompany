@@ -47,12 +47,36 @@ public class SQLCustomerDAOImpl implements CustomerDAO {
 
     @Override
     public boolean updateCustomer(Customer customer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        CallableStatement statement = null;
+        ResultSet rs;
+        try {
+            statement = connection.prepareCall("{call pr_update_customer_by_id(?,?,?,?,?)}");
+            statement.setInt(1, customer.getId());
+            statement.setString(2, customer.getFirstName());
+            statement.setString(3, customer.getLastName());
+            statement.setString(4, customer.getDirection());
+            statement.setString(5, customer.getEmail());
+            rs = statement.executeQuery();
+            return true;
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+        return false;
     }
 
     @Override
     public boolean deleteCustomer(Customer customer) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        CallableStatement statement = null;
+        ResultSet rs;
+        try {
+            statement = connection.prepareCall("{call pr_delete_customer(?)}");
+            statement.setInt(1, customer.getId());
+            rs = statement.executeQuery();
+            return true;
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+        return false;
     }
 
     @Override
@@ -85,7 +109,28 @@ public class SQLCustomerDAOImpl implements CustomerDAO {
 
     @Override
     public List listCustomers() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Customer> customersList = new ArrayList<>();
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            CallableStatement callableStatement = connection.prepareCall("{call pr_get_customers()}");
+            rs = callableStatement.executeQuery();
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setId(rs.getInt("cus_id"));
+                customer.setFirstName(rs.getString("cus_names"));
+                customer.setLastName(rs.getString("cus_surnames"));
+                customer.setDocCiRuc(rs.getString("cus_ced"));
+                customer.setDirection(rs.getString("cus_direction"));
+                customer.setEmail(rs.getString("cus_email"));
+                customersList.add(customer);
+            }
+            return customersList;
+
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+        return EMPTY;
     }
 
     @Override
@@ -106,6 +151,34 @@ public class SQLCustomerDAOImpl implements CustomerDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<Customer> searchByHAndiworkId(int handiworkID) {
+         List<Customer> listProjects = new ArrayList<>();
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            CallableStatement callableStatement = connection.prepareCall("{call get_customer_by_han_id(?)}");
+            callableStatement.setInt(1, handiworkID);
+            rs = callableStatement.executeQuery();
+
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setId(rs.getInt("cus_id"));
+                customer.setFirstName(rs.getString("cus_names"));
+                customer.setLastName(rs.getString("cus_surnames"));
+                customer.setDocCiRuc(rs.getString("cus_ced"));
+                customer.setDirection(rs.getString("cus_direction"));
+                customer.setEmail(rs.getString("cus_email"));
+                listProjects.add(customer);
+            }
+            return listProjects;
+
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+        return EMPTY;
     }
 
 }

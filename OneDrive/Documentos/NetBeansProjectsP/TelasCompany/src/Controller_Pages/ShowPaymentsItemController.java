@@ -11,6 +11,8 @@ import Model.HandiworkPayment;
 import Model.HandiworkPaymentManager;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -21,6 +23,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -44,7 +47,10 @@ public class ShowPaymentsItemController implements Initializable {
     private TextField TxtFPayment;
 
     @FXML
-    private Button BtnCancel, BtnAddPayment;
+    private Button BtnCancel,BtnAddPayment;
+    
+    @FXML
+    private DatePicker DatePay;
 
     @FXML
     private Label PaymentDone, ActualDate, TotalCost, StatePayment;
@@ -91,13 +97,13 @@ public class ShowPaymentsItemController implements Initializable {
         
          if (HandiworkDetail.getCost() == HandiworkPayment.getTotalPayment()) {
              showError(ErrorTitle, "No puede ingresar más abonos, el item ha sido pagado");
+             BtnAddPayment.setDisable(true);
              return;
          }
 
         if (showConfirmation()) {
             
             try {
-                LocalDate StartDate = LocalDate.now();
 
                 double Payment = Double.parseDouble(TxtFPayment.getText());
 
@@ -109,13 +115,13 @@ public class ShowPaymentsItemController implements Initializable {
 
                 if (totalPayment == HandiworkDetail.getCost()) {
                     String payStatus = "1";
-                    HandiworkDetail = new HandiworkDetail(HandiworkDetail.getId(), HandiworkDetail.getTypeItemId(), 1, StartDate.toString(), HandiworkDetail.getDetail(), HandiworkDetail.getAddDetail(), HandiworkDetail.getCost(), HandiworkDetail.getDeliveryDeadline(), payStatus, HandiworkDetail.getState());
+                    HandiworkDetail = new HandiworkDetail(HandiworkDetail.getId(), HandiworkDetail.getTypeItemId(), HandiworkDetail.getHandiworkId(), DatePay.toString(), HandiworkDetail.getDetail(), HandiworkDetail.getAddDetail(), HandiworkDetail.getCost(), HandiworkDetail.getDeliveryDeadline(), payStatus, HandiworkDetail.getState());
                     StatePayment.setText("Estado de Pago: Pagado");
                 }
 
                 HandiworkDtlModel.UpdateHandiworkDetail(HandiworkDetail);
 
-                HandiworkPaymentManagerModel.AddHandiworkPayment(HandiworkPayment.getId(), StartDate.toString(), Payment);
+                HandiworkPaymentManagerModel.AddHandiworkPayment(HandiworkPayment.getId(), DatePay.getValue().toString(), Payment);
                 ObservableList = setInformationPayments();
                 setItemstable();
             } catch (NumberFormatException e) {
@@ -127,7 +133,7 @@ public class ShowPaymentsItemController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         LocalDate StartDate = LocalDate.now();
-        ActualDate.setText("Fecha Actual: " + StartDate.toString());
+        DatePay.setValue(StartDate);
         NamePayment.setCellValueFactory(new PropertyValueFactory<>("nameItem"));
         DatePayment.setCellValueFactory(new PropertyValueFactory<>("Date"));
         Value.setCellValueFactory(new PropertyValueFactory<>("Amount"));
@@ -138,15 +144,16 @@ public class ShowPaymentsItemController implements Initializable {
 
     private ObservableList setInformationPayments() {
         List<HandiworkPayment> ListPayments = HandiworkPaymentManagerModel.ListPaymentWithHandiworkId(HandiworkPayment.getId());
+        TotalCost.setText("Precio Total: " + HandiworkDetail.getCost() + " $");
+        PaymentDone.setText("Abonado: " + HandiworkPayment.getTotalPayment() + " $");
         if (ListPayments.size() > 0) {
-            TotalCost.setText("Precio Total: " + HandiworkDetail.getCost() + " $");
             HandiworkPayment = (HandiworkPayment) ListPayments.get(0);
             HandiworkPayment.setTotalPayment(HandiworkPaymentManagerModel.TotalPaymentDone(HandiworkPayment.getId()));
             PaymentDone.setText("Abonado: " + HandiworkPayment.getTotalPayment() + " $");
-
             if (HandiworkDetail.getCost() == HandiworkPayment.getTotalPayment()) {
                 TxtFPayment.setDisable(true);
                 StatePayment.setText("Estado de Pago: Pagado");
+                BtnAddPayment.setDisable(true);
             }
 
             return ObservableList = FXCollections.observableList(ListPayments);

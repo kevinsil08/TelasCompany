@@ -16,6 +16,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -26,6 +27,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -34,6 +36,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -65,6 +68,8 @@ public class AddItemController implements Initializable {
     private TextField[] TxtMeasurement;
     private List<Item> ListItems;
     private Item itemSelected;
+    private int idHandiwork;
+    
 
     private HandiworkDetailManager HandiworkDtlModel;
     private ItemManager ItemManagerModel;
@@ -72,11 +77,12 @@ public class AddItemController implements Initializable {
     private HandiworkPaymentManager HandiworkPaymentManagerModel;
     
 
-    public AddItemController(HandiworkDetailManager HandiworkDtlModel, ItemManager ItemManagerModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel) {
+    public AddItemController(HandiworkDetailManager HandiworkDtlModel, ItemManager ItemManagerModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel , int idHandiwork) {
         this.HandiworkDtlModel = HandiworkDtlModel;
         this.ItemManagerModel = ItemManagerModel;
         this.MeasurementManagerModel = MeasurementManagerModel;
         this.HandiworkPaymentManagerModel = HandiworkPaymentManagerModel;
+        this.idHandiwork = idHandiwork;
     }
     
     @FXML
@@ -105,6 +111,11 @@ public class AddItemController implements Initializable {
         LocalDate StartDate = LocalDate.now();
         ValidateInput validateInput = new ValidateInput();
         
+        if(DeliveryDate == null){
+            showError(ErrorTitle , "Debe ingresar una fecha de entrega");
+            return;
+        }
+        
         if (!validateInput.firstDateBeforeSecondDate(StartDate.toString(), DeliveryDate.toString())) {
             showError(ErrorTitle , "La fecha de entrega debe ser mayor a la actual");
             return;
@@ -114,14 +125,21 @@ public class AddItemController implements Initializable {
             showError(ErrorTitle , "El Abono no debe ser mayor al Costo Total");
             return;
         }
-        //Handiwork PrincipalHandiwork = Handiwork
-        int lastId=HandiworkDtlModel.AddHandiworkDetail(itemSelected.getId(), 1, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), "0", "p");
-        HandiworkPaymentManagerModel.AddHandiworkPayment(lastId, StartDate.toString(), Payment);
+        
+        if(showConfirmation(itemSelected.getName())){
+            int lastId=HandiworkDtlModel.AddHandiworkDetail(itemSelected.getId(), idHandiwork, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), "0", "p");
+            if(!TxtFPayment.getText().isEmpty() && Payment>0){
+                HandiworkPaymentManagerModel.AddHandiworkPayment(lastId, StartDate.toString(), Payment);
+            }
+            
         
             for (int i = 0; i < TxtMeasurement.length; i++) {
-                MeasurementManagerModel.AddMeasurementValues(Integer.parseInt(TxtMeasurement[i].getId()), lastId,Double.parseDouble(TxtMeasurement[i].getText()));
+                MeasurementManagerModel.AddMeasurementValues(Integer.parseInt(TxtMeasurement[i].getId()), lastId,TxtMeasurement[i].getText());
             }
         closeStage();
+        }
+        
+        
         
         }catch(NumberFormatException e){
             showError(ErrorTitle , "Solo debe ingresar números en Precio Total y/o Abono");
@@ -132,6 +150,7 @@ public class AddItemController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         
         TxtFTotalCost.setText("0");
+        TxtFPayment.setText("0");
         
         ListItems = ItemManagerModel.ListItems();
 
@@ -172,21 +191,18 @@ public class AddItemController implements Initializable {
     private void onClickItem(int ItemId) {
         removeLabelsTextFields();
 
-        int MAXVALUETOHBOX = 4;
+        int MAXVALUETOHBOX = 3;
         List<Measurement> listMeasurement = MeasurementManagerModel.ListMeasurement(ItemId);
         NameMeasurement = new Label[listMeasurement.size()];
         TxtMeasurement = new TextField[listMeasurement.size()];
         int ITERATOR = 0;
         while (ITERATOR < listMeasurement.size()) {
             NameMeasurement[ITERATOR] = new Label((String) listMeasurement.get(ITERATOR).getName());
-            NameMeasurement[ITERATOR].setPadding(new Insets(0.0, 20.0, 0.0, 20.0));
+            NameMeasurement[ITERATOR].setPadding(new Insets(0.0, 50.0, 0.0, 50.0));
             NameMeasurement[ITERATOR].setFont(new Font("Roboto", 22.0));
             TxtMeasurement[ITERATOR] = new TextField();
             TxtMeasurement[ITERATOR].setPrefSize(78, 26);
             TxtMeasurement[ITERATOR].setId(""+listMeasurement.get(ITERATOR).getId());
-            
-            System.out.println("aaa "+TxtMeasurement[ITERATOR].getId());
-
             
             if (ITERATOR > MAXVALUETOHBOX) {
                 HBoxMeasurement2.getChildren().addAll(NameMeasurement[ITERATOR], TxtMeasurement[ITERATOR]);
@@ -215,5 +231,20 @@ public class AddItemController implements Initializable {
         errorAlert.setHeaderText(title);
         errorAlert.setContentText(error);
         errorAlert.showAndWait();
+    }
+    
+    private boolean showConfirmation(String name) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.setHeaderText(null);
+        alert.setTitle("Confirmación");
+        alert.setContentText("¿Desea agregar el item '"+name+"' ?");
+        Optional<ButtonType> action = alert.showAndWait();
+        boolean OptionChoosed = true;
+        if (action.get() != ButtonType.OK) {
+            OptionChoosed = false;
+        }
+
+        return OptionChoosed;
     }
 }

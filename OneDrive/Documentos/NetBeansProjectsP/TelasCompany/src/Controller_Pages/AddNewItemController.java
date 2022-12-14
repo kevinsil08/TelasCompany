@@ -5,16 +5,23 @@
  */
 package Controller_Pages;
 
+import Model.Item;
 import Model.ItemManager;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -31,6 +38,15 @@ public class AddNewItemController implements Initializable {
     
     @FXML
     private Button BtnIngresar,BtnCancelar;
+    
+    //TableItem
+    @FXML
+    private TableView<Item> TableItem;
+    
+    @FXML
+    private TableColumn nameItemColumn;
+    
+    ObservableList<Item> ObservableList;
     
     private ItemManager ItemManager;
 
@@ -50,7 +66,8 @@ public class AddNewItemController implements Initializable {
             
             if(showConfirmation()){
                 ItemManager.AddItem(NameItem);
-                closeStage();
+                ObservableList = SetInformationItems();
+                setItemstable();
             }
             
             
@@ -72,8 +89,21 @@ public class AddNewItemController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        nameItemColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        ObservableList = SetInformationItems();
+        setItemstable();
+                
     }    
+    
+    private ObservableList SetInformationItems(){
+        List<Item> ListItem = ItemManager.ListItems();
+        return ObservableList = FXCollections.observableList(ListItem);
+    }
+    
+    private void setItemstable() {
+        TableItem.setItems(null);
+        TableItem.setItems(ObservableList);
+    }
     
     private void showError(String title , String error ){
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);

@@ -14,21 +14,21 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" nodeOrientation="LEFT_TO_RIGHT" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_Pages.AddItemController">
+<ScrollPane fitToHeight="true" fitToWidth="true" nodeOrientation="LEFT_TO_RIGHT" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_Pages.AddItemController">
    <content>
-      <VBox prefHeight="733.0" prefWidth="1396.0" style="-fx-alignment: center;">
+      <VBox prefHeight="733.0" prefWidth="1396.0" style="-fx-alignment: start; -fx-background-color: white;">
          <children>
-            <Label text="*Datos Obligatorios" textFill="#c20c0c">
+            <Label styleClass="labelError" stylesheets="@../css/styles.css" text="*Datos Obligatorios" textFill="#c20c0c">
                <font>
                   <Font name="Roboto Black" size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets right="1000.0" top="10.0" />
+                  <Insets left="50.0" right="1000.0" top="10.0" />
                </VBox.margin>
             </Label>
-            <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="1396.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
+            <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="1396.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
                <children>
-                  <Label text="Seleccione el tipo de producto">
+                  <Label styleClass="labels" stylesheets="@../css/styles.css" text="Seleccione el tipo de producto">
                      <font>
                         <Font name="Roboto Black" size="20.0" />
                      </font>
@@ -42,30 +42,48 @@
                         <Font name="Roboto Black" size="18.0" />
                      </font>
                   </Label>
+                  <Label styleClass="labels" stylesheets="@../css/styles.css" text="Fecha de entrega">
+                     <font>
+                        <Font name="Roboto Medium" size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="100.0" right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <DatePicker fx:id="DateDelivery" disable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" prefWidth="175.0">
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                  </DatePicker>
+                  <Label text="*" textFill="#c20c0c">
+                     <font>
+                        <Font name="Roboto Black" size="22.0" />
+                     </font>
+                  </Label>
                </children>
                <VBox.margin>
-                  <Insets bottom="5.0" top="10.0" />
+                  <Insets bottom="5.0" left="50.0" top="10.0" />
                </VBox.margin>
             </HBox>
-            <VBox prefHeight="360.0" prefWidth="1396.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
+            <VBox prefHeight="360.0" prefWidth="1396.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
                <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
+                  <Label styleClass="labels" stylesheets="@../css/styles.css" text="Detalle del Producto">
+                     <font>
+                        <Font name="Roboto Medium" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="50.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label text="Detalle del Producto">
-                           <font>
-                              <Font name="Roboto Medium" size="20.0" />
-                           </font>
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                           <HBox.margin>
-                              <Insets right="20.0" />
-                           </HBox.margin>
-                        </Label>
-                        <TextArea fx:id="TxtAreaDetail" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefColumnCount="5" prefHeight="82.0" prefRowCount="5" prefWidth="894.0">
+                        <TextArea fx:id="TxtAreaDetail" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefColumnCount="5" prefHeight="82.0" prefRowCount="5" prefWidth="1196.0">
                            <font>
                               <Font name="Roboto" size="20.0" />
                            </font>
+                           <HBox.margin>
+                              <Insets left="50.0" top="20.0" />
+                           </HBox.margin>
                         </TextArea>
                         <Label text="*" textFill="#c20c0c">
                            <font>
@@ -73,56 +91,46 @@
                            </font>
                         </Label>
                      </children>
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
                   </HBox>
-                  <HBox fx:id="HBoxMeasurement" prefHeight="81.0" prefWidth="1396.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
+                  <HBox fx:id="HBoxMeasurement" prefHeight="81.0" prefWidth="1396.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
                      <VBox.margin>
                         <Insets bottom="10.0" top="20.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox fx:id="HBoxMeasurement2" prefHeight="72.0" prefWidth="1396.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
+                  <HBox fx:id="HBoxMeasurement2" prefHeight="72.0" prefWidth="1396.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox prefHeight="103.0" prefWidth="1396.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
-                     <children>
-                        <Label text="Detalles Adicionales">
-                           <font>
-                              <Font name="Roboto Medium" size="19.0" />
-                           </font>
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                           <HBox.margin>
-                              <Insets right="20.0" />
-                           </HBox.margin>
-                        </Label>
-                        <TextArea fx:id="TxtAreaAddDetail" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefColumnCount="5" prefHeight="62.0" prefRowCount="5" prefWidth="894.0">
-                           <font>
-                              <Font name="Roboto" size="20.0" />
-                           </font>
-                        </TextArea>
-                     </children>
+                  <Label styleClass="labels" stylesheets="@../css/styles.css" text="Detalles Adicionales">
+                     <font>
+                        <Font name="Roboto Medium" size="19.0" />
+                     </font>
                      <VBox.margin>
-                        <Insets bottom="5.0" top="20.0" />
+                        <Insets left="50.0" />
                      </VBox.margin>
-                  </HBox>
-                  <HBox prefHeight="78.0" prefWidth="1396.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
+                  </Label>
+                  <TextArea fx:id="TxtAreaAddDetail" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefColumnCount="5" prefHeight="62.0" prefRowCount="5" prefWidth="1196.0">
+                     <font>
+                        <Font name="Roboto" size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="50.0" top="20.0" />
+                     </VBox.margin>
+                  </TextArea>
+                  <HBox prefHeight="78.0" prefWidth="1396.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
                      <children>
-                        <Label text="Precio Total">
+                        <Label styleClass="labels" stylesheets="@../css/styles.css" text="Precio Total">
                            <font>
                               <Font name="Roboto Medium" size="18.0" />
                            </font>
                            <HBox.margin>
-                              <Insets right="20.0" />
+                              <Insets left="50.0" right="20.0" top="20.0" />
                            </HBox.margin>
                         </Label>
                         <TextField fx:id="TxtFTotalCost" disable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0">
                            <HBox.margin>
-                              <Insets right="15.0" />
+                              <Insets right="15.0" top="20.0" />
                            </HBox.margin>
                            <font>
                               <Font name="Roboto" size="16.0" />
@@ -132,18 +140,21 @@
                            <font>
                               <Font name="Roboto Black" size="22.0" />
                            </font>
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
                         </Label>
-                        <Label text="Abono">
+                        <Label styleClass="labels" stylesheets="@../css/styles.css" text="Abono">
                            <font>
                               <Font name="Roboto Medium" size="18.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="35.0" right="20.0" />
+                              <Insets left="35.0" right="20.0" top="20.0" />
                            </HBox.margin>
                         </Label>
                         <TextField fx:id="TxtFPayment" disable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0">
                            <HBox.margin>
-                              <Insets right="15.0" />
+                              <Insets right="15.0" top="20.0" />
                            </HBox.margin>
                            <font>
                               <Font name="Roboto" size="16.0" />
@@ -153,51 +164,18 @@
                            <font>
                               <Font name="Roboto Black" size="22.0" />
                            </font>
-                        </Label>
-                        <Label text="Fecha de entrega">
-                           <font>
-                              <Font name="Roboto Medium" size="18.0" />
-                           </font>
                            <HBox.margin>
-                              <Insets left="55.0" right="20.0" />
+                              <Insets top="20.0" />
                            </HBox.margin>
-                        </Label>
-                        <DatePicker fx:id="DateDelivery" disable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" prefWidth="175.0">
-                           <HBox.margin>
-                              <Insets right="15.0" />
-                           </HBox.margin>
-                        </DatePicker>
-                        <Label text="*" textFill="#c20c0c">
-                           <font>
-                              <Font name="Roboto Black" size="22.0" />
-                           </font>
                         </Label>
                      </children>
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: center;">
                      <children>
-                        <Button fx:id="BtnCancel" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#closeDialog" prefHeight="71.0" prefWidth="174.0" text="Cancelar">
-                           <font>
-                              <Font name="Roboto Medium" size="16.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets right="550.0" />
-                           </HBox.margin>
-                           <graphic>
-                              <ImageView fitHeight="60.0" fitWidth="60.0" translateX="1.0">
-                                 <image>
-                                    <Image url="@Images/cancel_icon.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <Button fx:id="BtnAddItem" alignment="TOP_RIGHT" contentDisplay="RIGHT" disable="true" mnemonicParsing="false" onMouseClicked="#onAddHandiworkDetail" text="Ingresar Item">
+                        <Button fx:id="BtnAddItem" alignment="TOP_RIGHT" contentDisplay="RIGHT" disable="true" mnemonicParsing="false" onMouseClicked="#onAddHandiworkDetail" styleClass="roundButton" stylesheets="@../css/styles.css" text="Ingresar Item">
                            <font>
                               <Font name="Roboto Medium" size="16.0" />
                            </font>
@@ -211,6 +189,21 @@
                            <HBox.margin>
                               <Insets right="300.0" />
                            </HBox.margin>
+                        </Button>
+                        <Button fx:id="BtnCancel" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#closeDialog" prefHeight="71.0" prefWidth="174.0" styleClass="roundButton" stylesheets="@../css/styles.css" text="Cancelar">
+                           <font>
+                              <Font name="Roboto Medium" size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="550.0" />
+                           </HBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="60.0" fitWidth="60.0" translateX="1.0">
+                                 <image>
+                                    <Image url="@Images/cancel_icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Button>
                      </children>
                   </HBox>

@@ -5,12 +5,13 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox prefHeight="613.0" prefWidth="1148.0" style="-fx-alignment: center;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_Pages.AssignMeasurementToItemController">
+<VBox prefHeight="613.0" prefWidth="1148.0" style="-fx-alignment: center;" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_Pages.AssignMeasurementToItemController">
    <children>
       <VBox prefHeight="70.0" prefWidth="674.0" style="-fx-alignment: center;">
          <children>
@@ -26,12 +27,12 @@
             </Label>
          </children>
       </VBox>
-      <HBox prefHeight="73.0" prefWidth="1148.0" style="-fx-alignment: center;">
+      <HBox prefHeight="73.0" prefWidth="1148.0" style="-fx-alignment: start;">
          <padding>
             <Insets left="20.0" />
          </padding>
          <children>
-            <Label text="Escoga un item ">
+            <Label styleClass="labels" stylesheets="@../css/styles.css" text="Escoga un item ">
                <font>
                   <Font name="Roboto Medium" size="22.0" />
                </font>
@@ -46,12 +47,12 @@
             </ComboBox>
          </children>
       </HBox>
-      <HBox prefHeight="73.0" prefWidth="1148.0" style="-fx-alignment: center;">
+      <HBox prefHeight="73.0" prefWidth="1148.0" style="-fx-alignment: start;">
          <padding>
             <Insets left="20.0" />
          </padding>
          <children>
-            <Label text="Escoga una medida ">
+            <Label styleClass="labels" stylesheets="@../css/styles.css" text="Escoga una medida ">
                <font>
                   <Font name="Roboto Medium" size="22.0" />
                </font>
@@ -66,7 +67,41 @@
             </ComboBox>
          </children>
       </HBox>
-      <HBox prefHeight="288.0" prefWidth="1148.0" style="-fx-alignment: center;">
+      <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: start;">
+         <children>
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#InsertMeasurementOfAItem" styleClass="roundButton" stylesheets="@../css/styles.css" text="Ingresar">
+               <font>
+                  <Font name="Roboto Medium" size="22.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" top="20.0" />
+               </HBox.margin>
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/save_icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="BtnCancel" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#closeDialog" styleClass="roundButton" stylesheets="@../css/styles.css" text="Cancelar">
+               <font>
+                  <Font name="Roboto Medium" size="22.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="100.0" right="200.0" top="20.0" />
+               </HBox.margin>
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/cancel_icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
+      <HBox prefHeight="288.0" prefWidth="1148.0" style="-fx-alignment: start;" stylesheets="@../css/styles.css">
          <padding>
             <Insets left="20.0" />
          </padding>
@@ -79,23 +114,6 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-         </children>
-      </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: center;">
-         <children>
-            <Button fx:id="BtnCancel" mnemonicParsing="false" onMouseClicked="#closeDialog" text="Cancelar">
-               <font>
-                  <Font name="Roboto Medium" size="22.0" />
-               </font>
-               <HBox.margin>
-                  <Insets right="200.0" />
-               </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" onMouseClicked="#InsertMeasurementOfAItem" text="Ingresar">
-               <font>
-                  <Font name="Roboto Medium" size="22.0" />
-               </font>
-            </Button>
          </children>
       </HBox>
    </children>

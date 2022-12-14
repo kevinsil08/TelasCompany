@@ -17,7 +17,7 @@ public interface HandiworkDetailDAO extends DAO{
     
     public int InsertHandiworkDetail(HandiworkDetail HandiworkDetail);
     public boolean UpdateHandiworkDetail(HandiworkDetail HandiworkDetail);
-    public boolean DeleteHandiworkDetail(HandiworkDetail HandiworkDetail);
+    public boolean DeleteHandiworkDetail(int HandiworkId, int HandiworkDetailId );
     
     public List<HandiworkDetail> findProjectByProperty(HandiworkDetailSearchType searchType, Object value);
     public List<HandiworkDetail> findAll();

@@ -41,8 +41,8 @@ public class HandiworkDetailManager {
         HandiworkDetailDAO.UpdateHandiworkDetail(HandiworkDetail);
     }
     
-    public void DeleteHandiworkDetail(HandiworkDetail HandiworkDetail){
-        HandiworkDetailDAO.DeleteHandiworkDetail(HandiworkDetail);
+    public void DeleteHandiworkDetail(int HandiworkId,int HandiworkDetailId){
+        HandiworkDetailDAO.DeleteHandiworkDetail(HandiworkId,HandiworkDetailId);
     }
     
     public List<HandiworkDetail> searchByProperty(HandiworkDetailSearchType searchType , String value){
