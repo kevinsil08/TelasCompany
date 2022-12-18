@@ -273,7 +273,7 @@ public class ModifyEliminateItemAddedController implements Initializable {
     }
 
     private void addMultySubItemsFields(int itemID) {
-
+        String cssPath = "/css/styles.css";
         Label LblPlanchadoDescr = new Label("Descripción Planchado");
         LblPlanchadoDescr.setPadding(new Insets(0, 20, 0, 20));
         TextField TxfPanchadoDescr = new TextField();
@@ -283,6 +283,8 @@ public class ModifyEliminateItemAddedController implements Initializable {
         TextField TxfPanchadoCost = new TextField();
         TxfPanchadoCost.setPadding(new Insets(0, 20, 0, 20));
         Button BtnAddPlanchado = new Button("+");
+        BtnAddPlanchado.getStylesheets().add(cssPath);
+        BtnAddPlanchado.getStyleClass().add("modifyButton");
         BtnAddPlanchado.setPadding(new Insets(0, 20, 0, 10));
         BtnAddPlanchado.maxWidth(10);
         HBox HboxInputPlanchado = new HBox();
@@ -318,6 +320,8 @@ public class ModifyEliminateItemAddedController implements Initializable {
                             setGraphic(null);
                             setText(null);
                         } else {
+                            btn.getStylesheets().add(cssPath);
+                            btn.getStyleClass().add("cancelButton");
                             btn.setOnAction(event -> {
                                 Planchado planchado = getTableView().getItems().get(getIndex());
                                 obsListPlanchados.remove(planchado);

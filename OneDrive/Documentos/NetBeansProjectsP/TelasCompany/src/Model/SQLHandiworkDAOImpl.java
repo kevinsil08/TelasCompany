@@ -107,7 +107,7 @@ public class SQLHandiworkDAOImpl implements HandiworkDAO {
 
     @Override
     public List<Handiwork> findAll() {
-        List<Handiwork> listProjects = new ArrayList<>();
+        List<Handiwork> handiworkList = new ArrayList<>();
         PreparedStatement ps;
         ResultSet rs;
         try {
@@ -115,19 +115,18 @@ public class SQLHandiworkDAOImpl implements HandiworkDAO {
             rs = callableStatement.executeQuery();
             while (rs.next()) {
                 Handiwork handiwork = new Handiwork();
+                handiwork.setCiCustomer(rs.getString("cus_ced"));
+                handiwork.setNamesCustomer(rs.getString("cus_names") + " " + rs.getString("cus_surnames"));
                 handiwork.setHandiWorkID(rs.getInt("han_id"));
-                handiwork.setCustomerID(rs.getInt("cus_id"));
-                handiwork.setEntryDate(rs.getString("han_entry_date"));
-                handiwork.setTotalCost(rs.getDouble("han_total_cost"));
-                handiwork.setNumberGarments(rs.getInt("han_num_grmt"));
-                handiwork.setState(rs.getBoolean("han_state"));
+                handiwork.setPayStatus(rs.getString("han_pay_status"));
                 String stsString = rs.getBoolean("han_state") ? "Finalizado" : "Pendiente" ;
                 handiwork.setStateString(stsString);
+                handiwork.setTotalCost(rs.getDouble("han_total_cost"));
                 handiwork.setLeftPayment(rs.getDouble("han_left_payment"));
-                handiwork.setPayStatus(rs.getString("han_pay_status"));
-                listProjects.add(handiwork);
+                handiwork.setEntryDate(rs.getString("han_entry_date"));
+                handiworkList.add(handiwork);
             }
-            return listProjects;
+            return handiworkList;
 
         } catch (SQLException e) {
             System.err.println(e);

@@ -85,7 +85,7 @@ public class AddCustomerController implements Initializable {
         String direction = txfDirection.getText();
         String email = txfEmail.getText();
         if (validateFields(names, surnames, ciRuc, direction, email)) {
-            int idInserted = modelCustomer.addCustomer(names, surnames, ciRuc, direction, email);
+            int idInserted = modelCustomer.addCustomer(names.toUpperCase(), surnames.toUpperCase(), ciRuc, direction, email);
             if (idInserted != -1) {
                 infoDial("Información", "Registro nuevo cliente", "Se guaradó cliente exitosamente");
             } else {
@@ -157,13 +157,13 @@ public class AddCustomerController implements Initializable {
             LblErrorCed.setText("Cédula/RUC actualmente registrados");
             verify = false;
         }
-        validateInput.setText(names);
-        if (!validateInput.names()) {
+        
+        if (names.equals("")) {
             LblErrorNombres.setText("Ingrese dos nombres / Nombreuno Nombredos");
             verify = false;
         }
         validateInput.setText(surnames);
-        if (!validateInput.names()) {
+        if (surnames.equals("")) {
             LblErrorSurn.setText("Ingrese dos apellidos/ Apellidouno Apellidodos");
             verify = false;
         }

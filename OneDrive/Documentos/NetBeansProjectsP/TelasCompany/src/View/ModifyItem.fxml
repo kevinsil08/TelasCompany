@@ -32,7 +32,7 @@
             <Insets left="20.0" />
          </padding>
          <children>
-            <Label styleClass="labels" stylesheets="@../css/styles.css" text="Escoja el item que será modificado">
+            <Label styleClass="labelsBlack" stylesheets="@../css/styles.css" text="Escoja el item que será modificado">
                <font>
                   <Font name="Roboto Medium" size="22.0" />
                </font>
@@ -48,16 +48,6 @@
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: start;">
-         <children>
-            <Label fx:id="NameItem" styleClass="labels" stylesheets="@../css/styles.css" text="Nombre del Item">
-               <font>
-                  <Font name="Roboto Medium" size="22.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="20.0" top="20.0" />
-               </HBox.margin>
-            </Label>
-         </children>
          <VBox.margin>
             <Insets top="20.0" />
          </VBox.margin>
@@ -67,7 +57,7 @@
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: start;">
          <children>
-            <Label styleClass="labels" stylesheets="@../css/styles.css" text="Nuevo nombre del Item">
+            <Label styleClass="labelsBlack" stylesheets="@../css/styles.css" text="Nuevo nombre del Item">
                <font>
                   <Font name="Roboto Medium" size="22.0" />
                </font>
@@ -91,6 +81,14 @@
                   <Insets top="20.0" />
                </HBox.margin>
             </Label>
+            <Label fx:id="NameItem" styleClass="labelsBlack" stylesheets="@../css/styles.css" text="Nombre del Item">
+               <font>
+                  <Font name="Roboto Medium" size="22.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" top="20.0" />
+               </HBox.margin>
+            </Label>
          </children>
          <padding>
             <Insets left="20.0" />
@@ -98,7 +96,7 @@
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: start;">
          <children>
-            <Button contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#UpdateItem" styleClass="roundButton" stylesheets="@../css/styles.css" text="Ingresar">
+            <Button contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#UpdateItem" styleClass="saveButton" stylesheets="@../css/styles.css" text="Ingresar">
                <font>
                   <Font name="Roboto Medium" size="22.0" />
                </font>
@@ -113,7 +111,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="BtnCancel" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#closeDialog" styleClass="roundButton" stylesheets="@../css/styles.css" text="Cancelar">
+            <Button fx:id="BtnCancel" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#closeDialog" styleClass="cancelButton" stylesheets="@../css/styles.css" text="Cancelar">
                <font>
                   <Font name="Roboto Medium" size="22.0" />
                </font>

@@ -19,34 +19,39 @@ import Model.ItemManager;
 import Model.MeasurementManager;
 import Model.SQLItemDAOImpl;
 import Model.SQLMeasurementDAOImpl;
-import java.awt.event.ActionEvent;
+
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
-
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -62,17 +67,22 @@ public class PrincipalHomeController implements Initializable {
 
 
     private double StageWidth, StageHeight;
-
+    
+    @FXML
+    private MenuBar menuBarHandiworks ;
+    
     @FXML
     private TableView<Handiwork> TbvHandiworks;
 
     private CustomerManager modelCustomer;
     private HandiworkManager modelHandiwork;
+    private boolean showAllHandiworks;
 
-    public PrincipalHomeController(CustomerManager modelCustomer, HandiworkManager modelHandiwork, Stage stage) {
+    public PrincipalHomeController(CustomerManager modelCustomer, HandiworkManager modelHandiwork, Stage stage , boolean showAllHandiworks) {
         this.modelCustomer = modelCustomer;
         this.modelHandiwork = modelHandiwork;
         this.stage = stage;
+        this.showAllHandiworks = showAllHandiworks;
         stage.setOnCloseRequest(e -> {
             modelCustomer.close();
             modelHandiwork.close();
@@ -84,7 +94,7 @@ public class PrincipalHomeController implements Initializable {
     private Button BtnAddCustomer, BtnModifyCustomer, BtnDeleteCustomer;
 
     private Tab AddCustomerTab, ModifyCustomerTab, DeleteCustomerTab;
-
+    
     @FXML
     private Button AddHandiwork;
     @FXML
@@ -92,25 +102,32 @@ public class PrincipalHomeController implements Initializable {
     //Arreglos
     @FXML
     private Button BtnArreglos;
-
+    @FXML
     private Tab ArreglosTab;
-
+    @FXML
+    private Button btnListAllHandiworks;
     @FXML
     private TabPane tabPane;
+    @FXML
+    private Label lblPrincipalTitle;
 
     @FXML
     private TableColumn<Handiwork, String> TcCiRuc, TcHanState, TcNames, TcPaymentStatus;
-
+    @FXML
+    private HBox hboxButton;
     @FXML
     private TableColumn<Handiwork, String> TcHanDate;
 
     @FXML
     private TableColumn<Handiwork, Double> TcPaymentLeft, TcTotalHanCost;
-
     @FXML
     private MenuItem MitAddCustomer;
     @FXML
     private MenuItem MitModifyCustomer;
+    @FXML
+    private HBox hboxFiltro;
+    
+    
 
     private Tab elaboracionTab, obrasPendientesTab;
 
@@ -196,6 +213,7 @@ public class PrincipalHomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         refreshTable();
+        verifyModal();
         /*int NUMBERTAB = 0;
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Paths[NUMBERTAB]));
         loader.setControllerFactory(t -> buildTableOrdersController());
@@ -340,7 +358,7 @@ public class PrincipalHomeController implements Initializable {
         TcHanState.setCellValueFactory(new PropertyValueFactory<>("stateString"));
         TcTotalHanCost.setCellValueFactory(new PropertyValueFactory<>("totalCost"));
         TcPaymentLeft.setCellValueFactory(new PropertyValueFactory<>("leftPayment"));
-        ObservableList<Handiwork> obListHandiwork = FXCollections.observableList(modelHandiwork.getPendingHandworks());
+        ObservableList<Handiwork> obListHandiwork = showAllHandiworks ?  FXCollections.observableList(modelHandiwork.getAllHandiworks()) : FXCollections.observableList(modelHandiwork.getPendingHandworks()) ;
         TbvHandiworks.setItems(obListHandiwork);
         filterTable(obListHandiwork);
     }
@@ -392,12 +410,63 @@ public class PrincipalHomeController implements Initializable {
             Stage stageDialog = new Stage();
             stageDialog.initModality(Modality.APPLICATION_MODAL);
             stageDialog.setScene(new Scene(loader.load()));
-            stageDialog.setTitle("Agregar cliente");
+            stageDialog.setTitle("Obra");
             stageDialog.showAndWait();
             refreshTable();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void verifyModal() {
+        if (showAllHandiworks) {
+            menuBarHandiworks.setVisible(false);
+            hboxButton.getChildren().clear();
+            insertListButtons();
+        } 
+    }
+    
+    @FXML
+    void showAllHandiworks(ActionEvent event) throws IOException {
+        showPrincipalStage(true);
+    }
+    
+    private PrincipalHomeController buildController( Stage stage , boolean modalWindow) {
+        return new PrincipalHomeController(  modelCustomer  , modelHandiwork, stage ,  modalWindow);
+    }
+
+    private void insertListButtons() {
+        lblPrincipalTitle.setText("Listado de todas las Obras");
+        Button BtnBack = new Button("Regresar");
+        BtnBack.getStylesheets().add("/css/styles.css");
+        BtnBack.getStyleClass().add("sale");
+        BtnBack.getStyleClass().add("cancelButton");
+        BtnBack.setPadding(new Insets(0, 20, 0, 10));
+        BtnBack.setPrefSize(240, 60);
+        BtnBack.maxWidth(60);
+//        DatePicker dpInitial = new DatePicker();
+//        dpInitial.setPromptText("Fecha inicial");
+        hboxFiltro.setSpacing(10);
+//        hboxFiltro.getChildren().add(dpInitial);
+        hboxButton.getChildren().addAll(BtnBack);
+        
+        BtnBack.setOnAction((ActionEvent event) -> {
+            try {
+                showPrincipalStage(false);
+            } catch (IOException ex) {
+                System.out.println(" Error carga de vista : PrincipalHome.fxml");
+                Logger.getLogger(PrincipalHomeController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+
+    }
+
+    private void showPrincipalStage(boolean modalWindow) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/PrincipalHome.fxml"));
+        stage.setTitle("Telas Company");
+        loader.setControllerFactory(t -> buildController(stage,modalWindow ));
+        stage.setScene(new Scene(loader.load()));
+        stage.show();
     }
 
 }

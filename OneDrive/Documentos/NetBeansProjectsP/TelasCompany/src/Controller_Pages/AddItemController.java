@@ -31,6 +31,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -115,63 +116,61 @@ public class AddItemController implements Initializable {
         String AddDetail = (TxtAreaAddDetail.getText().isEmpty())
                 ? null : TxtAreaAddDetail.getText();
 
-        try{
-            
-        double Payment = Double.parseDouble(TxtFPayment.getText());
-        double TotalCost = Double.parseDouble(TxtFTotalCost.getText());
-        LocalDate DeliveryDate = DateDelivery.getValue();
-        LocalDate StartDate = LocalDate.now();
-        ValidateInput validateInput = new ValidateInput();
-        
-        if(DeliveryDate == null){
-            showError(ErrorTitle , "Debe ingresar una fecha de entrega");
-            return;
-        }
-        
-        if (!validateInput.firstDateBeforeSecondDate(StartDate.toString(), DeliveryDate.toString())) {
-            showError(ErrorTitle , "La fecha de entrega debe ser mayor a la actual");
-            return;
-        }
-        
-        if(Payment>TotalCost){
-            showError(ErrorTitle , "El Abono no debe ser mayor al Costo Total");
-            return;
-        }
-        
-        if(showConfirmation(itemSelected.getName())){
-            
-            int lastId = 0;
-            if (itemSelected.getId() == 4) {
-                if (obsListPlanchados.isEmpty()) {
-                    showError("Error de registro", "Ingrese planchados");
-                    return;
+        try {
+
+            double Payment = Double.parseDouble(TxtFPayment.getText());
+            double TotalCost = Double.parseDouble(TxtFTotalCost.getText());
+            LocalDate DeliveryDate = DateDelivery.getValue();
+            LocalDate StartDate = LocalDate.now();
+            ValidateInput validateInput = new ValidateInput();
+
+            if (DeliveryDate == null) {
+                showError(ErrorTitle, "Debe ingresar una fecha de entrega");
+                return;
+            }
+
+            if (!validateInput.firstDateBeforeSecondDate(StartDate.toString(), DeliveryDate.toString())) {
+                showError(ErrorTitle, "La fecha de entrega debe ser mayor a la actual");
+                return;
+            }
+
+            if (Payment > TotalCost) {
+                showError(ErrorTitle, "El Abono no debe ser mayor al Costo Total");
+                return;
+            }
+
+            if (showConfirmation(itemSelected.getName())) {
+
+                int lastId = 0;
+                if (itemSelected.getId() == 4) {
+                    if (obsListPlanchados.isEmpty()) {
+                        showError("Error de registro", "Ingrese planchados");
+                        return;
+                    }
+                    // add handiworkDetail to db
+                    lastId = HandiworkDtlModel.AddHandiworkDetail(itemSelected.getId(), idHandiwork, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), "0", "p", obsListPlanchados.size());
+                    //add each planchado asosiated to handiworkDetail to db
+                    for (Planchado planchado : obsListPlanchados) {
+                        planchado.setHanDetailID(lastId);
+                        modelPlanchado.insertPlanchadoToHanDetail(planchado);
+                    }
+
+                } else {
+                    lastId = HandiworkDtlModel.AddHandiworkDetail(itemSelected.getId(), idHandiwork, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), "0", "p", 1);
+
+                    for (int i = 0; i < TxtMeasurement.length; i++) {
+                        MeasurementManagerModel.AddMeasurementValues(Integer.parseInt(TxtMeasurement[i].getId()), lastId, TxtMeasurement[i].getText());
+                    }
+
                 }
-                // add handiworkDetail to db
-                lastId = HandiworkDtlModel.AddHandiworkDetail(itemSelected.getId(), idHandiwork, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), "0", "p", obsListPlanchados.size());
-                //add each planchado asosiated to handiworkDetail to db
-                for (Planchado planchado : obsListPlanchados) {
-                    planchado.setHanDetailID(lastId);
-                    modelPlanchado.insertPlanchadoToHanDetail(planchado);
+                if (!TxtFPayment.getText().isEmpty() && Payment > 0) {
+                    HandiworkPaymentManagerModel.AddHandiworkPayment(lastId, StartDate.toString(), Payment);
                 }
-               
-            }else{
-             lastId=HandiworkDtlModel.AddHandiworkDetail(itemSelected.getId(), idHandiwork, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), "0", "p",1);
-            
-            for (int i = 0; i < TxtMeasurement.length; i++) {
-                MeasurementManagerModel.AddMeasurementValues(Integer.parseInt(TxtMeasurement[i].getId()), lastId,TxtMeasurement[i].getText());
+                closeStage();
             }
-            
-            }
-            if(!TxtFPayment.getText().isEmpty() && Payment>0){
-                HandiworkPaymentManagerModel.AddHandiworkPayment(lastId, StartDate.toString(), Payment);
-            }
-        closeStage();
-        }
-        
-        
-        
-        }catch(NumberFormatException e){
-            showError(ErrorTitle , "Solo debe ingresar números en Precio Total y/o Abono");
+
+        } catch (NumberFormatException e) {
+            showError(ErrorTitle, "Solo debe ingresar números en Precio Total y/o Abono");
 
         }
     }
@@ -182,7 +181,7 @@ public class AddItemController implements Initializable {
         TxtFTotalCost.setText("0");
         TxtFPayment.setText("0");
         ListItems = ItemManagerModel.ListItems();
-
+        
         ArrayList<String> ItemsNames = new ArrayList(ListItems.size());
         for (int i = 0; i < ListItems.size(); i++) {
             Item item = (Item) ListItems.get(i);
@@ -272,35 +271,58 @@ public class AddItemController implements Initializable {
         errorAlert.showAndWait();
     }
 
-
     private void addMultySubItemsFields(int itemID) {
-
+        String cssPath = "/css/styles.css";
         Label LblPlanchadoDescr = new Label("Descripción Planchado");
+        LblPlanchadoDescr.getStylesheets().add(cssPath);
+        LblPlanchadoDescr.getStyleClass().add("fieldTitle");
         LblPlanchadoDescr.setPadding(new Insets(0, 20, 0, 20));
         TextField TxfPanchadoDescr = new TextField();
         TxfPanchadoDescr.setPadding(new Insets(0, 20, 0, 20));
+        TxfPanchadoDescr.getStylesheets().add(cssPath);
+        TxfPanchadoDescr.getStyleClass().add("fieldForm");
         Label LblPlanchadoCost = new Label("Costo");
+        LblPlanchadoCost.getStylesheets().add(cssPath);
+        LblPlanchadoCost.getStyleClass().add("fieldTitle");
         LblPlanchadoCost.setPadding(new Insets(0, 20, 0, 20));
         TextField TxfPanchadoCost = new TextField();
         TxfPanchadoCost.setPadding(new Insets(0, 20, 0, 20));
+        TxfPanchadoCost.getStylesheets().add(cssPath);
+        TxfPanchadoCost.getStyleClass().add("fieldForm");
         Button BtnAddPlanchado = new Button("+");
         BtnAddPlanchado.setPadding(new Insets(0, 20, 0, 10));
         BtnAddPlanchado.maxWidth(10);
         HBox HboxInputPlanchado = new HBox();
         HboxInputPlanchado.getChildren().addAll(LblPlanchadoDescr, TxfPanchadoDescr, LblPlanchadoCost, TxfPanchadoCost, BtnAddPlanchado);
         HBoxMeasurement.getChildren().addAll(HboxInputPlanchado);
+        HBoxMeasurement.getStylesheets().add(cssPath);
+        HBoxMeasurement.setAlignment(Pos.CENTER);
+        HBoxMeasurement.getStyleClass().add("radiusBorderPanelOption");
         // table to store cutomer input planchado 
         TableView<Planchado> TblPlanchado = new TableView<Planchado>();
+        TblPlanchado.getStylesheets().add(cssPath);
+        TblPlanchado.getStyleClass().add("table-view");
+        TblPlanchado.setMinWidth(600);
+        
         TableColumn descCol = new TableColumn("Descripción");
+        descCol.setPrefWidth(400);
+        descCol.setMinWidth(400);
         TableColumn costCol = new TableColumn("Costo");
         descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        descCol.setPrefWidth(100);
+        descCol.setMinWidth(100);
+
         costCol.setCellValueFactory(new PropertyValueFactory<>("cost"));
         // lista de planchados para colocar en tableView
         List<Planchado> listPlanchados = new ArrayList<>();
         obsListPlanchados = FXCollections.observableList(listPlanchados);
+        BtnAddPlanchado.getStylesheets().add(cssPath);
+        BtnAddPlanchado.getStyleClass().add("modifyButton");
 
         // Columna con el boton de quitar planchados de la tabla
-    TableColumn actionCol = new TableColumn("Eliminar");
+        TableColumn actionCol = new TableColumn("Eliminar");
+        actionCol.setPrefWidth(100);
+        actionCol.setMinWidth(100);
         actionCol.setCellValueFactory(new PropertyValueFactory<>("Delete"));
 
         Callback<TableColumn<Planchado, String>, TableCell<Planchado, String>> cellFactory
@@ -310,7 +332,7 @@ public class AddItemController implements Initializable {
             public TableCell call(final TableColumn<Planchado, String> param) {
                 final TableCell<Planchado, String> cell = new TableCell<Planchado, String>() {
 
-                    final Button btn = new Button("Eliminar");
+                    final Button btn = new Button("-");
 
                     @Override
                     public void updateItem(String item, boolean empty) {
@@ -319,6 +341,8 @@ public class AddItemController implements Initializable {
                             setGraphic(null);
                             setText(null);
                         } else {
+                            btn.getStylesheets().add(cssPath);
+                            btn.getStyleClass().add("cancelButton");
                             btn.setOnAction(event -> {
                                 Planchado planchado = getTableView().getItems().get(getIndex());
                                 obsListPlanchados.remove(planchado);
@@ -340,6 +364,8 @@ public class AddItemController implements Initializable {
         TblPlanchado.setMaxSize(800, 300);
         TblPlanchado.setMinSize(600, 250);
         HBoxMeasurement2.getChildren().addAll(TblPlanchado);
+        HBoxMeasurement2.getStylesheets().add(cssPath);
+        HBoxMeasurement2.setAlignment(Pos.CENTER);
         Planchado planchadoSeleccion = new Planchado();
         planchadoSeleccion.setPlanchadoID(-1);
         autoCompleteSearch(TxfPanchadoDescr, TxfPanchadoCost, planchadoSeleccion);
@@ -438,14 +464,12 @@ public class AddItemController implements Initializable {
         obsListPlanchados.clear();
     }
 
-
-    
     private boolean showConfirmation(String name) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initModality(Modality.APPLICATION_MODAL);
         alert.setHeaderText(null);
         alert.setTitle("Confirmación");
-        alert.setContentText("¿Desea agregar el item '"+name+"' ?");
+        alert.setContentText("¿Desea agregar el item '" + name + "' ?");
         Optional<ButtonType> action = alert.showAndWait();
         boolean OptionChoosed = true;
         if (action.get() != ButtonType.OK) {

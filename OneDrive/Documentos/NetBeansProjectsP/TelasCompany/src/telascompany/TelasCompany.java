@@ -44,7 +44,7 @@ public class TelasCompany extends Application {
     }
 
     private PrincipalHomeController buildController( Stage stage) {
-        return new PrincipalHomeController(  buildModelCustomer()  , buildModelHandiwork(), stage);
+        return new PrincipalHomeController(  buildModelCustomer()  , buildModelHandiwork(), stage ,  false);
     }
     
     

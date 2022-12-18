@@ -42,7 +42,7 @@
                         <Font name="Roboto Black" size="18.0" />
                      </font>
                   </Label>
-                  <Label styleClass="labels" stylesheets="@../css/styles.css" text="Fecha de entrega">
+                  <Label styleClass="labelsBlack" stylesheets="@../css/styles.css" text="Fecha de entrega">
                      <font>
                         <Font name="Roboto Medium" size="18.0" />
                      </font>
@@ -122,7 +122,7 @@
                   </TextArea>
                   <HBox prefHeight="78.0" prefWidth="1396.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
                      <children>
-                        <Label styleClass="labels" stylesheets="@../css/styles.css" text="Precio Total">
+                        <Label styleClass="labelsBlack" stylesheets="@../css/styles.css" text="Precio Total">
                            <font>
                               <Font name="Roboto Medium" size="18.0" />
                            </font>
@@ -146,7 +146,7 @@
                               <Insets top="20.0" />
                            </HBox.margin>
                         </Label>
-                        <Label styleClass="labels" stylesheets="@../css/styles.css" text="Abono">
+                        <Label styleClass="labelsBlack" stylesheets="@../css/styles.css" text="Abono">
                            <font>
                               <Font name="Roboto Medium" size="18.0" />
                            </font>
@@ -177,7 +177,7 @@
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: center;">
                      <children>
-                        <Button fx:id="BtnAddItem" alignment="TOP_RIGHT" contentDisplay="RIGHT" disable="true" mnemonicParsing="false" onMouseClicked="#onAddHandiworkDetail" styleClass="roundButton" stylesheets="@../css/styles.css" text="Ingresar Item">
+                        <Button fx:id="BtnAddItem" alignment="TOP_RIGHT" contentDisplay="RIGHT" disable="true" mnemonicParsing="false" onMouseClicked="#onAddHandiworkDetail" styleClass="saveButton" stylesheets="@../css/styles.css" text="Ingresar Item">
                            <font>
                               <Font name="Roboto Medium" size="16.0" />
                            </font>
@@ -192,7 +192,7 @@
                               <Insets right="300.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="BtnCancel" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#closeDialog" prefHeight="71.0" prefWidth="174.0" styleClass="roundButton" stylesheets="@../css/styles.css" text="Cancelar">
+                        <Button fx:id="BtnCancel" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#closeDialog" prefHeight="82.0" prefWidth="235.0" styleClass="cancelButton" stylesheets="@../css/styles.css" text="Cancelar">
                            <font>
                               <Font name="Roboto Medium" size="16.0" />
                            </font>
