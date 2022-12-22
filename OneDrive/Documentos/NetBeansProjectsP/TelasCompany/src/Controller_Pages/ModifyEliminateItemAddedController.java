@@ -28,6 +28,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -275,27 +276,58 @@ public class ModifyEliminateItemAddedController implements Initializable {
     private void addMultySubItemsFields(int itemID) {
         String cssPath = "/css/styles.css";
         Label LblPlanchadoDescr = new Label("Descripción Planchado");
+        LblPlanchadoDescr.getStylesheets().add(cssPath);
+        LblPlanchadoDescr.getStyleClass().add("labelsSmall");
         LblPlanchadoDescr.setPadding(new Insets(0, 20, 0, 20));
         TextField TxfPanchadoDescr = new TextField();
         TxfPanchadoDescr.setPadding(new Insets(0, 20, 0, 20));
+        TxfPanchadoDescr.getStylesheets().add(cssPath);
+        TxfPanchadoDescr.getStyleClass().add("fieldForm");
+        TxfPanchadoDescr.setStyle("-fx-font-size: 1.5em;");
         Label LblPlanchadoCost = new Label("Costo");
+        LblPlanchadoCost.getStylesheets().add(cssPath);
+        LblPlanchadoCost.getStyleClass().add("labelsSmall");
         LblPlanchadoCost.setPadding(new Insets(0, 20, 0, 20));
         TextField TxfPanchadoCost = new TextField();
         TxfPanchadoCost.setPadding(new Insets(0, 20, 0, 20));
+        TxfPanchadoCost.getStylesheets().add(cssPath);
+        TxfPanchadoCost.getStyleClass().add("fieldForm");
+        TxfPanchadoCost.setStyle("-fx-font-size: 1.5em;");
         Button BtnAddPlanchado = new Button("+");
-        BtnAddPlanchado.getStylesheets().add(cssPath);
         BtnAddPlanchado.getStyleClass().add("modifyButton");
-        BtnAddPlanchado.setPadding(new Insets(0, 20, 0, 10));
+        BtnAddPlanchado.setPadding(new Insets(0, 10, 0, 10));
         BtnAddPlanchado.maxWidth(10);
         HBox HboxInputPlanchado = new HBox();
+        HBoxMeasurement.setAlignment(Pos.CENTER_LEFT);
+        HBoxMeasurement.setSpacing(20);
         HboxInputPlanchado.getChildren().addAll(LblPlanchadoDescr, TxfPanchadoDescr, LblPlanchadoCost, TxfPanchadoCost, BtnAddPlanchado);
+        HboxInputPlanchado.setMargin(LblPlanchadoDescr, new Insets(14, 0, 0, 20));
+        HboxInputPlanchado.setMargin(TxfPanchadoDescr, new Insets(14, 0, 0, 0));
+        HboxInputPlanchado.setMargin(LblPlanchadoCost, new Insets(14, 0, 0, 0));
+        HboxInputPlanchado.setMargin(TxfPanchadoCost, new Insets(14, 0, 0, 0));
+        HboxInputPlanchado.setMargin(BtnAddPlanchado, new Insets(5, 0, 0, 20));
+        HboxInputPlanchado.getStyleClass().add("radiusBorderPanelOptionBlue");
         HBoxMeasurement.getChildren().addAll(HboxInputPlanchado);
+        HBoxMeasurement.setMargin(HboxInputPlanchado, new Insets(0, 0, 0, 35));
+        HBoxMeasurement.getStylesheets().add(cssPath);
+        HBoxMeasurement.setAlignment(Pos.CENTER_LEFT);
+        HBoxMeasurement.setSpacing(20);
+        
         // table to store cutomer input planchado 
         TableView<Planchado> TblPlanchado = new TableView<Planchado>();
+        TblPlanchado.getStylesheets().add(cssPath);
+        TblPlanchado.getStyleClass().add("table-view");
+        TblPlanchado.setMinWidth(800);
+        TblPlanchado.setPrefWidth(800);
+        
         TableColumn descCol = new TableColumn("Descripción");
         TableColumn costCol = new TableColumn("Costo");
         descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
         costCol.setCellValueFactory(new PropertyValueFactory<>("cost"));
+        descCol.setPrefWidth(600);
+        descCol.setMinWidth(600);
+        costCol.setPrefWidth(100);
+        costCol.setMinWidth(100);
         // lista de planchados para colocar en tableView
         List<Planchado> listPlanchados = modelPlanchado.listPlanchadosByHanDetail(itemSelected.getId());
         obsListPlanchados = FXCollections.observableList(listPlanchados);
@@ -303,6 +335,8 @@ public class ModifyEliminateItemAddedController implements Initializable {
         // Columna con el boton de quitar planchados de la tabla
         TableColumn actionCol = new TableColumn("Eliminar");
         actionCol.setCellValueFactory(new PropertyValueFactory<>("Delete"));
+        actionCol.setPrefWidth(100);
+        actionCol.setMinWidth(100);
 
         Callback<TableColumn<Planchado, String>, TableCell<Planchado, String>> cellFactory
                 = //
@@ -311,7 +345,7 @@ public class ModifyEliminateItemAddedController implements Initializable {
             public TableCell call(final TableColumn<Planchado, String> param) {
                 final TableCell<Planchado, String> cell = new TableCell<Planchado, String>() {
 
-                    final Button btn = new Button("Eliminar");
+                    final Button btn = new Button("-");
 
                     @Override
                     public void updateItem(String item, boolean empty) {
@@ -321,7 +355,7 @@ public class ModifyEliminateItemAddedController implements Initializable {
                             setText(null);
                         } else {
                             btn.getStylesheets().add(cssPath);
-                            btn.getStyleClass().add("cancelButton");
+                            btn.getStyleClass().add("cancelButtonTable");
                             btn.setOnAction(event -> {
                                 Planchado planchado = getTableView().getItems().get(getIndex());
                                 obsListPlanchados.remove(planchado);
@@ -343,6 +377,9 @@ public class ModifyEliminateItemAddedController implements Initializable {
         TblPlanchado.setMaxSize(800, 300);
         TblPlanchado.setMinSize(600, 250);
         HBoxMeasurement2.getChildren().addAll(TblPlanchado);
+        HBoxMeasurement2.getStylesheets().add(cssPath);
+        HBoxMeasurement2.setAlignment(Pos.CENTER_LEFT);
+        HBoxMeasurement.setMargin(TblPlanchado, new Insets(0, 0, 0, 35));
         Planchado planchadoSeleccion = new Planchado();
         planchadoSeleccion.setPlanchadoID(-1);
         autoCompleteSearch(TxfPanchadoDescr, TxfPanchadoCost, planchadoSeleccion);

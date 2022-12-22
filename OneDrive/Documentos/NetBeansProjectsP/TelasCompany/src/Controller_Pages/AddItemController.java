@@ -275,42 +275,55 @@ public class AddItemController implements Initializable {
         String cssPath = "/css/styles.css";
         Label LblPlanchadoDescr = new Label("Descripción Planchado");
         LblPlanchadoDescr.getStylesheets().add(cssPath);
-        LblPlanchadoDescr.getStyleClass().add("fieldTitle");
+        LblPlanchadoDescr.getStyleClass().add("labelsSmall");
         LblPlanchadoDescr.setPadding(new Insets(0, 20, 0, 20));
         TextField TxfPanchadoDescr = new TextField();
         TxfPanchadoDescr.setPadding(new Insets(0, 20, 0, 20));
         TxfPanchadoDescr.getStylesheets().add(cssPath);
         TxfPanchadoDescr.getStyleClass().add("fieldForm");
+        TxfPanchadoDescr.setStyle("-fx-font-size: 1.5em;");
         Label LblPlanchadoCost = new Label("Costo");
         LblPlanchadoCost.getStylesheets().add(cssPath);
-        LblPlanchadoCost.getStyleClass().add("fieldTitle");
+        LblPlanchadoCost.getStyleClass().add("labelsSmall");
         LblPlanchadoCost.setPadding(new Insets(0, 20, 0, 20));
         TextField TxfPanchadoCost = new TextField();
         TxfPanchadoCost.setPadding(new Insets(0, 20, 0, 20));
         TxfPanchadoCost.getStylesheets().add(cssPath);
         TxfPanchadoCost.getStyleClass().add("fieldForm");
+        TxfPanchadoCost.setStyle("-fx-font-size: 1.5em;");
         Button BtnAddPlanchado = new Button("+");
-        BtnAddPlanchado.setPadding(new Insets(0, 20, 0, 10));
+        BtnAddPlanchado.setPadding(new Insets(0, 10, 0, 10));
         BtnAddPlanchado.maxWidth(10);
         HBox HboxInputPlanchado = new HBox();
+        HBoxMeasurement.setAlignment(Pos.CENTER_LEFT);
+        HBoxMeasurement.setSpacing(20);
         HboxInputPlanchado.getChildren().addAll(LblPlanchadoDescr, TxfPanchadoDescr, LblPlanchadoCost, TxfPanchadoCost, BtnAddPlanchado);
+        HboxInputPlanchado.setMargin(LblPlanchadoDescr, new Insets(14, 0, 0, 20));
+        HboxInputPlanchado.setMargin(TxfPanchadoDescr, new Insets(14, 0, 0, 0));
+        HboxInputPlanchado.setMargin(LblPlanchadoCost, new Insets(14, 0, 0, 0));
+        HboxInputPlanchado.setMargin(TxfPanchadoCost, new Insets(14, 0, 0, 0));
+        HboxInputPlanchado.setMargin(BtnAddPlanchado, new Insets(5, 0, 0, 20));
+        HboxInputPlanchado.getStyleClass().add("radiusBorderPanelOptionBlue");
         HBoxMeasurement.getChildren().addAll(HboxInputPlanchado);
+        HBoxMeasurement.setMargin(HboxInputPlanchado, new Insets(0, 0, 0, 35));
         HBoxMeasurement.getStylesheets().add(cssPath);
-        HBoxMeasurement.setAlignment(Pos.CENTER);
-        HBoxMeasurement.getStyleClass().add("radiusBorderPanelOption");
+        HBoxMeasurement.setAlignment(Pos.CENTER_LEFT);
+        HBoxMeasurement.setSpacing(20);
+        
         // table to store cutomer input planchado 
         TableView<Planchado> TblPlanchado = new TableView<Planchado>();
         TblPlanchado.getStylesheets().add(cssPath);
         TblPlanchado.getStyleClass().add("table-view");
-        TblPlanchado.setMinWidth(600);
+        TblPlanchado.setMinWidth(800);
+        TblPlanchado.setPrefWidth(800);
         
         TableColumn descCol = new TableColumn("Descripción");
-        descCol.setPrefWidth(400);
-        descCol.setMinWidth(400);
+        descCol.setPrefWidth(600);
+        descCol.setMinWidth(600);
         TableColumn costCol = new TableColumn("Costo");
         descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
-        descCol.setPrefWidth(100);
-        descCol.setMinWidth(100);
+        costCol.setPrefWidth(100);
+        costCol.setMinWidth(100);
 
         costCol.setCellValueFactory(new PropertyValueFactory<>("cost"));
         // lista de planchados para colocar en tableView
@@ -332,7 +345,7 @@ public class AddItemController implements Initializable {
             public TableCell call(final TableColumn<Planchado, String> param) {
                 final TableCell<Planchado, String> cell = new TableCell<Planchado, String>() {
 
-                    final Button btn = new Button("-");
+                    final Button btn = new Button("  -  ");
 
                     @Override
                     public void updateItem(String item, boolean empty) {
@@ -342,7 +355,7 @@ public class AddItemController implements Initializable {
                             setText(null);
                         } else {
                             btn.getStylesheets().add(cssPath);
-                            btn.getStyleClass().add("cancelButton");
+                            btn.getStyleClass().add("cancelButtonTable");
                             btn.setOnAction(event -> {
                                 Planchado planchado = getTableView().getItems().get(getIndex());
                                 obsListPlanchados.remove(planchado);
@@ -365,7 +378,8 @@ public class AddItemController implements Initializable {
         TblPlanchado.setMinSize(600, 250);
         HBoxMeasurement2.getChildren().addAll(TblPlanchado);
         HBoxMeasurement2.getStylesheets().add(cssPath);
-        HBoxMeasurement2.setAlignment(Pos.CENTER);
+        HBoxMeasurement2.setAlignment(Pos.CENTER_LEFT);
+        HBoxMeasurement.setMargin(TblPlanchado, new Insets(0, 0, 0, 35));
         Planchado planchadoSeleccion = new Planchado();
         planchadoSeleccion.setPlanchadoID(-1);
         autoCompleteSearch(TxfPanchadoDescr, TxfPanchadoCost, planchadoSeleccion);

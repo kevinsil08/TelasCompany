@@ -28,7 +28,7 @@
             </Label>
             <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="1396.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
                <children>
-                  <Label prefHeight="30.0" prefWidth="241.0" styleClass="labelsBlack" stylesheets="@../css/styles.css" text="Estado de la Obra">
+                  <Label minWidth="244.0" prefHeight="35.0" prefWidth="244.0" styleClass="labelsBlack" stylesheets="@../css/styles.css" text="Estado de la Obra">
                      <font>
                         <Font name="Roboto Black" size="20.0" />
                      </font>
@@ -63,7 +63,7 @@
                   <Insets bottom="5.0" top="10.0" />
                </VBox.margin>
             </HBox>
-            <VBox prefHeight="692.0" prefWidth="1542.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
+            <VBox prefHeight="686.0" prefWidth="1472.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: start;">
                      <children>
@@ -204,7 +204,7 @@
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: center;">
                      <children>
-                        <Button fx:id="BtnAddItem" alignment="TOP_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#onUpdateHandiworkDetail" prefHeight="62.0" prefWidth="264.0" styleClass="saveButton" stylesheets="@../css/styles.css" text="Modificar Item">
+                        <Button fx:id="BtnAddItem" alignment="TOP_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#onUpdateHandiworkDetail" prefHeight="62.0" prefWidth="303.0" styleClass="saveButton" stylesheets="@../css/styles.css" text="Modificar Item">
                            <font>
                               <Font name="Roboto Medium" size="16.0" />
                            </font>
