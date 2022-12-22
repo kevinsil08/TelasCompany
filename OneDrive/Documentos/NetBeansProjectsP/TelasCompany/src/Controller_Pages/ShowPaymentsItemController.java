@@ -118,7 +118,7 @@ public class ShowPaymentsItemController implements Initializable {
                     HandiworkDetail = new HandiworkDetail(HandiworkDetail.getId(), HandiworkDetail.getTypeItemId(), HandiworkDetail.getHandiworkId(), DatePay.toString(), HandiworkDetail.getDetail(), HandiworkDetail.getAddDetail(), HandiworkDetail.getCost(), HandiworkDetail.getDeliveryDeadline(), payStatus, HandiworkDetail.getState());
                     StatePayment.setText("Estado de Pago: Pagado");
                 }
-
+                
                 HandiworkDtlModel.UpdateHandiworkDetail(HandiworkDetail);
 
                 HandiworkPaymentManagerModel.AddHandiworkPayment(HandiworkPayment.getId(), DatePay.getValue().toString(), Payment);

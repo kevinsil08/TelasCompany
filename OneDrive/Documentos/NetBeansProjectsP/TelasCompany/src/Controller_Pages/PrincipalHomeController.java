@@ -63,7 +63,10 @@ public class PrincipalHomeController implements Initializable {
     private Stage stage;
 
     private double StageWidth, StageHeight;
-
+    
+    @FXML
+    private MenuBar menuBarHandiworks ;
+    
     @FXML
     private MenuBar menuBarHandiworks;
 
@@ -73,6 +76,7 @@ public class PrincipalHomeController implements Initializable {
     private CustomerManager modelCustomer;
     private HandiworkManager modelHandiwork;
     private boolean showAllHandiworks;
+
 
     public PrincipalHomeController(CustomerManager modelCustomer, HandiworkManager modelHandiwork, Stage stage, boolean showAllHandiworks) {
         this.modelCustomer = modelCustomer;
@@ -90,7 +94,7 @@ public class PrincipalHomeController implements Initializable {
     private Button BtnAddCustomer, BtnModifyCustomer, BtnDeleteCustomer;
 
     private Tab AddCustomerTab, ModifyCustomerTab, DeleteCustomerTab;
-
+    
     @FXML
     private Button AddHandiwork;
     @FXML
@@ -106,7 +110,6 @@ public class PrincipalHomeController implements Initializable {
     private TabPane tabPane;
     @FXML
     private Label lblPrincipalTitle;
-    
     @FXML
     private TableColumn<Handiwork, String> TcCiRuc, TcHanState, TcNames, TcPaymentStatus;
     @FXML
@@ -122,7 +125,6 @@ public class PrincipalHomeController implements Initializable {
     private MenuItem MitModifyCustomer;
     @FXML
     private HBox hboxFiltro;
-
     private Tab elaboracionTab, obrasPendientesTab;
 
     private final String[] Paths = {"/View/TableOrders.fxml", "/View/Elaboracion.fxml", "/View/AddCustomer.fxml",
@@ -342,7 +344,7 @@ public class PrincipalHomeController implements Initializable {
         return new AddHandiworkController(modelHandiwork, modelCustomer, id_handiwork, modify);
     }
 
-    private void refreshTable() {
+    public void refreshTable() {
         TcCiRuc.setCellValueFactory(new PropertyValueFactory<>("ciCustomer"));
         TcNames.setCellValueFactory(new PropertyValueFactory<>("namesCustomer"));
         TcHanDate.setCellValueFactory(new PropertyValueFactory<>("entryDate"));
@@ -407,7 +409,6 @@ public class PrincipalHomeController implements Initializable {
                 stageDialog.showAndWait();
                 refreshTable();
             } 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -425,6 +426,7 @@ public class PrincipalHomeController implements Initializable {
     void showAllHandiworks(ActionEvent event) throws IOException {
         showPrincipalStage(true);
     }
+
 
     private PrincipalHomeController buildController(Stage stage, boolean modalWindow) {
         return new PrincipalHomeController(modelCustomer, modelHandiwork, stage, modalWindow);

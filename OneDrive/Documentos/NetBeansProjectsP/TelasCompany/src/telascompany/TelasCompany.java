@@ -19,6 +19,7 @@ import Model.SQLPlanchadoImpl;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -30,7 +31,8 @@ public class TelasCompany extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/PrincipalHome.fxml"));
-        stage.setTitle("Telas Company");
+        stage.setTitle("Bordados Susana");
+        stage.getIcons().add(new Image("/View/bordados-logo-negro.png"));
         loader.setControllerFactory(t -> buildController(stage));
         stage.setScene(new Scene(loader.load()));
         stage.show();

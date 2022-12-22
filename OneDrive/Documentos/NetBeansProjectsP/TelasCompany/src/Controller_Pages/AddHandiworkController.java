@@ -89,8 +89,10 @@ public class AddHandiworkController implements Initializable {
     private Button BtnAddCustomer;
     @FXML
     private Button BtbUpdateHandiwork;
+
     @FXML
     private Button BtnDeleteHandiwork;
+
     @FXML
     private Button BtnSearchCustomer;
     @FXML
@@ -141,7 +143,9 @@ public class AddHandiworkController implements Initializable {
                 loadStage(loader, "Agregar Item");
                 fillHandiworkFields(id_handiwork);
                 modelHandiwork.updateCosts(id_handiwork);
+
                 setItemstable();
+
             }
 
         } catch (Exception e) {
@@ -156,6 +160,7 @@ public class AddHandiworkController implements Initializable {
             HandiworkDetail tableItemSelected = Table.getSelectionModel().getSelectedItem();
             if (showConfirmation(tableItemSelected.getPayment() + "", tableItemSelected.getNameItem())) {
                 HandiworkDetailManager.DeleteHandiworkDetail(id_handiwork, tableItemSelected.getId());
+
                 // update table of left payment 
                 modelHandiwork.updateCosts(id_handiwork);
                 setItemstable();
@@ -212,7 +217,7 @@ public class AddHandiworkController implements Initializable {
                 btnPaymentsItem.setDisable(false);
                 btnShowDetailItem.setDisable(false);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ModifyEliminateItemAdded.fxml"));
-                loader.setControllerFactory(t -> buildModifyCustomerController(tableItemSelected, buildHandiworkDetailManager(), buildMeasurementManager(), buildHandiworkPaymentManager(), buildPlanchadoManager()));
+                loader.setControllerFactory(t -> buildModifyCustomerController(tableItemSelected, buildHandiworkDetailManager(), buildMeasurementManager(), buildHandiworkPaymentManager(), buildPlanchadoManager(),id_handiwork));
                 loadStage(loader, "Modificar/Eliminar item ingresado");
                 modelHandiwork.updateCosts(id_handiwork);
                 fillHandiworkFields(id_handiwork);
@@ -461,9 +466,10 @@ public class AddHandiworkController implements Initializable {
         return new AddItemController(buildHandiworkDetailManager(), buildItemManager(), buildMeasurementManager(), buildHandiworkPaymentManager(), buildPlanchadoManager(), id_handiwork);
     }
 
-    private ModifyEliminateItemAddedController buildModifyCustomerController(HandiworkDetail itemSelected, HandiworkDetailManager HandiworkDtlModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel, PlanchadoManager modelPlanchado) {
-        return new ModifyEliminateItemAddedController(itemSelected, HandiworkDtlModel, MeasurementManagerModel, HandiworkPaymentManagerModel, modelPlanchado);
+    private ModifyEliminateItemAddedController buildModifyCustomerController(HandiworkDetail itemSelected, HandiworkDetailManager HandiworkDtlModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel, PlanchadoManager modelPlanchado, int id_handiwork) {
+        return new ModifyEliminateItemAddedController(itemSelected, HandiworkDtlModel, MeasurementManagerModel, HandiworkPaymentManagerModel, modelPlanchado,id_handiwork);
     }
+
 
     private ShowPaymentsItemController buildShowPaymentsItemController(HandiworkPaymentManager HandiworkPaymentManagerModel, HandiworkDetail itemSelected) {
         return new ShowPaymentsItemController(HandiworkPaymentManagerModel, HandiworkPayment, itemSelected, buildHandiworkDetailManager());

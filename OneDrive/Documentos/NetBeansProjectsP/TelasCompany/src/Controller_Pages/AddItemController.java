@@ -20,6 +20,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
@@ -226,17 +227,18 @@ public class AddItemController implements Initializable {
 
         } else {
             // rest of  items (arreglos, polleras , bolsicones)
-            int MAXVALUETOHBOX = 4;
+            int MAXVALUETOHBOX = 3;
             List<Measurement> listMeasurement = MeasurementManagerModel.ListMeasurement(ItemId);
             NameMeasurement = new Label[listMeasurement.size()];
             TxtMeasurement = new TextField[listMeasurement.size()];
             int ITERATOR = 0;
             while (ITERATOR < listMeasurement.size()) {
                 NameMeasurement[ITERATOR] = new Label((String) listMeasurement.get(ITERATOR).getName());
-                NameMeasurement[ITERATOR].setPadding(new Insets(0.0, 20.0, 0.0, 20.0));
+                NameMeasurement[ITERATOR].setPadding(new Insets(0.0, 50.0, 0.0, 50.0));
                 NameMeasurement[ITERATOR].setFont(new Font("Roboto", 22.0));
                 TxtMeasurement[ITERATOR] = new TextField();
-                TxtMeasurement[ITERATOR].setPrefSize(78, 26);
+                TxtMeasurement[ITERATOR].setPrefSize(90, 26);
+                TxtMeasurement[ITERATOR].setFont(new Font("Roboto", 18.0));
                 TxtMeasurement[ITERATOR].setId("" + listMeasurement.get(ITERATOR).getId());
                 if (ITERATOR > MAXVALUETOHBOX) {
                     HBoxMeasurement2.getChildren().addAll(NameMeasurement[ITERATOR], TxtMeasurement[ITERATOR]);
@@ -298,14 +300,14 @@ public class AddItemController implements Initializable {
         HBoxMeasurement.setAlignment(Pos.CENTER_LEFT);
         HBoxMeasurement.setSpacing(20);
         HboxInputPlanchado.getChildren().addAll(LblPlanchadoDescr, TxfPanchadoDescr, LblPlanchadoCost, TxfPanchadoCost, BtnAddPlanchado);
-        HboxInputPlanchado.setMargin(LblPlanchadoDescr, new Insets(14, 0, 0, 20));
+        HboxInputPlanchado.setMargin(LblPlanchadoDescr, new Insets(14, 0, 0, 50));
         HboxInputPlanchado.setMargin(TxfPanchadoDescr, new Insets(14, 0, 0, 0));
         HboxInputPlanchado.setMargin(LblPlanchadoCost, new Insets(14, 0, 0, 0));
         HboxInputPlanchado.setMargin(TxfPanchadoCost, new Insets(14, 0, 0, 0));
-        HboxInputPlanchado.setMargin(BtnAddPlanchado, new Insets(5, 0, 0, 20));
+        HboxInputPlanchado.setMargin(BtnAddPlanchado, new Insets(5, 10, 0, 50));
         HboxInputPlanchado.getStyleClass().add("radiusBorderPanelOptionBlue");
         HBoxMeasurement.getChildren().addAll(HboxInputPlanchado);
-        HBoxMeasurement.setMargin(HboxInputPlanchado, new Insets(0, 0, 0, 35));
+        HBoxMeasurement.setMargin(HboxInputPlanchado, new Insets(0, 0, 0, 50));
         HBoxMeasurement.getStylesheets().add(cssPath);
         HBoxMeasurement.setAlignment(Pos.CENTER_LEFT);
         HBoxMeasurement.setSpacing(20);
@@ -379,7 +381,7 @@ public class AddItemController implements Initializable {
         HBoxMeasurement2.getChildren().addAll(TblPlanchado);
         HBoxMeasurement2.getStylesheets().add(cssPath);
         HBoxMeasurement2.setAlignment(Pos.CENTER_LEFT);
-        HBoxMeasurement.setMargin(TblPlanchado, new Insets(0, 0, 0, 35));
+        HBoxMeasurement.setMargin(TblPlanchado, new Insets(0, 0, 0, 50));
         Planchado planchadoSeleccion = new Planchado();
         planchadoSeleccion.setPlanchadoID(-1);
         autoCompleteSearch(TxfPanchadoDescr, TxfPanchadoCost, planchadoSeleccion);
@@ -388,7 +390,7 @@ public class AddItemController implements Initializable {
             ValidateInput validateInput = new ValidateInput(TxfPanchadoCost.getText());
             if (!TxfPanchadoDescr.getText().isEmpty()) {
                 if (validateInput.moneyNumber()) {
-                    String selectedCost = String.format("%.2f", planchadoSeleccion.getCost());
+                    String selectedCost = String.format(Locale.US,"%.2f", planchadoSeleccion.getCost());
                     if (planchadoSeleccion.getPlanchadoID() != -1 && planchadoSeleccion.getDescription().equals(TxfPanchadoDescr.getText()) && selectedCost.equals(TxfPanchadoCost.getText())) {
                         // planchado selected from database
                         Planchado nuevoPlanchado = new Planchado(planchadoSeleccion);
@@ -433,7 +435,7 @@ public class AddItemController implements Initializable {
                 autoCompletePopup.getSuggestions().addAll(modelPlanchado.listPlanchados());
                 autoCompletePopup.setSelectionHandler(event -> {
                     TxfPanchadoDescr.setText(event.getObject().getDescription());
-                    TxfPanchadoCost.setText(String.format("%.2f", event.getObject().getCost()));
+                    TxfPanchadoCost.setText(String.format(Locale.US,"%.2f", event.getObject().getCost()));
                     planchadoSeleccion.setPlanchadoID(event.getObject().getPlanchadoID());
                     planchadoSeleccion.setDescription(event.getObject().getDescription());
                     planchadoSeleccion.setCost(event.getObject().getCost());
@@ -464,15 +466,15 @@ public class AddItemController implements Initializable {
         for (Planchado planchado : obsListPlanchados) {
             totalCost += planchado.getCost();
         }
-        TxtFTotalCost.setText(String.format("%.2f", totalCost));
+        TxtFTotalCost.setText(String.format(Locale.US,"%.2f", totalCost));
     }
 
     private void clearHboxContents() {
         HBoxMeasurement.getChildren().clear();
         HBoxMeasurement2.getChildren().clear();
         TxtFTotalCost.setEditable(true);
-        TxtFTotalCost.setText("");
-        TxtFPayment.setText("");
+        TxtFTotalCost.setText("0");
+        TxtFPayment.setText("0");
         TxtAreaAddDetail.setText("");
         TxtAreaDetail.setText("");
         obsListPlanchados.clear();

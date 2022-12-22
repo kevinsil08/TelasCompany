@@ -108,10 +108,10 @@ public class SQLHandiworkDetailDAOImpl implements HandiworkDetailDAO{
             statement.setBoolean(5, paystatus);
             
             String stateItem = "p";
-            if(! HandiworkDetail.getPayStatus().equals("Pendiente")){
+            if(! HandiworkDetail.getState().equals("Pendiente")){
                 stateItem = "f";
             }
-            
+
             statement.setString(6, stateItem);
             statement.setInt(7, HandiworkDetail.getId());
             statement.setInt(8, HandiworkDetail.getSubItemsQty());

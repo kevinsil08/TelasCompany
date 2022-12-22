@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="613.0" prefWidth="1148.0" style="-fx-alignment: center;" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_Pages.AssignMeasurementToItemController">
+<VBox prefHeight="613.0" prefWidth="1000.0" style="-fx-alignment: center;" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_Pages.AssignMeasurementToItemController">
    <children>
       <VBox prefHeight="70.0" prefWidth="674.0" style="-fx-alignment: center;">
          <children>
@@ -27,17 +27,14 @@
             </Label>
          </children>
       </VBox>
-      <HBox prefHeight="73.0" prefWidth="1148.0" style="-fx-alignment: start;">
-         <padding>
-            <Insets left="20.0" />
-         </padding>
+      <HBox prefHeight="73.0" prefWidth="1148.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
          <children>
-            <Label styleClass="labelsBlack" stylesheets="@../css/styles.css" text="Escoga un item ">
+            <Label text="Escoga un item ">
                <font>
                   <Font name="Roboto Medium" size="22.0" />
                </font>
                <HBox.margin>
-                  <Insets top="20.0" />
+                  <Insets left="200.0" top="20.0" />
                </HBox.margin>
             </Label>
             <ComboBox fx:id="ComboItems" prefHeight="44.0" prefWidth="308.0" style="-fx-font-size: 15pt;">
@@ -47,17 +44,14 @@
             </ComboBox>
          </children>
       </HBox>
-      <HBox prefHeight="73.0" prefWidth="1148.0" style="-fx-alignment: start;">
-         <padding>
-            <Insets left="20.0" />
-         </padding>
+      <HBox prefHeight="73.0" prefWidth="1148.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
          <children>
-            <Label styleClass="labelsBlack" stylesheets="@../css/styles.css" text="Escoga una medida ">
+            <Label text="Escoga una medida ">
                <font>
                   <Font name="Roboto Medium" size="22.0" />
                </font>
                <HBox.margin>
-                  <Insets top="20.0" />
+                  <Insets left="200.0" top="20.0" />
                </HBox.margin>
             </Label>
             <ComboBox fx:id="ComboMeasurements" prefHeight="44.0" prefWidth="308.0" style="-fx-font-size: 15pt;">
@@ -67,14 +61,14 @@
             </ComboBox>
          </children>
       </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: start;">
+      <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
          <children>
             <Button contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#InsertMeasurementOfAItem" styleClass="saveButton" stylesheets="@../css/styles.css" text="Ingresar">
                <font>
                   <Font name="Roboto Medium" size="22.0" />
                </font>
                <HBox.margin>
-                  <Insets left="20.0" top="20.0" />
+                  <Insets left="200.0" top="20.0" />
                </HBox.margin>
                <graphic>
                   <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
@@ -101,14 +95,11 @@
             </Button>
          </children>
       </HBox>
-      <HBox prefHeight="288.0" prefWidth="1148.0" style="-fx-alignment: start;" stylesheets="@../css/styles.css">
-         <padding>
-            <Insets left="20.0" />
-         </padding>
+      <HBox prefHeight="288.0" prefWidth="1148.0" style="-fx-alignment: start;" stylesheets="@../css/styles.css" VBox.vgrow="SOMETIMES">
          <children>
             <TableView fx:id="Table" prefHeight="248.0" prefWidth="396.0">
                <HBox.margin>
-                  <Insets bottom="20.0" top="20.0" />
+                  <Insets bottom="20.0" left="200.0" top="20.0" />
                </HBox.margin>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

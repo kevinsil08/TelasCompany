@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -90,15 +91,17 @@ public class ModifyEliminateItemAddedController implements Initializable {
     private PlanchadoManager modelPlanchado;
 
     private LocalDate StartDate;
+    private int id_handiwork;
 
 
-    public ModifyEliminateItemAddedController(HandiworkDetail itemSelected, HandiworkDetailManager HandiworkDtlModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel, PlanchadoManager modelPlanchado) {
+    public ModifyEliminateItemAddedController(HandiworkDetail itemSelected, HandiworkDetailManager HandiworkDtlModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel, PlanchadoManager modelPlanchado,int id_handiwork) {
         this.itemSelected = itemSelected;
         this.HandiworkDtlModel = HandiworkDtlModel;
         this.MeasurementManagerModel = MeasurementManagerModel;
         this.HandiworkPaymentManagerModel = HandiworkPaymentManagerModel;
         this.modelPlanchado = modelPlanchado;
         this.obsListPlanchados = FXCollections.observableArrayList();
+        this.id_handiwork=id_handiwork;
         StartDate = LocalDate.now();
     }
 
@@ -121,9 +124,10 @@ public class ModifyEliminateItemAddedController implements Initializable {
         if (showConfirmation()) {
             String ErrorTitle = "Error de ingreso";
             String Detail = TxtAreaDetail.getText();
-            String AddDetail = (itemSelected.getAddDetail() == null)
+            String AddDetail = (TxtAreaAddDetail.getText() == null)
                     ? null : TxtAreaAddDetail.getText();
-            String payStatus = "No pagado";
+            System.out.println("am "+AddDetail); 
+           String payStatus = "No pagado";
 
             try {
 
@@ -154,11 +158,11 @@ public class ModifyEliminateItemAddedController implements Initializable {
                     planchado.setHanDetailID(itemSelected.getId());
                     modelPlanchado.insertPlanchadoToHanDetail(planchado);
                 }
-                HandiworkDetail HandiworkDetail = new HandiworkDetail(itemSelected.getId(), itemSelected.getTypeItemId(), 1, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), payStatus, state , obsListPlanchados.size());
+                HandiworkDetail HandiworkDetail = new HandiworkDetail(itemSelected.getId(), itemSelected.getTypeItemId(), id_handiwork, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), payStatus, state , obsListPlanchados.size());
                 HandiworkDtlModel.UpdateHandiworkDetail(HandiworkDetail);
 
             }else{
-                HandiworkDetail HandiworkDetail = new HandiworkDetail(itemSelected.getId(), itemSelected.getTypeItemId(), 1, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), payStatus, state);
+                HandiworkDetail HandiworkDetail = new HandiworkDetail(itemSelected.getId(), itemSelected.getTypeItemId(), id_handiwork, StartDate.toString(), Detail, AddDetail, TotalCost, DeliveryDate.toString(), payStatus, state);
 
                 HandiworkDtlModel.UpdateHandiworkDetail(HandiworkDetail);
 
@@ -179,7 +183,6 @@ public class ModifyEliminateItemAddedController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         nameItem.setText("Tipo de Item: " + itemSelected.getNameItem());
-        TxtAreaDetail.setText(itemSelected.getDetail());
 
         DateActual.setText("Fecha Actual: " + StartDate.toString());
 
@@ -219,7 +222,7 @@ public class ModifyEliminateItemAddedController implements Initializable {
 
         } else {
 
-            int MAXVALUETOHBOX = 4;
+            int MAXVALUETOHBOX = 3;
         List<Measurement> listMeasurement = MeasurementManagerModel.ListValuesMeasurementOfItem(itemSelected.getId());
 
         NameMeasurement = new Label[listMeasurement.size()];
@@ -231,7 +234,8 @@ public class ModifyEliminateItemAddedController implements Initializable {
             NameMeasurement[ITERATOR].setPadding(new Insets(0.0, 50.0, 0.0, 50.0));
             NameMeasurement[ITERATOR].setFont(new Font("Roboto", 22.0));
             TxtMeasurement[ITERATOR] = new TextField(listMeasurement.get(ITERATOR).getValue());
-            TxtMeasurement[ITERATOR].setPrefSize(78, 26);
+            TxtMeasurement[ITERATOR].setPrefSize(90, 26);
+            TxtMeasurement[ITERATOR].setFont(new Font("Roboto", 18.0));
             TxtMeasurement[ITERATOR].setId("" + listMeasurement.get(ITERATOR).getId());
 
             if (ITERATOR > MAXVALUETOHBOX) {
@@ -267,9 +271,9 @@ public class ModifyEliminateItemAddedController implements Initializable {
         HBoxMeasurement.getChildren().clear();
         HBoxMeasurement2.getChildren().clear();
         TxtFTotalCost.setEditable(true);
-        TxtFTotalCost.setText("");
-        TxtAreaAddDetail.setText("");
-        TxtAreaDetail.setText("");
+        TxtFTotalCost.setText(itemSelected.getCost()+"");
+        TxtAreaAddDetail.setText(itemSelected.getAddDetail());
+        TxtAreaDetail.setText(itemSelected.getDetail());
         obsListPlanchados.clear();
     }
 
@@ -301,14 +305,14 @@ public class ModifyEliminateItemAddedController implements Initializable {
         HBoxMeasurement.setAlignment(Pos.CENTER_LEFT);
         HBoxMeasurement.setSpacing(20);
         HboxInputPlanchado.getChildren().addAll(LblPlanchadoDescr, TxfPanchadoDescr, LblPlanchadoCost, TxfPanchadoCost, BtnAddPlanchado);
-        HboxInputPlanchado.setMargin(LblPlanchadoDescr, new Insets(14, 0, 0, 20));
+        HboxInputPlanchado.setMargin(LblPlanchadoDescr, new Insets(14, 0, 0, 50));
         HboxInputPlanchado.setMargin(TxfPanchadoDescr, new Insets(14, 0, 0, 0));
         HboxInputPlanchado.setMargin(LblPlanchadoCost, new Insets(14, 0, 0, 0));
         HboxInputPlanchado.setMargin(TxfPanchadoCost, new Insets(14, 0, 0, 0));
-        HboxInputPlanchado.setMargin(BtnAddPlanchado, new Insets(5, 0, 0, 20));
+        HboxInputPlanchado.setMargin(BtnAddPlanchado, new Insets(5, 10, 0, 50));
         HboxInputPlanchado.getStyleClass().add("radiusBorderPanelOptionBlue");
         HBoxMeasurement.getChildren().addAll(HboxInputPlanchado);
-        HBoxMeasurement.setMargin(HboxInputPlanchado, new Insets(0, 0, 0, 35));
+        HBoxMeasurement.setMargin(HboxInputPlanchado, new Insets(0, 0, 0, 50));
         HBoxMeasurement.getStylesheets().add(cssPath);
         HBoxMeasurement.setAlignment(Pos.CENTER_LEFT);
         HBoxMeasurement.setSpacing(20);
@@ -330,6 +334,8 @@ public class ModifyEliminateItemAddedController implements Initializable {
         costCol.setMinWidth(100);
         // lista de planchados para colocar en tableView
         List<Planchado> listPlanchados = modelPlanchado.listPlanchadosByHanDetail(itemSelected.getId());
+
+
         obsListPlanchados = FXCollections.observableList(listPlanchados);
         updateTblView(TblPlanchado, obsListPlanchados);
         // Columna con el boton de quitar planchados de la tabla
@@ -379,7 +385,8 @@ public class ModifyEliminateItemAddedController implements Initializable {
         HBoxMeasurement2.getChildren().addAll(TblPlanchado);
         HBoxMeasurement2.getStylesheets().add(cssPath);
         HBoxMeasurement2.setAlignment(Pos.CENTER_LEFT);
-        HBoxMeasurement.setMargin(TblPlanchado, new Insets(0, 0, 0, 35));
+
+        HBoxMeasurement.setMargin(TblPlanchado, new Insets(0, 0, 0, 50));
         Planchado planchadoSeleccion = new Planchado();
         planchadoSeleccion.setPlanchadoID(-1);
         autoCompleteSearch(TxfPanchadoDescr, TxfPanchadoCost, planchadoSeleccion);
@@ -388,7 +395,7 @@ public class ModifyEliminateItemAddedController implements Initializable {
             ValidateInput validateInput = new ValidateInput(TxfPanchadoCost.getText());
             if (!TxfPanchadoDescr.getText().isEmpty()) {
                 if (validateInput.moneyNumber()) {
-                    String selectedCost = String.format("%.2f", planchadoSeleccion.getCost());
+                    String selectedCost = String.format(Locale.US,"%.2f", planchadoSeleccion.getCost());
                     if (planchadoSeleccion.getPlanchadoID() != -1 && planchadoSeleccion.getDescription().equals(TxfPanchadoDescr.getText()) && selectedCost.equals(TxfPanchadoCost.getText())) {
                         // planchado selected from database
                         Planchado nuevoPlanchado = new Planchado(planchadoSeleccion);
@@ -427,7 +434,9 @@ public class ModifyEliminateItemAddedController implements Initializable {
                 autoCompletePopup.getSuggestions().addAll(modelPlanchado.listPlanchados());
                 autoCompletePopup.setSelectionHandler(event -> {
                     TxfPanchadoDescr.setText(event.getObject().getDescription());
-                    TxfPanchadoCost.setText(String.format("%.2f", event.getObject().getCost()));
+
+                    TxfPanchadoCost.setText(String.format(Locale.US,"%.2f", event.getObject().getCost()));
+
                     planchadoSeleccion.setPlanchadoID(event.getObject().getPlanchadoID());
                     planchadoSeleccion.setDescription(event.getObject().getDescription());
                     planchadoSeleccion.setCost(event.getObject().getCost());
@@ -457,7 +466,10 @@ public class ModifyEliminateItemAddedController implements Initializable {
         for (Planchado planchado : obsListPlanchados) {
             totalCost += planchado.getCost();
         }
-        TxtFTotalCost.setText(String.format("%.2f", totalCost));
+
+        TxtFTotalCost.setText(String.format(Locale.US,"%.2f", totalCost));
+
+
     }
 
     private void resetTextFields(TextField TxfPanchadoCost, TextField TxfPanchadoDescr) {

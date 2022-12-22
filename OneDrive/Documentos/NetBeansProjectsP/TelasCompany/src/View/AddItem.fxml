@@ -29,7 +29,8 @@
             </Label>
             <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="1396.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
                <children>
-                  <Label stylesheets="@../css/styles.css" text="Seleccione el tipo de producto">
+                  <Label stylesheets="@../css/styles.css" text="Seleccione el tipo de Item">
+
                      <font>
                         <Font name="Roboto Black" size="20.0" />
                      </font>
@@ -41,7 +42,7 @@
                         <String fx:value="labelsBlack" />
                      </styleClass>
                   </Label>
-                  <ComboBox fx:id="ComboItems" prefHeight="30.0" prefWidth="250.0" promptText="Seleccione un tipo de producto" style="-fx-font-size: 10pt;" />
+                  <ComboBox fx:id="ComboItems" prefHeight="43.0" prefWidth="374.0" promptText="Seleccione un tipo de Item" style="-fx-font-size: 15pt;" />
                   <Label text="*" textFill="#c20c0c">
                      <font>
                         <Font name="Roboto Black" size="18.0" />
@@ -55,7 +56,7 @@
                         <Insets left="100.0" right="20.0" />
                      </HBox.margin>
                   </Label>
-                  <DatePicker fx:id="DateDelivery" disable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" prefWidth="175.0">
+                  <DatePicker fx:id="DateDelivery" disable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="210.0" style="-fx-font-size: 12pt;">
                      <HBox.margin>
                         <Insets right="15.0" />
                      </HBox.margin>
@@ -72,7 +73,9 @@
             </HBox>
             <VBox prefHeight="360.0" prefWidth="1396.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
                <children>
-                  <Label styleClass="labelsBlack" stylesheets="@../css/styles.css" text="Detalle del Producto">
+
+                  <Label styleClass="labelsBlack" stylesheets="@../css/styles.css" text="Detalle del Item">
+
                      <font>
                         <Font name="Roboto Medium" size="20.0" />
                      </font>
@@ -135,7 +138,7 @@
                               <Insets left="50.0" right="20.0" top="20.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="TxtFTotalCost" disable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0">
+                        <TextField fx:id="TxtFTotalCost" disable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="190.0">
                            <HBox.margin>
                               <Insets right="15.0" top="20.0" />
                            </HBox.margin>
@@ -159,7 +162,7 @@
                               <Insets left="35.0" right="20.0" top="20.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="TxtFPayment" disable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0">
+                        <TextField fx:id="TxtFPayment" disable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="190.0">
                            <HBox.margin>
                               <Insets right="15.0" top="20.0" />
                            </HBox.margin>
@@ -187,7 +190,7 @@
                               <Font name="Roboto Medium" size="16.0" />
                            </font>
                            <graphic>
-                              <ImageView>
+                              <ImageView preserveRatio="true">
                                  <image>
                                     <Image url="@Images/save_icon.png" />
                                  </image>
