@@ -5,14 +5,17 @@ import Model.CustomerManager;
 import Model.ValidateInput;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class AddCustomerController implements Initializable {
@@ -98,11 +101,31 @@ public class AddCustomerController implements Initializable {
 
     @FXML
     void deleteCustomer(MouseEvent event) {
-        if (modelCustomer.deleteCustomer(customer.getId())) {
-             infoDial("Información", "Actualización cliente", "Se borró cliente : " + customer.getFirstName() + " " + customer.getLastName());
-        } else {
-            showError("Error registro", "No se borró registro de cliente en la base de datos", "El cliente actual tiene pedidos registrados");
+
+        if (showConfirmation()) {
+            if (modelCustomer.deleteCustomer(customer.getId())) {
+                infoDial("Información", "Actualización cliente", "Se borró cliente : " + customer.getFirstName() + " " + customer.getLastName());
+                closeStage(btnDelete);
+            }else{
+                showError("Error registro", "No se borró registro de cliente en la base de datos", "El cliente actual tiene pedidos registrados");        
+            }
+        } 
+
+    }
+
+    private boolean showConfirmation() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.setHeaderText(null);
+        alert.setTitle("Confirmación");
+        alert.setContentText("¿Eliminar cliente?");
+        Optional<ButtonType> action = alert.showAndWait();
+        boolean OptionChoosed = true;
+        if (action.get() != ButtonType.OK) {
+            OptionChoosed = false;
         }
+
+        return OptionChoosed;
     }
 
     @FXML
@@ -157,7 +180,7 @@ public class AddCustomerController implements Initializable {
             LblErrorCed.setText("Cédula/RUC actualmente registrados");
             verify = false;
         }
-        
+
         if (names.equals("")) {
             LblErrorNombres.setText("Ingrese dos nombres / Nombreuno Nombredos");
             verify = false;

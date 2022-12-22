@@ -318,6 +318,18 @@
                   </HBox>
                </children>
             </VBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="BtnDeleteHandiwork" mnemonicParsing="false" onAction="#deleteHanidowork" prefHeight="69.0" prefWidth="274.0" styleClass="cancelButton" stylesheets="@../css/styles.css" text="Eliminar Obra" visible="false">
+                     <HBox.margin>
+                        <Insets left="200.0" />
+                     </HBox.margin>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="TRASH" size="2.4em" />
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </content>

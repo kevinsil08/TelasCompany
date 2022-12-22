@@ -30,6 +30,7 @@
             <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="1396.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
                <children>
                   <Label stylesheets="@../css/styles.css" text="Seleccione el tipo de Item">
+
                      <font>
                         <Font name="Roboto Black" size="20.0" />
                      </font>
@@ -72,7 +73,9 @@
             </HBox>
             <VBox prefHeight="360.0" prefWidth="1396.0" style="-fx-alignment: start;" VBox.vgrow="SOMETIMES">
                <children>
+
                   <Label styleClass="labelsBlack" stylesheets="@../css/styles.css" text="Detalle del Item">
+
                      <font>
                         <Font name="Roboto Medium" size="20.0" />
                      </font>

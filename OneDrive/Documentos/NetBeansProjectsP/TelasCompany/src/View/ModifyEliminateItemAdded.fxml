@@ -77,7 +77,9 @@
                         </Label>
                      </children>
                   </HBox>
+
                   <Label styleClass="labelsBlack" stylesheets="@../css/styles.css" text="Detalle del Item">
+
                      <font>
                         <Font name="Roboto Medium" size="20.0" />
                      </font>

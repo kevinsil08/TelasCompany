@@ -5,7 +5,6 @@
  */
 package Controller_Pages;
 
-
 import Model.Customer;
 
 import DAO.ItemDAO;
@@ -19,7 +18,6 @@ import Model.ItemManager;
 import Model.MeasurementManager;
 import Model.SQLItemDAOImpl;
 import Model.SQLMeasurementDAOImpl;
-
 
 import java.io.IOException;
 import java.net.URL;
@@ -55,7 +53,6 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-
 /**
  * FXML Controller class
  *
@@ -65,12 +62,14 @@ public class PrincipalHomeController implements Initializable {
 
     private Stage stage;
 
-
     private double StageWidth, StageHeight;
     
     @FXML
     private MenuBar menuBarHandiworks ;
     
+    @FXML
+    private MenuBar menuBarHandiworks;
+
     @FXML
     private TableView<Handiwork> TbvHandiworks;
 
@@ -78,7 +77,8 @@ public class PrincipalHomeController implements Initializable {
     private HandiworkManager modelHandiwork;
     private boolean showAllHandiworks;
 
-    public PrincipalHomeController(CustomerManager modelCustomer, HandiworkManager modelHandiwork, Stage stage , boolean showAllHandiworks) {
+
+    public PrincipalHomeController(CustomerManager modelCustomer, HandiworkManager modelHandiwork, Stage stage, boolean showAllHandiworks) {
         this.modelCustomer = modelCustomer;
         this.modelHandiwork = modelHandiwork;
         this.stage = stage;
@@ -110,7 +110,6 @@ public class PrincipalHomeController implements Initializable {
     private TabPane tabPane;
     @FXML
     private Label lblPrincipalTitle;
-
     @FXML
     private TableColumn<Handiwork, String> TcCiRuc, TcHanState, TcNames, TcPaymentStatus;
     @FXML
@@ -126,17 +125,12 @@ public class PrincipalHomeController implements Initializable {
     private MenuItem MitModifyCustomer;
     @FXML
     private HBox hboxFiltro;
-    
-    
-
     private Tab elaboracionTab, obrasPendientesTab;
 
     private final String[] Paths = {"/View/TableOrders.fxml", "/View/Elaboracion.fxml", "/View/AddCustomer.fxml",
-        "/View/ModifyCustomer.fxml", "/View/DeleteCustomer.fxml","/View/Arreglos.fxml","/View/AddHandiwork.fxml",
-        "/View/AddNewItem.fxml","/View/ModifyItem.fxml","/View/AddMeasurement.fxml","/View/ModifyMeasurement.fxml",
+        "/View/ModifyCustomer.fxml", "/View/DeleteCustomer.fxml", "/View/Arreglos.fxml", "/View/AddHandiwork.fxml",
+        "/View/AddNewItem.fxml", "/View/ModifyItem.fxml", "/View/AddMeasurement.fxml", "/View/ModifyMeasurement.fxml",
         "/View/AssignMeasurementToItem.fxml"};
-
-    
 
     private AddCustomerController buildAddCustomerController() {
         Customer customer = new Customer();
@@ -196,7 +190,7 @@ public class PrincipalHomeController implements Initializable {
 
         if (event.getSource() == AddHandiwork) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(Paths[NUMBERTAB]));
-            loader.setControllerFactory(t -> buildHandiworkController(-1 , false));
+            loader.setControllerFactory(t -> buildHandiworkController(-1, false));
             Stage stageDialog = new Stage();
             stageDialog.initModality(Modality.APPLICATION_MODAL);
             stageDialog.setScene(new Scene(loader.load()));
@@ -243,7 +237,7 @@ public class PrincipalHomeController implements Initializable {
         stageDialog.setTitle("Agregar cliente");
         stageDialog.showAndWait();
     }
-    
+
     @FXML
     private void AddItem() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Paths[7]));
@@ -254,7 +248,7 @@ public class PrincipalHomeController implements Initializable {
         stageDialog.setTitle("Agregar nuevo Item");
         stageDialog.showAndWait();
     }
-    
+
     @FXML
     private void UpdateItem() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Paths[8]));
@@ -265,7 +259,7 @@ public class PrincipalHomeController implements Initializable {
         stageDialog.setTitle("Actualizar Item");
         stageDialog.showAndWait();
     }
-    
+
     @FXML
     private void AddMeasurement() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Paths[9]));
@@ -276,7 +270,7 @@ public class PrincipalHomeController implements Initializable {
         stageDialog.setTitle("Agregar nueva medida");
         stageDialog.showAndWait();
     }
-    
+
     @FXML
     private void UpdateMeasurement() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Paths[10]));
@@ -287,7 +281,7 @@ public class PrincipalHomeController implements Initializable {
         stageDialog.setTitle("Actualizar Item");
         stageDialog.showAndWait();
     }
-    
+
     @FXML
     private void AssignMeasurementItem() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Paths[11]));
@@ -298,7 +292,7 @@ public class PrincipalHomeController implements Initializable {
         stageDialog.setTitle("Asignar Medidas a un Item");
         stageDialog.showAndWait();
     }
-    
+
     private ItemDAO buildItemDAO() {
         return new SQLItemDAOImpl();
     }
@@ -306,15 +300,15 @@ public class PrincipalHomeController implements Initializable {
     private ItemManager buildItemManager() {
         return new ItemManager(buildItemDAO());
     }
-    
-    private AddNewItemController buildAddNewItemController(){
+
+    private AddNewItemController buildAddNewItemController() {
         return new AddNewItemController(buildItemManager());
     }
-    
-    private ModifyItemController buildModifyItemController(){
+
+    private ModifyItemController buildModifyItemController() {
         return new ModifyItemController(buildItemManager());
     }
-    
+
     private MeasurementDAO buildMeasurementDAO() {
         return new SQLMeasurementDAOImpl();
     }
@@ -322,16 +316,16 @@ public class PrincipalHomeController implements Initializable {
     private MeasurementManager buildMeasurementManager() {
         return new MeasurementManager(buildMeasurementDAO());
     }
-    
-    private AddMeasurementController buildAddMeasurementController(){
-        return  new AddMeasurementController(buildItemManager(), buildMeasurementManager());
+
+    private AddMeasurementController buildAddMeasurementController() {
+        return new AddMeasurementController(buildItemManager(), buildMeasurementManager());
     }
-    
-    private ModifyMeasurementController buildModifyMeasurementController(){
-        return  new ModifyMeasurementController(buildMeasurementManager());
+
+    private ModifyMeasurementController buildModifyMeasurementController() {
+        return new ModifyMeasurementController(buildMeasurementManager());
     }
-    
-    private AssignMeasurementToItemController buildAssignMeasurementToItemController(){
+
+    private AssignMeasurementToItemController buildAssignMeasurementToItemController() {
         return new AssignMeasurementToItemController(buildItemManager(), buildMeasurementManager());
     }
 
@@ -346,7 +340,7 @@ public class PrincipalHomeController implements Initializable {
         stageDialog.showAndWait();
     }
 
-    private AddHandiworkController buildHandiworkController(int id_handiwork , boolean  modify) {
+    private AddHandiworkController buildHandiworkController(int id_handiwork, boolean modify) {
         return new AddHandiworkController(modelHandiwork, modelCustomer, id_handiwork, modify);
     }
 
@@ -358,7 +352,7 @@ public class PrincipalHomeController implements Initializable {
         TcHanState.setCellValueFactory(new PropertyValueFactory<>("stateString"));
         TcTotalHanCost.setCellValueFactory(new PropertyValueFactory<>("totalCost"));
         TcPaymentLeft.setCellValueFactory(new PropertyValueFactory<>("leftPayment"));
-        ObservableList<Handiwork> obListHandiwork = showAllHandiworks ?  FXCollections.observableList(modelHandiwork.getAllHandiworks()) : FXCollections.observableList(modelHandiwork.getPendingHandworks()) ;
+        ObservableList<Handiwork> obListHandiwork = showAllHandiworks ? FXCollections.observableList(modelHandiwork.getAllHandiworks()) : FXCollections.observableList(modelHandiwork.getPendingHandworks());
         TbvHandiworks.setItems(obListHandiwork);
         filterTable(obListHandiwork);
     }
@@ -405,14 +399,16 @@ public class PrincipalHomeController implements Initializable {
     private void openSelected() {
         try {
             Handiwork tableItemSelected = TbvHandiworks.getSelectionModel().getSelectedItem();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/AddHandiwork.fxml"));
-            loader.setControllerFactory(t -> buildHandiworkController(tableItemSelected.getHandiWorkID(), true));
-            Stage stageDialog = new Stage();
-            stageDialog.initModality(Modality.APPLICATION_MODAL);
-            stageDialog.setScene(new Scene(loader.load()));
-            stageDialog.setTitle("Obra");
-            stageDialog.showAndWait();
-            refreshTable();
+            if (tableItemSelected != null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/AddHandiwork.fxml"));
+                loader.setControllerFactory(t -> buildHandiworkController(tableItemSelected.getHandiWorkID(), true));
+                Stage stageDialog = new Stage();
+                stageDialog.initModality(Modality.APPLICATION_MODAL);
+                stageDialog.setScene(new Scene(loader.load()));
+                stageDialog.setTitle("Obra");
+                stageDialog.showAndWait();
+                refreshTable();
+            } 
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -423,16 +419,17 @@ public class PrincipalHomeController implements Initializable {
             menuBarHandiworks.setVisible(false);
             hboxButton.getChildren().clear();
             insertListButtons();
-        } 
+        }
     }
-    
+
     @FXML
     void showAllHandiworks(ActionEvent event) throws IOException {
         showPrincipalStage(true);
     }
-    
-    private PrincipalHomeController buildController( Stage stage , boolean modalWindow) {
-        return new PrincipalHomeController(  modelCustomer  , modelHandiwork, stage ,  modalWindow);
+
+
+    private PrincipalHomeController buildController(Stage stage, boolean modalWindow) {
+        return new PrincipalHomeController(modelCustomer, modelHandiwork, stage, modalWindow);
     }
 
     private void insertListButtons() {
@@ -449,7 +446,7 @@ public class PrincipalHomeController implements Initializable {
         hboxFiltro.setSpacing(10);
 //        hboxFiltro.getChildren().add(dpInitial);
         hboxButton.getChildren().addAll(BtnBack);
-        
+
         BtnBack.setOnAction((ActionEvent event) -> {
             try {
                 showPrincipalStage(false);
@@ -464,7 +461,7 @@ public class PrincipalHomeController implements Initializable {
     private void showPrincipalStage(boolean modalWindow) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/PrincipalHome.fxml"));
         stage.setTitle("Telas Company");
-        loader.setControllerFactory(t -> buildController(stage,modalWindow ));
+        loader.setControllerFactory(t -> buildController(stage, modalWindow));
         stage.setScene(new Scene(loader.load()));
         stage.show();
     }

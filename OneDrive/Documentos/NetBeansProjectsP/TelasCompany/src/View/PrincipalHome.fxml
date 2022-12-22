@@ -147,6 +147,7 @@
                                  </effect>
                                  <children>
                                     <Label layoutX="25.0" layoutY="7.0" styleClass="lblOptionPrincipal" text="Recargar Tabla" textAlignment="CENTER" textFill="WHITE">
+
                                        <font>
                                           <Font name="Roboto Black" size="22.0" />
                                        </font>
@@ -154,6 +155,7 @@
                                  </children>
                               </Pane>
                               <Button id="btnAddProject" alignment="CENTER" layoutX="10.0" layoutY="58.0" mnemonicParsing="false" onMouseClicked="#refreshTable" prefHeight="61.0" prefWidth="384.0" stylesheets="@../css/styles.css" text="Abrir" textAlignment="CENTER">
+
                                  <styleClass>
                                     <String fx:value="roundButton" />
                                     <String fx:value="sale" />

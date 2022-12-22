@@ -216,7 +216,7 @@ public class SQLHandiworkDAOImpl implements HandiworkDAO {
         }
         return -1;
     }
-
+    
     @Override
     public int updateHandiworkCosts(int idHandiwork) {
         CallableStatement statement = null;
@@ -230,7 +230,7 @@ public class SQLHandiworkDAOImpl implements HandiworkDAO {
         }
         return -1;
     }
-
+    // this pr is used on updateHandiworkCosts updateHandiworkCosts
     @Override
     public int updateLeftCost(int idHandiwork) {
         CallableStatement statement = null;
@@ -239,6 +239,21 @@ public class SQLHandiworkDAOImpl implements HandiworkDAO {
             statement = connection.prepareCall("{call pr_update_handiwork_left_payment(?)}");
             statement.setInt(1, idHandiwork);
             statement.executeQuery();
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+        return -1;
+    }
+    // only delete handiwork if its total cost is equal to 0.00
+    @Override
+    public int deleteHandiwork(int idHandiwork) {
+        CallableStatement statement = null;
+        ResultSet rs;
+        try {
+            statement = connection.prepareCall("{call pr_delete_handiwork(?)}");
+            statement.setInt(1, idHandiwork);
+            statement.executeQuery();
+            return 1;
         } catch (SQLException e) {
             System.err.println(e);
         }

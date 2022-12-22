@@ -91,6 +91,9 @@ public class AddHandiworkController implements Initializable {
     private Button BtbUpdateHandiwork;
 
     @FXML
+    private Button BtnDeleteHandiwork;
+
+    @FXML
     private Button BtnSearchCustomer;
     @FXML
     private TextField txfCedRuc;
@@ -140,6 +143,9 @@ public class AddHandiworkController implements Initializable {
                 loadStage(loader, "Agregar Item");
                 fillHandiworkFields(id_handiwork);
                 modelHandiwork.updateCosts(id_handiwork);
+
+                setItemstable();
+
             }
 
         } catch (Exception e) {
@@ -154,18 +160,26 @@ public class AddHandiworkController implements Initializable {
             HandiworkDetail tableItemSelected = Table.getSelectionModel().getSelectedItem();
             if (showConfirmation(tableItemSelected.getPayment() + "", tableItemSelected.getNameItem())) {
                 HandiworkDetailManager.DeleteHandiworkDetail(id_handiwork, tableItemSelected.getId());
-                HandiworkDetailManager = new HandiworkDetailManager(buildHandiworkDetailDao());
-                List<HandiworkDetail> ListItems = HandiworkDetailManager.ListItemsForTableView(id_handiwork);
-                ObservableList = FXCollections.observableList(ListItems);
-                setItemstable();
+
+                // update table of left payment 
                 modelHandiwork.updateCosts(id_handiwork);
+                setItemstable();
                 fillHandiworkFields(id_handiwork);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    // show button to delete only if total cost of handiwork is equal to 0
+    @FXML
+    void deleteHanidowork(ActionEvent event) {
+        if (modelHandiwork.deleteHandiwork(id_handiwork) == 1) {
+            infoDial("Eliminación de obra", "Se eliminó la obra con éxito", "");
+            closeStage();
+        } else {
+            showError("Error en la base de datos", "No se pudo eliminar la obra");
+        }
+    }
     @FXML
     void closeDialog(MouseEvent event) {
         closeStage();
@@ -183,12 +197,13 @@ public class AddHandiworkController implements Initializable {
         stageDialog.setTitle(title);
         stageDialog.showAndWait();
         HandiworkDetailManager = new HandiworkDetailManager(buildHandiworkDetailDao());
-        List<HandiworkDetail> ListItems = HandiworkDetailManager.ListItemsForTableView(id_handiwork);
-        ObservableList = FXCollections.observableList(ListItems);
+        
         setItemstable();
     }
 
     public void setItemstable() {
+        List<HandiworkDetail> ListItems = HandiworkDetailManager.ListItemsForTableView(id_handiwork);
+        ObservableList = FXCollections.observableList(ListItems);
         Table.setItems(null);
         Table.setItems(ObservableList);
     }
@@ -211,6 +226,7 @@ public class AddHandiworkController implements Initializable {
                 btnPaymentsItem.setDisable(true);
                 btnShowDetailItem.setDisable(true);
             }
+            setItemstable();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -394,6 +410,12 @@ public class AddHandiworkController implements Initializable {
         txfPorPagar.setText(String.format("%.2f", listHandiwork.get(0).getLeftPayment()));
         Double payed = listHandiwork.get(0).getTotalCost() - listHandiwork.get(0).getLeftPayment();
         TxfPagado.setText(String.format("%.2f", payed));
+        // if total cost is equal to 0, show button to delete handiwork
+        if (txfCostoTotal.getText().equals("0.00")) {
+            BtnDeleteHandiwork.setVisible(true);
+        } else {
+            BtnDeleteHandiwork.setVisible(false);
+        }
     }
 
     AddCustomerController buildAddCustomerDialog(CustomerManager modelCustomer, Customer customer) {
@@ -447,6 +469,7 @@ public class AddHandiworkController implements Initializable {
     private ModifyEliminateItemAddedController buildModifyCustomerController(HandiworkDetail itemSelected, HandiworkDetailManager HandiworkDtlModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel, PlanchadoManager modelPlanchado, int id_handiwork) {
         return new ModifyEliminateItemAddedController(itemSelected, HandiworkDtlModel, MeasurementManagerModel, HandiworkPaymentManagerModel, modelPlanchado,id_handiwork);
     }
+
 
     private ShowPaymentsItemController buildShowPaymentsItemController(HandiworkPaymentManager HandiworkPaymentManagerModel, HandiworkDetail itemSelected) {
         return new ShowPaymentsItemController(HandiworkPaymentManagerModel, HandiworkPayment, itemSelected, buildHandiworkDetailManager());
@@ -515,6 +538,7 @@ public class AddHandiworkController implements Initializable {
             infoDial("Actualización obra", "Estado de la obra se guardó correctamente", "");
             // update all the handiwork details to finished state
             modelHandiwork.setStateOfHanDetail(listHandiwork.get(0));
+            setItemstable();
         } else {
             showError("Error al guradar obra", "No se actualizó los cambios de la obra");
         }

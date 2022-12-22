@@ -334,7 +334,8 @@ public class ModifyEliminateItemAddedController implements Initializable {
         costCol.setMinWidth(100);
         // lista de planchados para colocar en tableView
         List<Planchado> listPlanchados = modelPlanchado.listPlanchadosByHanDetail(itemSelected.getId());
-        System.out.println(listPlanchados);
+
+
         obsListPlanchados = FXCollections.observableList(listPlanchados);
         updateTblView(TblPlanchado, obsListPlanchados);
         // Columna con el boton de quitar planchados de la tabla
@@ -384,6 +385,7 @@ public class ModifyEliminateItemAddedController implements Initializable {
         HBoxMeasurement2.getChildren().addAll(TblPlanchado);
         HBoxMeasurement2.getStylesheets().add(cssPath);
         HBoxMeasurement2.setAlignment(Pos.CENTER_LEFT);
+
         HBoxMeasurement.setMargin(TblPlanchado, new Insets(0, 0, 0, 50));
         Planchado planchadoSeleccion = new Planchado();
         planchadoSeleccion.setPlanchadoID(-1);
@@ -432,7 +434,9 @@ public class ModifyEliminateItemAddedController implements Initializable {
                 autoCompletePopup.getSuggestions().addAll(modelPlanchado.listPlanchados());
                 autoCompletePopup.setSelectionHandler(event -> {
                     TxfPanchadoDescr.setText(event.getObject().getDescription());
+
                     TxfPanchadoCost.setText(String.format(Locale.US,"%.2f", event.getObject().getCost()));
+
                     planchadoSeleccion.setPlanchadoID(event.getObject().getPlanchadoID());
                     planchadoSeleccion.setDescription(event.getObject().getDescription());
                     planchadoSeleccion.setCost(event.getObject().getCost());
@@ -462,7 +466,10 @@ public class ModifyEliminateItemAddedController implements Initializable {
         for (Planchado planchado : obsListPlanchados) {
             totalCost += planchado.getCost();
         }
+
         TxtFTotalCost.setText(String.format(Locale.US,"%.2f", totalCost));
+
+
     }
 
     private void resetTextFields(TextField TxfPanchadoCost, TextField TxfPanchadoDescr) {

@@ -30,4 +30,5 @@ public interface HandiworkDAO extends DAO{
     public int updateHandiworkCosts(int idHandiwork);
 
     public int updateLeftCost(int idHandiwork);
+    public int deleteHandiwork(int idHandiwork);
 }
