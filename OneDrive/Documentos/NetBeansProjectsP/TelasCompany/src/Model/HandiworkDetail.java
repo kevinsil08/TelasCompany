@@ -23,6 +23,7 @@ public class HandiworkDetail {
     private String DeliveryDeadline;
     private String PayStatus;
     private String State;
+    private int SubItemsQty;
 
     public HandiworkDetail() {
     }
@@ -39,6 +40,19 @@ public class HandiworkDetail {
         this.PayStatus = PayStatus;
         this.State = State;
     }
+    public HandiworkDetail(int Id, int TypeItemId, int HandiworkId, String EntryDate, String Detail, String AddDetail, double Cost, String DeliveryDeadline, String PayStatus, String State , int SubItemsQty) {
+        this.Id = Id;
+        this.TypeItemId = TypeItemId;
+        this.HandiworkId = HandiworkId;
+        this.EntryDate = EntryDate;
+        this.Detail = Detail;
+        this.AddDetail = AddDetail;
+        this.Cost = Cost;
+        this.DeliveryDeadline = DeliveryDeadline;
+        this.PayStatus = PayStatus;
+        this.State = State;
+        this.SubItemsQty = SubItemsQty;
+    }
 
     public void setPayment(double Payment) {
         this.Payment = Payment;
@@ -46,6 +60,14 @@ public class HandiworkDetail {
 
     public double getPayment() {
         return Payment;
+    }
+
+    public int getSubItemsQty() {
+        return SubItemsQty;
+    }
+
+    public void setSubItemsQty(int SubItemsQty) {
+        this.SubItemsQty = SubItemsQty;
     }
 
     

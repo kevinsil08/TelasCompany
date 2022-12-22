@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="529.0" prefWidth="1148.0" style="-fx-alignment: start; -fx-background-color: white;" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_Pages.AddNewItemController">
+<VBox minWidth="-Infinity" prefHeight="529.0" prefWidth="695.0" style="-fx-alignment: start-left; -fx-background-color: white;" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_Pages.AddNewItemController">
    <children>
-      <VBox prefHeight="70.0" prefWidth="674.0" style="-fx-alignment: center;">
+      <VBox prefHeight="75.0" prefWidth="814.0" style="-fx-alignment: center;" VBox.vgrow="NEVER">
          <children>
             <Label text="Añadir Item">
                <font>
@@ -28,81 +28,92 @@
             </Label>
          </children>
       </VBox>
-      <HBox prefHeight="55.0" prefWidth="1148.0" style="-fx-alignment: start;">
+      <VBox alignment="CENTER_LEFT" prefHeight="395.0" prefWidth="664.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
          <children>
-            <Label text="Nombre del Item">
-               <font>
-                  <Font name="Roboto Medium" size="22.0" />
-               </font>
-               <HBox.margin>
-                  <Insets right="20.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets left="20.0" />
-               </padding>
-            </Label>
-            <TextField fx:id="TxtItem" prefColumnCount="10">
-               <font>
-                  <Font name="Roboto" size="17.0" />
-               </font>
-            </TextField>
-            <Label text="*" textFill="#e10808">
-               <font>
-                  <Font name="Roboto Black" size="14.0" />
-               </font>
-            </Label>
+            <HBox prefHeight="55.0" prefWidth="1148.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
+               <children>
+                  <Label text="Nombre del Item">
+                     <font>
+                        <Font name="Roboto Medium" size="22.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="TxtItem" prefColumnCount="10">
+                     <font>
+                        <Font name="Roboto" size="17.0" />
+                     </font>
+                  </TextField>
+                  <Label text="*" textFill="#e10808">
+                     <font>
+                        <Font name="Roboto Black" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="55.0" prefWidth="1148.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
+               <children>
+                  <Button contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#AddItem" style="-fx-alignment: center;" styleClass="saveButton" stylesheets="@../css/styles.css" text="Ingresar">
+                     <font>
+                        <Font name="Roboto Medium" size="22.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/save_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="BtnCancelar" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#closeDialog" style="-fx-alignment: center;" styleClass="cancelButton" stylesheets="@../css/styles.css" text="Cancelar">
+                     <font>
+                        <Font name="Roboto Medium" size="22.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/cancel_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="226.0" prefWidth="679.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
+               <children>
+                  <TableView fx:id="TableItem" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="195.0" prefWidth="458.0">
+                    <columns>
+                      <TableColumn fx:id="nameItemColumn" prefWidth="75.0" text="Nombre del Item" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                     <HBox.margin>
+                        <Insets top="20.0" />
+                     </HBox.margin>
+                  </TableView>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </HBox>
          </children>
          <VBox.margin>
-            <Insets top="20.0" />
+            <Insets />
          </VBox.margin>
-         <padding>
-            <Insets left="20.0" />
-         </padding>
-      </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: start;">
-         <children>
-            <Button contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#AddItem" styleClass="roundButton" stylesheets="@../css/styles.css" text="Ingresar">
-               <font>
-                  <Font name="Roboto Medium" size="22.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="20.0" top="20.0" />
-               </HBox.margin>
-               <graphic>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Images/save_icon.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="BtnCancelar" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#closeDialog" styleClass="roundButton" stylesheets="@../css/styles.css" text="Cancelar">
-               <font>
-                  <Font name="Roboto Medium" size="22.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="100.0" right="200.0" top="20.0" />
-               </HBox.margin>
-               <graphic>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Images/cancel_icon.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </HBox>
-      <TableView fx:id="TableItem" prefHeight="191.0" prefWidth="990.0">
-        <columns>
-          <TableColumn fx:id="nameItemColumn" prefWidth="75.0" text="Nombre del Item" />
-        </columns>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
-         <VBox.margin>
-            <Insets left="20.0" right="600.0" />
-         </VBox.margin>
-      </TableView>
+      </VBox>
    </children>
 </VBox>

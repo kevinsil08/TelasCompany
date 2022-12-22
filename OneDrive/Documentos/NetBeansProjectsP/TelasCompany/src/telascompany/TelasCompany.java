@@ -9,13 +9,17 @@ package telascompany;
 import Controller_Pages.PrincipalHomeController;
 import DAO.CustomerDAO;
 import DAO.HandiworkDAO;
+import DAO.PlanchadoDAO;
 import Model.CustomerManager;
 import Model.HandiworkManager;
+import Model.PlanchadoManager;
 import Model.SQLCustomerDAOImpl;
 import Model.SQLHandiworkDAOImpl;
+import Model.SQLPlanchadoImpl;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -27,7 +31,8 @@ public class TelasCompany extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/PrincipalHome.fxml"));
-        stage.setTitle("Telas Company");
+        stage.setTitle("Bordados Susana");
+        stage.getIcons().add(new Image("/View/bordados-logo-negro.png"));
         loader.setControllerFactory(t -> buildController(stage));
         stage.setScene(new Scene(loader.load()));
         stage.show();
@@ -41,7 +46,7 @@ public class TelasCompany extends Application {
     }
 
     private PrincipalHomeController buildController( Stage stage) {
-        return new PrincipalHomeController(  buildModelCustomer()  , buildModelHandiwork(),stage);
+        return new PrincipalHomeController(  buildModelCustomer()  , buildModelHandiwork(), stage ,  false);
     }
     
     
@@ -61,5 +66,5 @@ public class TelasCompany extends Application {
     private HandiworkManager buildModelHandiwork(){
         return new HandiworkManager(buildHandiworkDAO());
     }
-    
+     
 }

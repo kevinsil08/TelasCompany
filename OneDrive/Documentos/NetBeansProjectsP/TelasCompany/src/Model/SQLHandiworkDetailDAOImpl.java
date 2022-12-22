@@ -30,7 +30,7 @@ public class SQLHandiworkDetailDAOImpl implements HandiworkDetailDAO{
     public int InsertHandiworkDetail(HandiworkDetail HandiworkDetail) {
         try {
             
-            CallableStatement statement = connection.prepareCall("{call pr_add_handiwork_detail (?,?,?,?,?,?,?,?,?)}");
+            CallableStatement statement = connection.prepareCall("{call pr_add_handiwork_detail (?,?,?,?,?,?,?,?,?,?)}");
             statement.setInt(1, HandiworkDetail.getTypeItemId());
             statement.setInt(2, HandiworkDetail.getHandiworkId());
             statement.setString(3, HandiworkDetail.getEntryDate());
@@ -40,6 +40,7 @@ public class SQLHandiworkDetailDAOImpl implements HandiworkDetailDAO{
             statement.setString(7, HandiworkDetail.getDeliveryDeadline());
             statement.setBoolean(8, false);
             statement.setString(9, HandiworkDetail.getState());
+            statement.setInt(10, HandiworkDetail.getSubItemsQty());
             ResultSet rs = statement.executeQuery();
             if(rs.next()){
                 return rs.getInt("last_insert_id()");
@@ -94,7 +95,7 @@ public class SQLHandiworkDetailDAOImpl implements HandiworkDetailDAO{
     public boolean UpdateHandiworkDetail(HandiworkDetail HandiworkDetail) {
         CallableStatement statement = null;
         try {
-            statement = connection.prepareCall("{call pr_update_handiwork_detail( ?, ?, ?, ?, ?, ?, ?)}");
+            statement = connection.prepareCall("{call pr_update_handiwork_detail( ?, ?, ?, ?, ?, ?, ?,?)}");
             statement.setString(1, HandiworkDetail.getDetail());
             statement.setString(2, HandiworkDetail.getAddDetail());
             statement.setDouble(3, HandiworkDetail.getCost());
@@ -107,12 +108,13 @@ public class SQLHandiworkDetailDAOImpl implements HandiworkDetailDAO{
             statement.setBoolean(5, paystatus);
             
             String stateItem = "p";
-            if(! HandiworkDetail.getPayStatus().equals("Pendiente")){
+            if(! HandiworkDetail.getState().equals("Pendiente")){
                 stateItem = "f";
             }
-            
+
             statement.setString(6, stateItem);
             statement.setInt(7, HandiworkDetail.getId());
+            statement.setInt(8, HandiworkDetail.getSubItemsQty());
             statement.execute();
             return true;
         } catch (SQLException e) {

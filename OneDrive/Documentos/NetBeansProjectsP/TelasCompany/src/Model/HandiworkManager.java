@@ -38,6 +38,9 @@ public class HandiworkManager {
     public List getPendingHandworks(){
         return handiworkDAO.findPendingHandiworks();
     }
+    public List getAllHandiworks(){
+        return handiworkDAO.findAll();
+    }
     
     public void close(){
         try {

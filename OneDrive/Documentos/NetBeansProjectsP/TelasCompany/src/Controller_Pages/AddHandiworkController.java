@@ -9,6 +9,7 @@ import DAO.HandiworkDetailDAO;
 import DAO.ItemDAO;
 import DAO.MeasurementDAO;
 import DAO.PaymentDAO;
+import DAO.PlanchadoDAO;
 import Model.Customer;
 import Model.CustomerManager;
 import Model.Handiwork;
@@ -20,14 +21,17 @@ import Model.HandiworkPaymentManager;
 import Model.Item;
 import Model.ItemManager;
 import Model.MeasurementManager;
+import Model.PlanchadoManager;
 import Model.SQLHandiworkDetailDAOImpl;
 import Model.SQLHandiworkPaymentDAOImpl;
 import Model.SQLItemDAOImpl;
 import Model.SQLMeasurementDAOImpl;
+import Model.SQLPlanchadoImpl;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -67,7 +71,6 @@ public class AddHandiworkController implements Initializable {
     @FXML
     private TableColumn NameItem = new TableColumn("Tipo de Item");
 
-
     @FXML
     private TableColumn DeliveryDate = new TableColumn("Fecha de Entrega");
 
@@ -80,14 +83,13 @@ public class AddHandiworkController implements Initializable {
     @FXML
     private TableColumn StatusPayment = new TableColumn("Estado de Abono");
 
-
     @FXML
     private TableColumn StatusHandiworkDetail = new TableColumn("Estado");
     @FXML
     private Button BtnAddCustomer;
     @FXML
     private Button BtbUpdateHandiwork;
-    
+
     @FXML
     private Button BtnSearchCustomer;
     @FXML
@@ -102,7 +104,7 @@ public class AddHandiworkController implements Initializable {
 
     @FXML
     private TextField txfCostoTotal;
-    
+
     @FXML
     private TextField TxfDate;
     @FXML
@@ -137,20 +139,27 @@ public class AddHandiworkController implements Initializable {
                 loader.setControllerFactory(t -> buildAddItemController());
                 loadStage(loader, "Agregar Item");
                 fillHandiworkFields(id_handiwork);
+                modelHandiwork.updateCosts(id_handiwork);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
     private void DeleteItem(MouseEvent event) throws IOException {
         try {
 
             HandiworkDetail tableItemSelected = Table.getSelectionModel().getSelectedItem();
-            if(showConfirmation(tableItemSelected.getPayment()+"", tableItemSelected.getNameItem())){
+            if (showConfirmation(tableItemSelected.getPayment() + "", tableItemSelected.getNameItem())) {
                 HandiworkDetailManager.DeleteHandiworkDetail(id_handiwork, tableItemSelected.getId());
+                HandiworkDetailManager = new HandiworkDetailManager(buildHandiworkDetailDao());
+                List<HandiworkDetail> ListItems = HandiworkDetailManager.ListItemsForTableView(id_handiwork);
+                ObservableList = FXCollections.observableList(ListItems);
+                setItemstable();
+                modelHandiwork.updateCosts(id_handiwork);
+                fillHandiworkFields(id_handiwork);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -193,8 +202,9 @@ public class AddHandiworkController implements Initializable {
                 btnPaymentsItem.setDisable(false);
                 btnShowDetailItem.setDisable(false);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ModifyEliminateItemAdded.fxml"));
-                loader.setControllerFactory(t -> buildModifyCustomerController(tableItemSelected, buildHandiworkDetailManager(), buildMeasurementManager(), buildHandiworkPaymentManager()));
+                loader.setControllerFactory(t -> buildModifyCustomerController(tableItemSelected, buildHandiworkDetailManager(), buildMeasurementManager(), buildHandiworkPaymentManager(), buildPlanchadoManager(),id_handiwork));
                 loadStage(loader, "Modificar/Eliminar item ingresado");
+                modelHandiwork.updateCosts(id_handiwork);
                 fillHandiworkFields(id_handiwork);
             } else {
                 showError("Error debe seleccionar un item", "Error debe seleccionar un item");
@@ -217,9 +227,9 @@ public class AddHandiworkController implements Initializable {
                 btnShowDetailItem.setDisable(false);
                 HandiworkPayment = new HandiworkPayment();
                 HandiworkPayment.setId(tableItemSelected.getId());
-                
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ShowPaymentsItem.fxml"));
-                loader.setControllerFactory(t -> buildShowPaymentsItemController(buildHandiworkPaymentManager(),tableItemSelected));
+                loader.setControllerFactory(t -> buildShowPaymentsItemController(buildHandiworkPaymentManager(), tableItemSelected));
                 loadStage(loader, "Pagos del item");
                 fillHandiworkFields(id_handiwork);
 
@@ -238,18 +248,18 @@ public class AddHandiworkController implements Initializable {
         verifyWindowMode();
         loadComboBoxValues();
         NameItem.setCellValueFactory(new PropertyValueFactory<>("nameItem"));
-        NameItem.setStyle( "-fx-alignment: CENTER;");
+        NameItem.setStyle("-fx-alignment: CENTER;");
         DeliveryDate.setCellValueFactory(new PropertyValueFactory<>("DeliveryDeadline"));
-        DeliveryDate.setStyle( "-fx-alignment: CENTER;");
+        DeliveryDate.setStyle("-fx-alignment: CENTER;");
         StatusPayment.setCellValueFactory(new PropertyValueFactory<>("PayStatus"));
-        StatusPayment.setStyle( "-fx-alignment: CENTER;");
+        StatusPayment.setStyle("-fx-alignment: CENTER;");
         StatusHandiworkDetail.setCellValueFactory(new PropertyValueFactory<>("State"));
-        StatusHandiworkDetail.setStyle( "-fx-alignment: CENTER;");
+        StatusHandiworkDetail.setStyle("-fx-alignment: CENTER;");
         Payment.setCellValueFactory(new PropertyValueFactory<>("Payment"));
-        Payment.setStyle( "-fx-alignment: CENTER-RIGHT;");
+        Payment.setStyle("-fx-alignment: CENTER-RIGHT;");
         TotalCost.setCellValueFactory(new PropertyValueFactory<>("Cost"));
-        TotalCost.setStyle( "-fx-alignment: CENTER-RIGHT;");
-        Table.getColumns().addAll(NameItem, DeliveryDate, StatusPayment, StatusHandiworkDetail,Payment, TotalCost);
+        TotalCost.setStyle("-fx-alignment: CENTER-RIGHT;");
+        Table.getColumns().addAll(NameItem, DeliveryDate, StatusPayment, StatusHandiworkDetail, Payment, TotalCost);
         System.out.println(" id :  " + id_handiwork);
         HandiworkDetailManager = new HandiworkDetailManager(buildHandiworkDetailDao());
         List<HandiworkDetail> ListItems = HandiworkDetailManager.ListItemsForTableView(id_handiwork);
@@ -363,19 +373,20 @@ public class AddHandiworkController implements Initializable {
         LocalDate systemDate = java.time.LocalDate.now();
         int customerId = listCustomer.get(0).getId();
         id_handiwork = modelHandiwork.addHandiwork(customerId, systemDate.toString(), 0., 0, false, 0., "Por pagar");
+        btnAddItem.setDisable(modify);
         return id_handiwork;
     }
 
     private void fillCustomerNames(List<Customer> listCustomer) {
         txfNames.setText(listCustomer.get(0).getFirstName());
         txfSurnames.setText(listCustomer.get(0).getLastName());
-        txfNames.setDisable(true);
-        txfSurnames.setDisable(true);
+        txfNames.setEditable(false);
+        txfSurnames.setEditable(false);
         txfCedRuc.setText(listCustomer.get(0).getDocCiRuc());
     }
 
     private void fillHandiworkFields(int idHandiwork) {
-        int ingreso  = modelHandiwork.updateCosts(idHandiwork);
+        int ingreso = modelHandiwork.updateCosts(idHandiwork);
         List<Handiwork> listHandiwork = modelHandiwork.getById(idHandiwork);
         txfCostoTotal.setText(String.format("%.2f", listHandiwork.get(0).getTotalCost()));
         CmbEstado.getSelectionModel().select(listHandiwork.get(0).getStateString());
@@ -421,17 +432,24 @@ public class AddHandiworkController implements Initializable {
         return new HandiworkPaymentManager(buildPaymentDAO());
     }
 
+    private PlanchadoManager buildPlanchadoManager() {
+        return new PlanchadoManager(buildPlanchadoDAO());
+    }
+
+    private PlanchadoDAO buildPlanchadoDAO() {
+        return new SQLPlanchadoImpl();
+    }
+
     private AddItemController buildAddItemController() {
-        return new AddItemController(buildHandiworkDetailManager(), buildItemManager(), buildMeasurementManager(), buildHandiworkPaymentManager(), id_handiwork);
+        return new AddItemController(buildHandiworkDetailManager(), buildItemManager(), buildMeasurementManager(), buildHandiworkPaymentManager(), buildPlanchadoManager(), id_handiwork);
     }
 
-    private ModifyEliminateItemAddedController buildModifyCustomerController(HandiworkDetail itemSelected, HandiworkDetailManager HandiworkDtlModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel) {
-        return new ModifyEliminateItemAddedController(itemSelected, HandiworkDtlModel, MeasurementManagerModel, HandiworkPaymentManagerModel);
+    private ModifyEliminateItemAddedController buildModifyCustomerController(HandiworkDetail itemSelected, HandiworkDetailManager HandiworkDtlModel, MeasurementManager MeasurementManagerModel, HandiworkPaymentManager HandiworkPaymentManagerModel, PlanchadoManager modelPlanchado, int id_handiwork) {
+        return new ModifyEliminateItemAddedController(itemSelected, HandiworkDtlModel, MeasurementManagerModel, HandiworkPaymentManagerModel, modelPlanchado,id_handiwork);
     }
 
-
-    private ShowPaymentsItemController buildShowPaymentsItemController(HandiworkPaymentManager HandiworkPaymentManagerModel, HandiworkDetail itemSelected){
-        return new ShowPaymentsItemController(HandiworkPaymentManagerModel,HandiworkPayment,itemSelected,buildHandiworkDetailManager());
+    private ShowPaymentsItemController buildShowPaymentsItemController(HandiworkPaymentManager HandiworkPaymentManagerModel, HandiworkDetail itemSelected) {
+        return new ShowPaymentsItemController(HandiworkPaymentManagerModel, HandiworkPayment, itemSelected, buildHandiworkDetailManager());
 
     }
 
@@ -463,9 +481,9 @@ public class AddHandiworkController implements Initializable {
 
     private void verifyWindowMode() {
         if (modify) {
-            txfCedRuc.setDisable(modify);
-            txfNames.setDisable(modify);
-            txfSurnames.setDisable(modify);
+            txfCedRuc.setEditable(!modify);
+            txfNames.setEditable(!modify);
+            txfSurnames.setEditable(!modify);
             BtnAddCustomer.setDisable(modify);
             BtnSearchCustomer.setDisable(modify);
             BtnSearchCustomer.setVisible(!modify);
@@ -475,29 +493,33 @@ public class AddHandiworkController implements Initializable {
                 fillCustomerNames(listCustomer);
                 fillHandiworkFields(id_handiwork);
             }
+        }else{
+            LocalDate systemDate = java.time.LocalDate.now();
+            TxfDate.setText(systemDate.format(DateTimeFormatter.ISO_DATE));
+            btnAddItem.setDisable(!modify);
         }
 
     }
 
     private void loadComboBoxValues() {
-        ObservableList<String> list = FXCollections.observableArrayList("Finalizado","Pendiente");
+        ObservableList<String> list = FXCollections.observableArrayList("Finalizado", "Pendiente");
         CmbEstado.setItems(list);
     }
-    
+
     @FXML
     void updateHandiwork(ActionEvent event) {
         // update only state that if is finalizado or pendiente
         List<Handiwork> listHandiwork = modelHandiwork.getById(id_handiwork);
         listHandiwork.get(0).setState(CmbEstado.getValue().equals("Finalizado"));
         if (modelHandiwork.updateHanState(listHandiwork.get(0)) != -1) {
-            infoDial("Actualización obra","Estado de la obra se guardó correctamente","");
+            infoDial("Actualización obra", "Estado de la obra se guardó correctamente", "");
             // update all the handiwork details to finished state
             modelHandiwork.setStateOfHanDetail(listHandiwork.get(0));
         } else {
             showError("Error al guradar obra", "No se actualizó los cambios de la obra");
-        }   
+        }
     }
-    
+
     private void infoDial(String title, String header, String msg) {
         Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
         infoAlert.setTitle(title);
@@ -505,13 +527,13 @@ public class AddHandiworkController implements Initializable {
         infoAlert.setContentText(msg);
         infoAlert.showAndWait();
     }
-    
-    private boolean showConfirmation(String amountTotalPayment,String name) {
+
+    private boolean showConfirmation(String amountTotalPayment, String name) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initModality(Modality.APPLICATION_MODAL);
         alert.setHeaderText(null);
         alert.setTitle("Confirmación");
-        alert.setContentText("¿Desea eliminar el item '"+name+"', ha sido abonado: "+amountTotalPayment+"$ ?");
+        alert.setContentText("¿Desea eliminar el item '" + name + "', ha sido abonado: " + amountTotalPayment + "$ ?");
         Optional<ButtonType> action = alert.showAndWait();
         boolean OptionChoosed = true;
         if (action.get() != ButtonType.OK) {

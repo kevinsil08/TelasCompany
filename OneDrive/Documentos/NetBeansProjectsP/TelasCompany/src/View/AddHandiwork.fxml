@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -13,64 +14,15 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" nodeOrientation="LEFT_TO_RIGHT" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_Pages.AddHandiworkController">
+<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" nodeOrientation="LEFT_TO_RIGHT" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_Pages.AddHandiworkController">
    <content>
-      <VBox prefHeight="733.0" prefWidth="1396.0" style="-fx-alignment: center;">
+      <VBox alignment="TOP_CENTER" prefHeight="862.0" prefWidth="1432.0" style="-fx-background-color: white;">
          <children>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="104.0" prefWidth="1234.0" style="-fx-alignment: center; -fx-border-width: 1px; -fx-border-color: black;" VBox.vgrow="SOMETIMES">
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="132.0" prefWidth="1234.0" style="-fx-border-width: 1px; -fx-border-color: #C2D2E7; -fx-background-color: #1C5D99;" styleClass="radiusBorderPanelOption" stylesheets="@../css/styles.css" VBox.vgrow="SOMETIMES">
                <children>
-                  <HBox prefHeight="46.0" prefWidth="1058.0" VBox.vgrow="SOMETIMES">
-                     <children>
-                        <Label text="Cédula" HBox.hgrow="SOMETIMES">
-                           <font>
-                              <Font name="Roboto Medium" size="20.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="50.0" top="20.0" />
-                           </HBox.margin>
-                        </Label>
-                        <TextField fx:id="txfCedRuc" maxWidth="-Infinity" onAction="#searchCustomerCI" prefColumnCount="10" prefHeight="26.0" prefWidth="193.0">
-                           <HBox.margin>
-                              <Insets left="53.0" top="19.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="Roboto" size="17.0" />
-                           </font>
-                        </TextField>
-                        <Button fx:id="BtnSearchCustomer" mnemonicParsing="false" onAction="#searchCustomerDialog" text="Buscar Cliente">
-                           <HBox.margin>
-                              <Insets left="100.0" top="14.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="Roboto Medium" size="16.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="BtnAddCustomer" mnemonicParsing="false" onAction="#addCustomer" text="Agregar Nuevo Cliente">
-                           <font>
-                              <Font name="Roboto Medium" size="16.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="20.0" top="14.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Label text="Estado">
-                           <HBox.margin>
-                              <Insets left="50.0" top="20.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="Roboto Medium" size="20.0" />
-                           </font>
-                        </Label>
-                        <ComboBox fx:id="CmbEstado" prefHeight="26.0" prefWidth="199.0">
-                           <HBox.margin>
-                              <Insets left="50.0" top="20.0" />
-                           </HBox.margin>
-                        </ComboBox>
-                     </children>
-                  </HBox>
                   <HBox prefHeight="72.0" prefWidth="1234.0" VBox.vgrow="SOMETIMES">
                      <children>
-                        <Label text="Nombres" wrapText="true">
+                        <Label text="Nombres" textFill="WHITE" wrapText="true">
                            <font>
                               <Font name="Roboto Medium" size="20.0" />
                            </font>
@@ -86,7 +38,7 @@
                               <Font name="Roboto" size="17.0" />
                            </font>
                         </TextField>
-                        <Label text="Apellidos">
+                        <Label text="Apellidos" textFill="WHITE">
                            <font>
                               <Font name="Roboto Medium" size="20.0" />
                            </font>
@@ -102,75 +54,148 @@
                               <Font name="Roboto" size="17.0" />
                            </font>
                         </TextField>
-                        <Label text="Fecha">
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="46.0" prefWidth="1058.0" VBox.vgrow="SOMETIMES">
+                     <children>
+                        <Label text="Cédula" textFill="WHITE" HBox.hgrow="SOMETIMES">
                            <font>
                               <Font name="Roboto Medium" size="20.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="50.0" top="10.0" />
+                              <Insets left="50.0" top="14.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="TxfDate" editable="false" layoutX="604.0" layoutY="20.0" maxWidth="-Infinity" prefColumnCount="10" prefHeight="38.0" prefWidth="203.0">
+                        <TextField fx:id="txfCedRuc" maxWidth="-Infinity" onAction="#searchCustomerCI" prefColumnCount="10" prefHeight="26.0" prefWidth="193.0">
+                           <HBox.margin>
+                              <Insets left="53.0" top="14.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Roboto" size="17.0" />
+                           </font>
+                        </TextField>
+                        <Button fx:id="BtnSearchCustomer" mnemonicParsing="false" onAction="#searchCustomerDialog" prefHeight="31.0" prefWidth="38.0" style="-fx-background-color: #D15B00;" stylesheets="@../css/styles.css">
+                           <HBox.margin>
+                              <Insets left="5.0" top="14.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Roboto Medium" size="16.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIcon fill="WHITE" glyphName="SEARCH" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="BtnAddCustomer" mnemonicParsing="false" onAction="#addCustomer" style="-fx-background-color: #008A5F;" stylesheets="@../css/styles.css">
+                           <font>
+                              <Font name="Roboto Medium" size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" top="14.0" />
+                           </HBox.margin>
+                           <graphic>
+                              <FontAwesomeIcon fill="WHITE" glyphName="PLUS" />
+                           </graphic>
+                        </Button>
+                        <Label text="Fecha" textFill="WHITE">
+                           <font>
+                              <Font name="Roboto Medium" size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="50.0" top="14.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="TxfDate" editable="false" maxWidth="-Infinity" prefColumnCount="10" prefHeight="35.0" prefWidth="194.0">
                            <font>
                               <Font name="Roboto" size="17.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="50.0" top="10.0" />
+                              <Insets left="46.0" top="10.0" />
                            </HBox.margin>
                         </TextField>
+                        <Label text="Estado" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets left="50.0" top="20.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Roboto Medium" size="20.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="CmbEstado" prefHeight="26.0" prefWidth="199.0">
+                           <HBox.margin>
+                              <Insets left="50.0" top="20.0" />
+                           </HBox.margin>
+                        </ComboBox>
                      </children>
                   </HBox>
                </children>
                <VBox.margin>
-                  <Insets left="15.0" right="15.0" top="20.0" />
+                  <Insets left="15.0" right="15.0" top="30.0" />
                </VBox.margin>
                <padding>
                   <Insets bottom="20.0" />
                </padding>
             </VBox>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="995.0">
+            <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="1024.0">
                <children>
-                  <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="1158.0">
+                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="88.0" prefWidth="1067.0" style="-fx-border-width: 1px; -fx-border-color: #ADB1CD; -fx-background-color: #007FE8;" styleClass="radiusBorderPanelOption" stylesheets="@../css/styles.css">
                      <children>
-                        <Button fx:id="btnAddItem" mnemonicParsing="false" onMouseClicked="#showAddItem" text="Agregar Item">
-                           <font>
-                              <Font name="Roboto Black" size="22.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btnShowDetailItem" disable="true" mnemonicParsing="false" onMouseClicked="#showModifyDeleteItem" text="Detalles del Item">
+                        <Button fx:id="btnAddItem" mnemonicParsing="false" onMouseClicked="#showAddItem" prefHeight="58.0" prefWidth="216.0" styleClass="modifyButton" stylesheets="@../css/styles.css" text=" Item">
                            <font>
                               <Font name="Roboto Black" size="22.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="100.0" />
+                              <Insets bottom="10.0" left="10.0" />
                            </HBox.margin>
+                           <graphic>
+                              <FontAwesomeIcon fill="WHITE" glyphName="PLUS" size="2.4em" />
+                           </graphic>
                         </Button>
-                        <Button fx:id="btnPaymentsItem" disable="true" mnemonicParsing="false" onMouseClicked="#showPaymentsItem" text="Visualizar Abonos del Item">
+                        <Button fx:id="btnShowDetailItem" disable="true" mnemonicParsing="false" onMouseClicked="#showModifyDeleteItem" prefHeight="58.0" prefWidth="249.0" styleClass="modifyButton" text=" Detalles ">
                            <font>
                               <Font name="Roboto Black" size="22.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="100.0" />
+                              <Insets bottom="10.0" left="30.0" />
                            </HBox.margin>
+                           <graphic>
+                              <FontAwesomeIcon fill="WHITE" glyphName="FILE_TEXT_ALT" size="2.4em" />
+                           </graphic>
                         </Button>
-                        <Button fx:id="btnDelete" disable="true" mnemonicParsing="false" onMouseClicked="#DeleteItem" text="Eliminar Item">
+                        <Button fx:id="btnPaymentsItem" disable="true" mnemonicParsing="false" onMouseClicked="#showPaymentsItem" prefHeight="58.0" prefWidth="249.0" styleClass="modifyButton" text=" Abonos">
                            <font>
                               <Font name="Roboto Black" size="22.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="100.0" />
+                              <Insets bottom="10.0" left="30.0" />
                            </HBox.margin>
+                           <graphic>
+                              <FontAwesomeIcon fill="WHITE" glyphName="USD" size="2.4em" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="btnDelete" disable="true" mnemonicParsing="false" onMouseClicked="#DeleteItem" styleClass="modifyButton" text=" Eliminar">
+                           <font>
+                              <Font name="Roboto Black" size="22.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="30.0" />
+                           </HBox.margin>
+                           <graphic>
+                              <FontAwesomeIcon fill="#004200" glyphName="TRASH" size="2.4em" />
+                           </graphic>
                         </Button>
                      </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </HBox>
                </children>
                <VBox.margin>
-                  <Insets right="200.0" top="20.0" />
+                  <Insets right="200.0" top="70.0" />
                </VBox.margin>
             </VBox>
-            <VBox alignment="TOP_CENTER" prefHeight="290.0" prefWidth="1396.0" style="-fx-alignment: center;" VBox.vgrow="SOMETIMES">
+            <VBox alignment="TOP_CENTER" prefHeight="290.0" prefWidth="1396.0" style="-fx-alignment: center;">
                <children>
-                  <TableView fx:id="Table" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="268.0" prefWidth="1243.0" stylesheets="@../css/styles.css">
+                  <TableView fx:id="Table" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="328.0" prefWidth="1228.0" stylesheets="@../css/styles.css">
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
@@ -185,91 +210,110 @@
                         </DropShadow>
                      </effect>
                   </TableView>
-                  <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="74.0" prefWidth="1243.0">
+                  <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="111.0" prefWidth="1243.0">
                      <children>
-                        <Button fx:id="btnCancel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#closeDialog" prefHeight="36.0" prefWidth="132.0" text="Regresar" textFill="#c90a0a">
-                           <HBox.margin>
-                              <Insets left="50.0" top="20.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="Roboto Black" size="20.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="BtbUpdateHandiwork" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#updateHandiwork" prefHeight="36.0" prefWidth="132.0" text="Guardar" textFill="#0bd72d">
-                           <font>
-                              <Font name="Roboto Black" size="20.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="100.0" right="100.0" top="20.0" />
-                           </HBox.margin>
-                        </Button>
-                        <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0">
+                        <HBox prefHeight="178.0" prefWidth="778.0" stylesheets="@../css/styles.css">
                            <children>
-                              <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="47.0" prefWidth="451.0">
+                              <Button fx:id="BtbUpdateHandiwork" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#updateHandiwork" prefHeight="78.0" prefWidth="271.0" styleClass="saveButton" stylesheets="@../css/styles.css" text=" Guardar" textFill="#0bd72d">
+                                 <font>
+                                    <Font name="Roboto Black" size="20.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="100.0" right="100.0" top="20.0" />
+                                 </HBox.margin>
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="SAVE" size="2.4em" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="btnCancel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#closeDialog" prefHeight="81.0" prefWidth="218.0" styleClass="cancelButton" text=" Regresar" textFill="#c90a0a">
+                                 <HBox.margin>
+                                    <Insets top="20.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Roboto Black" size="20.0" />
+                                 </font>
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="CARET_LEFT" size="2.4em" />
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <VBox alignment="TOP_RIGHT" prefHeight="174.0" prefWidth="446.0" style="-fx-border-width: 1px; -fx-background-color: #1C5D99; -fx-border-color: #1C5D99;" styleClass="radiusBorderPanelOption" stylesheets="@../css/styles.css">
+                           <children>
+                              <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="54.0" prefWidth="451.0" style="-fx-background-color: #1C5D99;" styleClass="radiusBorderPanelOption" stylesheets="@../css/styles.css">
                                  <children>
-                                    <Label text="Pagado">
+                                    <Label text="Pagado" textFill="WHITE">
                                        <HBox.margin>
                                           <Insets left="10.0" right="20.0" top="10.0" />
                                        </HBox.margin>
                                        <font>
-                                          <Font size="20.0" />
+                                          <Font size="22.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="TxfPagado" editable="false" maxHeight="30.0" prefHeight="10.0" prefWidth="250.0">
+                                    <TextField fx:id="TxfPagado" alignment="CENTER_RIGHT" editable="false" maxHeight="30.0" prefHeight="10.0" prefWidth="250.0" styleClass="fieldForm" stylesheets="@../css/styles.css">
                                        <font>
                                           <Font size="18.0" />
                                        </font>
                                        <HBox.margin>
+                                          <Insets right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                       <opaqueInsets>
                                           <Insets />
+                                       </opaqueInsets>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="57.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="449.0" style="-fx-background-color: #1C5D99;" styleClass="radiusBorderPanelOption" stylesheets="@../css/styles.css">
+                                 <children>
+                                    <Label text="Por pagar" textFill="WHITE">
+                                       <HBox.margin>
+                                          <Insets left="10.0" right="20.0" top="10.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font size="22.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="txfPorPagar" alignment="CENTER_RIGHT" editable="false" maxHeight="31.0" prefHeight="31.0" prefWidth="250.0" styleClass="fieldForm" stylesheets="@../css/styles.css">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets right="5.0" top="5.0" />
                                        </HBox.margin>
                                     </TextField>
                                  </children>
                               </HBox>
-                              <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="57.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="47.0" prefWidth="451.0">
+                              <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="62.0" prefWidth="451.0" style="-fx-background-color: #007AE2;" styleClass="radiusBorderPanelOption" stylesheets="@../css/styles.css">
                                  <children>
-                                    <Label text="Por pagar">
+                                    <Label text="Total" textFill="WHITE">
                                        <HBox.margin>
                                           <Insets left="10.0" right="20.0" top="10.0" />
                                        </HBox.margin>
                                        <font>
-                                          <Font size="20.0" />
+                                          <Font size="22.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="txfPorPagar" editable="false" maxHeight="30.0" prefHeight="10.0" prefWidth="250.0">
+                                    <TextField fx:id="txfCostoTotal" alignment="CENTER_RIGHT" editable="false" maxHeight="30.0" prefHeight="10.0" prefWidth="250.0" styleClass="fieldForm" stylesheets="@../css/styles.css">
                                        <font>
                                           <Font size="18.0" />
                                        </font>
                                        <HBox.margin>
-                                          <Insets />
+                                          <Insets right="5.0" />
                                        </HBox.margin>
                                     </TextField>
                                  </children>
-                              </HBox>
-                              <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="47.0" prefWidth="451.0">
-                                 <children>
-                                    <Label text="Total">
-                                       <HBox.margin>
-                                          <Insets left="10.0" right="20.0" top="10.0" />
-                                       </HBox.margin>
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <TextField fx:id="txfCostoTotal" editable="false" maxHeight="30.0" prefHeight="10.0" prefWidth="250.0">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
-                                    </TextField>
-                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
                               </HBox>
                            </children>
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
                         </VBox>
                      </children>
                      <VBox.margin>
-                        <Insets top="5.0" />
+                        <Insets />
                      </VBox.margin>
                   </HBox>
                </children>

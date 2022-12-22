@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -8,17 +9,24 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_Pages.AddCustomerController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="787.0" prefWidth="1138.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_Pages.AddCustomerController">
    <children>
       <BorderPane layoutY="30.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
             <VBox alignment="TOP_CENTER" prefHeight="724.0" prefWidth="955.0" styleClass="containerForm" stylesheets="@../css/styles.css" BorderPane.alignment="CENTER">
                <children>
-                  <HBox alignment="CENTER" prefHeight="95.0" prefWidth="782.0">
+                  <HBox alignment="CENTER" prefHeight="95.0" prefWidth="782.0" styleClass="radiusTitlePane" stylesheets="@../css/styles.css">
                      <children>
-                        <Label fx:id="LblTitle" prefHeight="46.0" prefWidth="354.0" styleClass="labels" stylesheets="@../css/styles.css" text="Registro Cliente" textAlignment="CENTER" />
+                        <Label fx:id="LblTitle" alignment="CENTER" prefHeight="46.0" prefWidth="354.0" styleClass="labels" stylesheets="@../css/styles.css" text="Registro Cliente" textAlignment="CENTER">
+                           <font>
+                              <Font name="Roboto" size="24.0" />
+                           </font></Label>
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
                   </HBox>
                   <VBox prefHeight="51.0" prefWidth="755.0" styleClass="fieldForm" stylesheets="@../css/styles.css">
                      <VBox.margin>
@@ -155,13 +163,16 @@
                   </VBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="btnModificar" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#updateCustomer" prefHeight="26.0" prefWidth="189.0" styleClass="acceptButton" stylesheets="@../css/styles.css" text="Modificar" visible="false">
+                        <Button fx:id="btnModificar" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#updateCustomer" prefHeight="26.0" prefWidth="189.0" styleClass="modifyButton" stylesheets="@../css/styles.css" text="Modificar" visible="false">
                            <HBox.margin>
                               <Insets right="20.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="btnGuardar" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#addCustomer" prefHeight="26.0" prefWidth="189.0" styleClass="acceptButton" stylesheets="@../css/styles.css" text="Guardar" />
-                        <Button fx:id="btnDelete" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#deleteCustomer" prefHeight="26.0" prefWidth="189.0" styleClass="acceptButton" stylesheets="@../css/styles.css" text="Eliminar" visible="false" />
+                        <Button fx:id="btnGuardar" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#addCustomer" prefHeight="66.0" prefWidth="237.0" styleClass="saveButton" stylesheets="@../css/styles.css" text=" Guardar">
+                           <graphic>
+                              <FontAwesomeIcon fill="WHITE" glyphName="SAVE" size="2.4em" />
+                           </graphic></Button>
+                        <Button fx:id="btnDelete" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#deleteCustomer" prefHeight="26.0" prefWidth="189.0" styleClass="cancelButton" stylesheets="@../css/styles.css" text="Eliminar" visible="false" />
                      </children>
                   </HBox>
                </children>

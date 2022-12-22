@@ -17,24 +17,54 @@ and open the template in the editor.
 }
 
 .radiusBorderPanel{
-    -fx-border-radius: 30 30 0 0;
-    -fx-background-radius: 30 30 0 0;
+    -fx-border-radius: 10 10 0 0;
+    -fx-background-radius: 10 10 0 0;
 }
 
 .roundButton{
     -fx-background-radius: 4em;
 }
+.radiusBorderPanelOption{
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+    -fx-background-color: #F2FAFF;
 
+}
+.radiusBorderPanelOptionBlue{
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+    -fx-background-color: #1C5D99;
+
+}
+.radiusTitlePane{
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+    -fx-background-color: #1c5d99;
+
+}
 .completeBorderPanel{
     -fx-border-radius: 30 30 30 30;
     -fx-background-radius: 30 30 30 30;
 }
+.paneRadiusButton{
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+}
 
+.paneRadiusTop{
+    -fx-border-radius: 10 10 0 0;
+    -fx-background-radius: 10 10 0 0;
+    -fx-background-color: #1C5D99;
+}
 .whiteFontField{
     -fx-text-fill : red;
 }
 
-
+.lblOptionPrincipal{
+    -fx-text-fill: white;
+    -fx-font-family: 'Roboto',  'Arial';
+    -fx-font-size: 1.5em;
+}
 
 @font-face {
     font-family: 'Roboto';
@@ -55,10 +85,23 @@ and open the template in the editor.
 
 
 .labels{
-    -fx-font-family: 'Roboto Black';
-    -fx-font-size: 1.6em;
-    -fx-text-fill: #000000;
-    
+    -fx-font-family: 'Roboto Black' , 'Lato', 'Arial';
+    -fx-font-size: 3em;
+    -fx-text-fill: white;
+
+}
+.labelsSmall{
+    -fx-font-family: 'Roboto Black' , 'Lato', 'Arial';
+    -fx-font-size: 2em;
+    -fx-text-fill: white;
+
+}
+
+.labelsBlack{
+    -fx-font-family: 'Roboto Black' , 'Lato', 'Arial';
+    -fx-font-size: 2em;
+    -fx-text-fill: #222222;
+
 }
 
 .buttonPanel:hover {
@@ -76,9 +119,12 @@ and open the template in the editor.
 
 .roundButton{
     -fx-background-radius: 5em;
-    
+
 }
 
+.textOption{
+    -fx-font-size: 15pt ;
+}
 .completeBorderPanel{
     -fx-border-radius: 30 30 30 30;
     -fx-background-radius: 30 30 30 30;
@@ -89,7 +135,7 @@ and open the template in the editor.
 }
 
 .containerForm{
-    -fx-background-color: #D3D3D3;
+    -fx-background-color: #F5F9FF;
     -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.1),10.0,0.0,0.0,10.0);
     -fx-background-radius:30;
 }
@@ -102,7 +148,7 @@ and open the template in the editor.
 .fieldTitle{
     -fx-font-family: 'Lato-bold', 'Arial';
     -fx-font-size: 1.2em;
-    -fx-text-fill: black;
+    -fx-text-fill: #293B45;
     -fx-font-weight: bold
 }
 
@@ -117,7 +163,7 @@ and open the template in the editor.
     -fx-font-family: 'Roboto',  'Arial';
     -fx-font-size: 2em;
     -fx-background-radius:30;
-    -fx-background-color: black;
+    -fx-background-color: #B06500;
     -fx-text-fill: white;
 }
 
@@ -135,12 +181,243 @@ and open the template in the editor.
 
 .table-view .column-header {
     -fx-background-color: #1C5D99;
+
+}
+.table-row-cell:filled:selected {
+    -fx-background-color: #FFF7D6;
+}
+.table-row-cell:selected-row {
+    -fx-background-color: #FFF7D6;
 }
 
 .table-view .column-header .label {
     -fx-text-fill: white;
     -fx-font-weight: bold;
+    -fx-font-size: 1.5em;
+    -fx-border-width:  0 0 10 0;
+    -fx-background-color: transparent;
+}
+
+.table-view{
+    -fx-background-radius: 14 14 0 0;
+    -fx-font-family: 'Roboto',  'Arial';
+    -fx-font-size: 1em;
+}
+
+/* Row hovered */
+.table-view:row-selection .table-row-cell:filled:hover {
+    -fx-background-color: #ADD9F3;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-text-fill: -fx-text-inner-color;
+}
+
+.table-view .table-cell{
+    -fx-font-family: 'Roboto',  'Arial';
+    -fx-font-size:22px;         
+    -fx-text-fill:#222222; 
+
+}
+.table-row-cell{
+    -fx-background-color: white;
+    -fx-background-insets: 0.0, 0.0 0.0 10.0 0.0;
+    -fx-padding: 0.0em; 
+    -fx-cell-size: 60px;
+}
+
+.table-row-cell:odd{
+    -fx-background-color: #F2FAFF;
+    -fx-background-insets: 0.0, 0.0 0.0 1.0 0.0;
+    -fx-padding: 0.0em; 
+    -fx-cell-size: 60px;
 }
 
 
+.sale
+{
+    -fx-padding: 6 15 15 15;
+    -fx-background-insets: 0,0 0 3 0,0 0 4 0,0 0 3 0;
+    -fx-background-radius: 10;
+    -fx-background-color:
+        linear-gradient(from 0% 93% to 0% 100%,#a34313 0%,#903b12 100%),
+        #9d4024,
+        #d86e3a,
+        radial-gradient(center 50% 50%, radius 100%,#d96e3a,#c54e2c);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75),4,0,0,1);
+    -fx-font-weight: bold;
+    -fx-font-size: 2em;
+    -fx-text-fill: white;
+}
 
+.sale:hover
+{
+
+    -fx-background-color:linear-gradient(from 0% 93% to 0% 100%,#a34313 0%,#903b12 100%),
+        #9d4024,
+        #d86e3a,
+        radial-gradient(center 50% 50%,radius 100%,#ea7f4b,#c54e2c);
+}
+
+.sale:pressed
+{
+    -fx-padding: 8 15 13 15;
+    -fx-background-insets: 1 0 0 0,1 0 1 0,1 0 2 0,1 0 3 0;
+
+}
+/*button green modify */
+.modifyButton
+{
+    -fx-padding: 6 15 15 15;
+    -fx-background-insets: 0,0 0 3 0,0 0 4 0,0 0 3 0;
+    -fx-background-radius: 10;
+    -fx-background-color:
+        linear-gradient(from 0% 93% to 0% 100%,#339039 0%,#00711c 100%),
+        #00711c,
+        #6dc76c,
+        radial-gradient(center 50% 50%, radius 100%,#6dc76c,#50c255);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75),4,0,0,1);
+    -fx-font-weight: bold;
+    -fx-font-size: 2em;
+    -fx-text-fill: white;
+}
+
+.modifyButton:hover
+{
+
+    -fx-background-color:linear-gradient(from 0% 93% to 0% 100%,#339039 0%,#00711c 100%),
+        #00711c,
+        #6dc76c,
+        radial-gradient(center 50% 50%,radius 100%,#80db7e,#50c255);
+}
+
+.modifyButton:pressed
+{
+    -fx-padding: 8 15 13 15;
+    -fx-background-insets: 1 0 0 0,1 0 1 0,1 0 2 0,1 0 3 0;
+
+}
+
+
+/*button red cancel*/
+.cancelButton
+{
+    -fx-padding: 6 15 15 15;
+    -fx-background-insets: 0,0 0 3 0,0 0 4 0,0 0 3 0;
+    -fx-background-radius: 10;
+    -fx-background-color:
+        linear-gradient(from 0% 93% to 0% 100%,#c5003b 0%,#bb0e41 100%),
+        #bb0e41,
+        #c20039,
+        radial-gradient(center 50% 50%, radius 100%,#ce1742,#c20039);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75),4,0,0,1);
+    -fx-font-weight: bold;
+    -fx-font-size: 2em;
+    -fx-text-fill: white;
+}
+
+.cancelButton:hover
+{
+
+    -fx-background-color:linear-gradient(from 0% 93% to 0% 100%,#c5003b 0%,#bb0e41 100%),
+        #bb0e41,
+        #c20039,
+        radial-gradient(center 50% 50%,radius 100%,#ee3f59,#c20039);
+}
+
+.cancelButton:pressed
+{
+    -fx-padding: 8 15 13 15;
+    -fx-background-insets: 1 0 0 0,1 0 1 0,1 0 2 0,1 0 3 0;
+
+}
+
+/*button red cancel*/
+.cancelButtonTable
+{
+    -fx-padding: 3 8 8 6;
+    -fx-background-insets: 0,0 0 3 0,0 0 4 0,0 0 3 0;
+    -fx-background-radius: 8;
+    -fx-background-color:
+        linear-gradient(from 0% 93% to 0% 100%,#c5003b 0%,#bb0e41 100%),
+        #bb0e41,
+        #c20039,
+        radial-gradient(center 50% 50%, radius 100%,#ce1742,#c20039);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75),4,0,0,1);
+    -fx-font-weight: bold;
+    -fx-font-size: 1em;
+    -fx-text-fill: white;
+}
+
+.cancelButtonTable:hover
+{
+
+    -fx-background-color:linear-gradient(from 0% 93% to 0% 100%,#c5003b 0%,#bb0e41 100%),
+        #bb0e41,
+        #c20039,
+        radial-gradient(center 50% 50%,radius 100%,#ee3f59,#c20039);
+}
+
+.cancelButtonTable:pressed
+{
+    -fx-padding: 3 8 6 6;
+    -fx-background-insets: 1 0 0 0,1 0 1 0,1 0 2 0,1 0 3 0;
+
+}
+
+/*button save blue*/
+.saveButton
+{
+    -fx-padding: 6 15 15 15;
+    -fx-background-insets: 0,0 0 3 0,0 0 4 0,0 0 3 0;
+    -fx-background-radius: 10;
+    -fx-background-color:
+        linear-gradient(from 0% 93% to 0% 100%,#004cac 0%,#002174 100%),
+        #004cac,
+        #007ae2,
+        radial-gradient(center 50% 50%, radius 100%,#007ae2,#0065ca);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75),4,0,0,1);
+    -fx-font-weight: bold;
+    -fx-font-size: 2em;
+    -fx-text-fill: white;
+}
+
+.saveButton:hover
+{
+
+    -fx-background-color:linear-gradient(from 0% 93% to 0% 100%,#004cac 0%,#002174 100%),
+        #004cac,
+        #007ae2,
+        radial-gradient(center 50% 50%,radius 100%,#007fe8,#0065ca);
+}
+
+.saveButton:pressed
+{
+    -fx-padding: 8 15 13 15;
+    -fx-background-insets: 1 0 0 0,1 0 1 0,1 0 2 0,1 0 3 0;
+
+}
+
+
+.menu-bar
+{
+    -fx-text-fill: green;
+    -fx-font-size: 1.3em;
+}
+
+.menu-item:focused {
+    -fx-background-color: #ADD9F3;
+}
+
+.menu-item .label{
+    -fx-text-fill: #364954;
+    -fx-font-size: 1.3em;
+    -fx-font-family: 'Roboto',  'Arial';
+}
+
+.search-box{
+    -fx-background-color: #FFFFFF;
+    -fx-backgraound-radius: 100;
+}
+
+.transparent{
+    -fx-background-color: rgba(0,0,0,0);
+}
