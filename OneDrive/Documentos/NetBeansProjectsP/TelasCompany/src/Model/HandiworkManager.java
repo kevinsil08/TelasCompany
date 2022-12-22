@@ -65,4 +65,7 @@ public class HandiworkManager {
     public int updateLeftCost(int idHandiwork){
         return handiworkDAO.updateLeftCost(idHandiwork);
     }
+    public int deleteHandiwork(int idHandiwork){
+        return handiworkDAO.deleteHandiwork(idHandiwork);
+    }
 }
